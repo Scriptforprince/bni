@@ -1,0 +1,802 @@
+ <!-- header -->
+ <%- include('../partials/header') %> 
+ <!-- end header -->
+
+ <!-- sidebar -->
+
+ <%- include('../partials/sidebar') %>
+
+ <style>
+  /* Hide the default select dropdown arrow */
+  .custom-select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+  }
+
+  /* Remove padding for better alignment */
+  .custom-select {
+    padding-right: 0;
+    background: none;
+  }
+
+  .whatsapp-icon {
+  color: green; /* Set your desired green color */
+}
+
+
+</style>
+
+ <!-- end sidebar -->
+
+      <!-- Start::app-content -->
+      <div class="main-content app-content" style="background-color: #f4f4f4">
+        <div class="container-fluid">
+          <!-- Start::page-header -->
+          <div
+            class="d-flex align-items-center justify-content-between page-header-breadcrumb flex-wrap gap-2"
+          >
+            <div>
+              <h1 class="page-title fw-medium fs-18 mb-0">
+                <span style="font-weight: 700; font-family: Poppins"
+                  >Add New Member</span
+                > <br>
+				
+              </h1>
+              <!-- <p>Manage kitty payments with just one click</p> -->
+            </div>
+            <!-- <div class="d-flex align-items-center gap-2 flex-wrap">
+              <div class="form-group">
+                <div class="input-group">
+                  <div class="input-group-text bg-white border">
+                    <i class="ri-calendar-line"></i>
+                  </div>
+                  <input
+                    type="text"
+                    class="form-control breadcrumb-input"
+                    id="daterange"
+                    placeholder="Search By Date Range"
+                  />
+                </div>
+              </div>
+              <div class="btn-list">
+                <button class="btn btn-white btn-wave">
+                  <i class="ri-filter-3-line align-middle me-1 lh-1"></i> Filter
+                </button>
+                <button class="btn btn-primary btn-wave me-0">
+                  <i class="ri-share-forward-line me-1"></i> Share
+                </button>
+              </div>
+            </div> -->
+          </div>
+          <!-- End::page-header -->
+          <style>
+            @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+
+            @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+          </style>
+
+          <style>
+            * {
+              font-family: Montserrat !important;
+              font-weight: 800px;
+            }
+            .text-muted {
+              color: black !important;
+              font-family: Montserrat Alternates;
+            }
+            .popins {
+              font-family: Poppins;
+            }
+          </style>
+
+          <div class="row">
+            <div class="col-xl-12">
+              <div class="card custom-card">
+                <div class="card-body add-products">
+                  <div class="row gx-4">
+                    <div class="col-xxl-12 col-xl-12 col-lg-12 col-md-6">
+                      <div class="card custom-card shadow-none mb-0 border-0">
+                        <div class="card-body p-0">
+                          <div class="row gy-3">
+                            <div class="col-xl-12">
+                              <label for="product-cost-add" class="form-label"
+                                ><span style="font-size: 15px;"
+                                  ><b>It's time for a new member!</b></span
+                                ></label
+                              >
+                            </div>
+                            
+                            <div class="col-xl-6">
+                              <label for="memberFirstName" class="form-label">
+                                Member Name *
+                              </label>
+                              <div class="input-group">
+                                <span class="input-group-text">
+                                  <select class="form-select border-0 p-0 custom-select" id="memberPrefix" name="member_prefix" style="width: auto;">
+                                    <option value="Mr.">Mr.</option>
+                                    <option value="Mrs.">Mrs.</option>
+                                    <option value="Ms.">Ms.</option>
+                                    <option value="Dr.">Dr.</option>
+                                    <option value="Prof.">Prof.</option>
+                                  </select>
+                                </span>
+                                <input type="text" class="form-control" id="memberFirstName" placeholder="Enter first name" name="member_first_name" />
+                              </div>
+                              <label for="memberFirstName" class="form-label mt-1 fs-12 fw-normal text-muted mb-0">
+                                <span style="color: red"
+                            >*Mention the acknowledged name of the member</span
+                          ></label
+                        >
+                              </label>
+                            </div>
+                            
+                            
+                            <div class="col-xl-6">
+                                <label for="product-cost-add" class="form-label"
+                                  >Member Last Name *</label
+                                >
+                                <input type="text" class="form-control" id="memberLastName" placeholder="Enter Last Name" name="member_last_name" />
+                             
+                              </div>
+                              <div class="col-xl-6">
+                                <label for="gender" class="form-label">Gender</label>
+                                <select class="form-select" id="gender" name="gender">
+                                  <option value="male">Male</option>
+                                  <option value="female">Female</option>
+                                  <option value="neutral">Neutral</option>
+                                </select>
+                              </div>
+                              
+                              <div class="col-xl-6">
+                                <label for="product-cost-add" class="form-label"
+                                  >Date of Birth *</label
+                                >
+                                <input
+                                  type="date"
+                                  class="form-control"
+                                  id="memberDateOfBirth"
+                                  placeholder="New chapter name.."
+                                />
+                               
+                              </div>
+                              <div class="col-xl-6">
+                                <label for="contact-number" class="form-label"
+                                  >Contact Number <span style="color: red;">(Phone Number) *</span> </label
+                                >
+                                <div class="input-group">
+                                  <span class="input-group-text">
+                                    <img
+                                      src="https://upload.wikimedia.org/wikipedia/en/4/41/Flag_of_India.svg"
+                                      alt="India"
+                                      width="20"
+                                      style="margin-right: 5px"
+                                    />
+                                    91+
+                                  </span>
+                                  <input
+                                    type="tel"
+                                    class="form-control"
+                                    id="contact-number"
+                                    placeholder="Enter phone number"
+                                  />
+                                </div>
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" id="whatsappCheckbox">
+                                  <label for="whatsappCheckbox" class="form-label mt-1 fs-12 fw-normal text-muted mb-0">
+                                    <span>
+                                      <i class="bi bi-whatsapp whatsapp-icon"></i> This is my Whatsapp Number
+                                    </span>
+                                  </label>
+                                  
+                                </div>
+                                
+                              </div>
+                              
+                              <div class="col-xl-6">
+                                <label for="contact-number" class="form-label"
+                                  >Alternate Contact Number *</label
+                                >
+                                <div class="input-group">
+                                  <span class="input-group-text">
+                                    <img
+                                      src="https://upload.wikimedia.org/wikipedia/en/4/41/Flag_of_India.svg"
+                                      alt="India"
+                                      width="20"
+                                      style="margin-right: 5px"
+                                    />
+                                    91+
+                                  </span>
+                                  <input
+                                    type="tel"
+                                    class="form-control"
+                                    id="contact-number"
+                                    placeholder="Enter Alternate phone number"
+                                  />
+                                </div>
+                              </div>
+                              <div class="col-xl-6">
+                                <label for="product-cost-add" class="form-label"
+                                  >Member Email Address *</label
+                                >
+                                <input type="text" class="form-control" id="memberEmail" placeholder="test@gmail.com" name="member_email_address" />
+                                
+                              </div>
+
+                              <div class="col-xl-6">
+                                <label for="memberImage" class="form-label">Member Image</label>
+                                <input type="file" class="form-control" id="memberImage" name="member_image"/>
+                              </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-xl-12">
+              <div class="card custom-card">
+                <div class="card-body add-products">
+                  <div class="row gx-4">
+                    <div class="col-xxl-12 col-xl-12 col-lg-12 col-md-6">
+                      <div class="card custom-card shadow-none mb-0 border-0">
+                        <div class="card-body p-0">
+                          <div class="row gy-3">
+                            <div class="col-xl-12">
+                              <label for="product-cost-add" class="form-label"
+                                ><span style="font-size: 15px; color:#d01f2f;"
+                                  ><b>Member Address Details</b></span
+                                ></label
+                              >
+                            </div>
+      
+                            <div class="col-xl-6">
+                              <label for="product-brand-add" class="form-label"
+                                >Country *</label
+                              >
+                              <select
+                                class="form-control"
+                                name="product-brand-add"
+                                id="product-brand-add"
+                              >
+                                <option value="">Select Country</option>
+                              </select>
+                            </div>
+      
+                            <div class="col-xl-6">
+                              <label for="state" class="form-label"
+                                >State/Province *</label
+                              >
+                              <input
+                                type="text"
+                                class="form-control"
+                                id="state"
+                                placeholder="Enter state or province"
+                              />
+                            </div>
+      
+                            <div class="col-xl-6">
+                              <label for="city" class="form-label">City *</label>
+                              <input
+                                type="text"
+                                class="form-control"
+                                id="city"
+                                placeholder="Enter city"
+                              />
+                            </div>
+      
+                            <div class="col-xl-6">
+                              <label for="street" class="form-label"
+                                >Street Address Line 1 *</label
+                              >
+                              <input
+                                type="text"
+                                class="form-control"
+                                id="street"
+                                placeholder="Enter street address"
+                              />
+                            </div>
+      
+                            <div class="col-xl-6">
+                              <label for="street" class="form-label"
+                                >Street Address Line 2</label
+                              >
+                              <input
+                                type="text"
+                                class="form-control"
+                                id="street"
+                                placeholder="Enter street address"
+                              />
+                            </div>
+      
+                            <div class="col-xl-6">
+                              <label for="postal-code" class="form-label"
+                                >Postal Code *</label
+                              >
+                              <input
+                                type="text"
+                                class="form-control"
+                                id="postal-code"
+                                placeholder="Enter postal code"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-xl-12">
+              <div class="card custom-card">
+                <div class="card-body add-products">
+                  <div class="row gx-4">
+                    <div class="col-xxl-12 col-xl-12 col-lg-12 col-md-6">
+                      <div class="card custom-card shadow-none mb-0 border-0">
+                        <div class="card-body p-0">
+                          <div class="row gy-3">
+                            <div class="col-xl-12">
+                              <label for="product-cost-add" class="form-label"
+                                ><span style="font-size: 15px; color:#d01f2f;"
+                                  ><b>Member GSTIN & Company Details</b></span
+                                ></label
+                              >
+                            </div>
+                            <div class="col-xl-6">
+                              <label for="product-cost-add" class="form-label"
+                                >Member GSTIN Number *</label
+                              >
+                              <input
+                                type="text"
+                                class="form-control"
+                                id="memberGSTNumber"
+                                placeholder="Enter GSTIN Number.."
+                              />
+                        
+                            </div>
+
+              <div class="col-xl-6">
+                              <label for="product-cost-add" class="form-label"
+                                >Member Company Name *</label
+                              >
+                              <input
+                                type="text"
+                                class="form-control"
+                                id="memberCompanyName"
+                                placeholder="Enter Company Name.."
+                              />
+                        
+                            </div>
+
+
+              <div class="col-xl-6">
+                              <label for="product-cost-add" class="form-label"
+                                >Member Company State *</label
+                              >
+                              <input
+                                type="text"
+                                class="form-control"
+                                id="memberCompanyState"
+                                placeholder="Enter Company State.."
+                              />
+                        
+                            </div>
+
+              <div class="col-xl-6">
+                              <label for="product-cost-add" class="form-label"
+                                >Member Company City *</label
+                              >
+                              <input
+                                type="text"
+                                class="form-control"
+                                id="memberCompanyCity"
+                                placeholder="Enter Company City.."
+                              />
+                        
+                            </div>
+
+                            <div class="col-xl-6">
+                              <label for="product-cost-add" class="form-label"
+                                >Member Company Address *</label
+                              >
+                              <input
+                                type="text"
+                                class="form-control"
+                                id="memberCompanyAddress"
+                                placeholder="Enter Company Address.."
+                              />
+                        
+                            </div>
+
+                            <div class="col-xl-6">
+                              <label for="product-cost-add" class="form-label"
+                                >Postal Code *</label
+                              >
+                              <input
+                                type="text"
+                                class="form-control"
+                                id="memberCompanyAddress"
+                                placeholder="Enter Postal Code.."
+                              />
+                        
+                            </div>
+
+                            <div class="col-xl-6">
+                              <label for="memberImage" class="form-label">Member Company logo</label>
+                              <input type="file" class="form-control" id="memberImage" name="member_image"/>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-xl-12">
+              <div class="card custom-card">
+                <div class="card-body add-products">
+                  <div class="row gx-4">
+                    <div class="col-xxl-12 col-xl-12 col-lg-12 col-md-6">
+                      <div class="card custom-card shadow-none mb-0 border-0">
+                        <div class="card-body p-0">
+                          <div class="row gy-3">
+                            <div class="col-xl-12">
+                              <label for="product-cost-add" class="form-label"
+                                ><span style="font-size: 15px; color: #d01f2f;"
+                                  ><b>Member BNI Details</b></span
+                                ></label
+                              >
+                            </div>
+                            <div class="col-xl-6">
+                              <label for="region" class="form-label">Choose Region <a href="/r/add-region">
+                                <button type="button" class="btn btn-outline-info btn-sm">Add Region +</button>
+                              </a></label>
+                              <select class="form-control" name="region" id="region">
+                                <option value="">Select Region</option>
+                              </select>
+                            </div>
+                            
+                            <div class="col-xl-6">
+                              <label for="chapter" class="form-label">Choose Chapter <a href="/c/add-chapter">
+                                <button type="button" class="btn btn-outline-info btn-sm">Add Chapter +</button>
+                              </a></label>
+                              <select class="form-control" name="chapter" id="chapter">
+                                <option value="">Select Chapter</option>
+                              </select>
+                            </div>
+                            
+                          <div class="col-xl-6">
+                              <label for="accolades" class="form-label">Accolades <a href="add-accolades.html">
+                                <button type="button" class="btn btn-outline-info btn-sm">Add Accolades +</button>
+                              </a></label>
+                              <div id="accoladesContainer">
+                              </div>
+                            </div>
+                        
+                              
+                            <div class="col-xl-6">
+                              <label for="product-brand-add" class="form-label">
+                                  Choose Category 
+                                  <a href="add-category.html">
+                                      <button type="button" class="btn btn-outline-info btn-sm">Add Category +</button>
+                                  </a>
+                              </label>
+                              <select class="form-control" data-trigger="" name="product-brand-add" id="category">
+                                  <option value="">Select</option>
+                                  <!-- Categories will be dynamically populated here -->
+                              </select>
+                          </div>
+            
+                             
+                              <div class="col-xl-6">
+                                <label for="chapter" class="form-label">Choose Membership</label>
+                                <select class="form-control" name="chapter" id="chapter">
+                                  <option value="">Select Chapter</option>
+                                  <option value="">1 Year</option>
+                                  <option value="">2 Year</option>
+                                  <option value="">5 Year</option>
+                                </select>
+                              </div>
+                              <div class="col-xl-6">
+                                <label for="product-cost-add" class="form-label"
+                                  >Induction Date</label
+                                >
+                                <input type="date" class="form-control" id="memberInductionDate" name="member_induction_date" />
+                               
+                              </div>
+
+
+                              <div class="col-xl-6">
+                                <label for="product-cost-add" class="form-label"
+                                  >Renewal Date</label
+                                >
+                                <input
+                                  type="date"
+                                  class="form-control"
+                                  id="memberRenewalDate"
+                                  placeholder="New chapter name.."
+                                />
+                            
+                              </div>
+                              <div class="col-xl-6">
+                                <label for="product-cost-add" class="form-label"
+                                  >Renewal Due Date</label
+                                >
+                                <input
+                                  type="date"
+                                  class="form-control"
+                                  id="memberRenewalDueDate"
+                                  placeholder="New chapter name.."
+                                  readonly
+                                  style="background-color: gainsboro;"
+                                />
+                               
+                              </div>
+                              <!-- <div class="col-xl-6">
+                                <label for="product-cost-add" class="form-label"
+                                  >Last Renewal Date</label
+                                >
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  id="memberLastRenewalDate"
+                                  placeholder="08.05.2024.."
+                                  readonly
+                                  style="background-color: gainsboro;"
+                                />
+                          
+                              </div> -->
+                              
+                              <!-- <div class="col-xl-6">
+                                <label for="memberStatus" class="form-label">Member Status</label>
+                                <select class="form-control" name="memberStatus" id="memberStatus">
+                                  <option value="">Select</option>
+                                  <option value="active">Active</option>
+                                  <option value="inactive">Inactive</option>
+                                </select>
+                              </div> -->
+                              
+                              
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-xl-12">
+              <div class="card custom-card">
+                <div class="card-body add-products">
+                  <div class="row gx-4">
+                    <div class="col-xxl-12 col-xl-12 col-lg-12 col-md-6">
+                      <div class="card custom-card shadow-none mb-0 border-0">
+                        <div class="card-body p-0">
+                          <div class="row gy-3">
+                            <div class="col-xl-12">
+                              <label for="product-cost-add" class="form-label"
+                                ><span style="font-size: 15px; color: #d01f2f;"
+                                  ><b>Social Media & Handles</b></span
+                                ></label
+                              >
+                            </div>
+                            <div class="col-xl-6">
+                              <label for="facebook-link" class="form-label">
+                                <i class="bi bi-facebook"></i> Facebook
+                              </label>
+                              <input
+                                type="text"
+                                class="form-control"
+                                id="facebook-link"
+                                placeholder="www.facebook.com"
+                              />
+                            </div>
+      
+                            <div class="col-xl-6">
+                              <label for="instagram-link" class="form-label">
+                                <i class="bi bi-instagram"></i>
+                                Instagram
+                              </label>
+                              <input
+                                type="text"
+                                class="form-control"
+                                id="instagram-link"
+                                placeholder="www.instagram.com"
+                              />
+                            </div>
+      
+                            <div class="col-xl-4">
+                              <label for="linkedin-link" class="form-label">
+                                <i class="bi bi-linkedin"></i>
+                                Linkedin
+                              </label>
+                              <input
+                                type="text"
+                                class="form-control"
+                                id="linkedin-link"
+                                placeholder="www.linkedin.com"
+                              />
+                            </div>
+      
+                            <div class="col-xl-4">
+                              <label for="youtube-link" class="form-label">
+                                <i class="bi bi-youtube"></i>
+                                Youtube
+                              </label>
+                              <input
+                                type="text"
+                                class="form-control"
+                                id="youtube-link"
+                                placeholder="www.youtube.com"
+                              />
+                            </div>
+      
+                            <div class="col-xl-4">
+                              <label for="youtube-link" class="form-label">
+                                <i class="bi bi-https"></i>
+                                Company Website (If any)
+                              </label>
+                              <input
+                                type="text"
+                                class="form-control"
+                                id="youtube-link"
+                                placeholder="www.website.com"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                <div class="col-12"><div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="notificationConsent">
+                  <label for="notificationConsent" class="form-check-label">
+                    I consent to receive notifications.
+                  </label>
+                </div>
+              </div>
+              </div>
+                
+                
+                <div class="card-footer border-top border-block-start-dashed d-sm-flex justify-content-end align-items-center">
+                  <div class="me-3">
+                    <label for="publishDate" class="form-label mb-0 me-2"><b>Date of Publishing</b>:</label>
+                    <input type="date" class="form-control d-inline-block w-auto" />
+                  </div>
+                  <div class="me-3">
+                    <label for="personName" class="form-label mb-0 me-2"><b>Member Launched by</b>:</label>
+                    <input type="text" class="form-control d-inline-block w-auto" id="personName" 
+                           placeholder="Sunil Kuzhuvelil" />
+                  </div>
+                  
+                  <button class="btn btn-success me-2 mb-2 mb-sm-0">
+                    Add Member
+                  </button>
+                </div>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- End::content  -->
+      
+
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+  const regionsApiUrl = 'https://bni-data-backend.onrender.com/api/regions';
+  const chaptersApiUrl = 'https://bni-data-backend.onrender.com/api/chapters';
+  const accoladesApiUrl = 'https://bni-data-backend.onrender.com/api/accolades'; // Adjust this URL accordingly
+  const categoriesApiUrl = 'https://bni-data-backend.onrender.com/api/memberCategory'; // Replace with your actual categories API
+  const categorySelect = document.getElementById('category');
+  
+  const regionSelect = document.getElementById('region');
+  const chapterSelect = document.getElementById('chapter');
+  const accoladesContainer = document.getElementById('accoladesContainer');
+  const loader = document.getElementById('loader'); // Loader element
+
+  let allChapters = []; // To store fetched chapters
+
+  // Fetch regions and populate the region dropdown
+  fetch(regionsApiUrl)
+    .then(response => response.json())
+    .then(data => {
+      regionSelect.innerHTML = '<option value="">Select Region</option>';
+      
+      // Populate region options
+      data.forEach(region => {
+        const option = document.createElement('option');
+        option.value = region.region_id; // Use region_id as value
+        option.textContent = region.region_name;
+        regionSelect.appendChild(option);
+      });
+    })
+    .catch(error => {
+      console.error('Error fetching regions:', error);
+    });
+
+  // Fetch all chapters and store them
+  fetch(chaptersApiUrl)
+    .then(response => response.json())
+    .then(data => {
+      allChapters = data; // Store all chapters
+    })
+    .catch(error => {
+      console.error('Error fetching chapters:', error);
+    });
+
+  // Event listener to filter and display chapters based on selected region
+  regionSelect.addEventListener('change', function() {
+    const selectedRegionId = this.value;
+    chapterSelect.innerHTML = '<option value="">Select Chapter</option>';  // Clear previous options
+    accoladesContainer.innerHTML = '';
+
+    console.log('Region selected, showing loader'); 
+    loader.style.display = 'flex';
+
+    setTimeout(() => {
+      const filteredChapters = allChapters.filter(chapter => chapter.region_id == selectedRegionId);
+      
+      if (filteredChapters.length > 0) {
+        filteredChapters.forEach(chapter => {
+          const option = document.createElement('option');
+          option.value = chapter.chapter_id; 
+          option.textContent = chapter.chapter_name;
+          chapterSelect.appendChild(option);
+        });
+      } else {
+        chapterSelect.innerHTML = '<option value="">No Chapters Available</option>';
+      }
+
+      console.log('Chapters loaded, hiding loader'); 
+      loader.style.display = 'none';
+    }, 500); 
+
+    fetch(`${accoladesApiUrl}?region_id=${selectedRegionId}`) 
+      .then(response => response.json())
+      .then(accolades => {
+        if (accolades.length > 0) {
+          accolades.forEach(accolade => {
+            const checkbox = document.createElement('div');
+            checkbox.classList.add('form-check');
+            checkbox.innerHTML = `
+              <input type="checkbox" class="form-check-input" id="accolade-${accolade.accolade_id}" value="${accolade.accolade_id}">
+              <label class="form-check-label" for="accolade-${accolade.accolade_id}">${accolade.accolade_name}</label>
+            `;
+            accoladesContainer.appendChild(checkbox);
+          });
+        } else {
+          accoladesContainer.innerHTML = '<p>No Accolades Available</p>';
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching accolades:', error);
+        accoladesContainer.innerHTML = '<p>Error loading accolades. Please try again.</p>';
+      })
+      .finally(() => {
+        loader.style.display = 'none';
+      });
+  });
+});
+
+    </script>
+
+<%- include('../partials/footer') %> 
