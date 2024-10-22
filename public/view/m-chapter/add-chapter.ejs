@@ -111,7 +111,7 @@
               font-family: Poppins;
             }
           </style>
-
+          <form id="addChapterForm">
           <div class="row">
             <div class="col-xl-12">
               <div class="card custom-card">
@@ -129,11 +129,13 @@
                               >
                             </div>
                             <div class="col-xl-6">
-                              <label for="chapter-name" class="form-label">Enter Chapter Name</label>
+                              <label for="chapter_name" class="form-label">Enter Chapter Name</label>
                               <input
                                   type="text"
                                   class="form-control"
-                                  id="chapter-name"
+                                  id="chapter_name"
+                                  name="chapter_name"
+                                  required
                                   placeholder="New chapter name.."
                               />
                               <label for="chapter-name" class="form-label mt-1 fs-12 fw-normal text-muted mb-0">
@@ -156,20 +158,23 @@
                               </div>
                             </div>
                             <div class="col-xl-6">
-                              <label for="chapter-meeting-day" class="form-label">Chapter Meeting Day</label>
-                              <select class="form-control" name="chapter-meeting-day" id="chapter-meeting-day">
+                              <label for="chapter_meeting_day" class="form-label">Chapter Meeting Day</label>
+                              <select class="form-control" id="chapter_meeting_day"
+                              name="chapter_meeting_day"
+                              required>
                                 <option value="">Select</option>
                               </select>
                             </div>
                             <div class="col-xl-6">
-                              <label for="product-brand-add" class="form-label"
+                              <label for="chapter_type" class="form-label"
                                 >Chapter Type</label
                               >
                               <select
                                 class="form-control"
                                 data-trigger=""
-                                name="product-brand-add"
-                                id="product-brand-add"
+                                id="chapter_type"
+                                name="chapter_type"
+                                required
                               >
                                 <option value="">Select</option>
                                 <option value="Onlime">Online</option>
@@ -178,20 +183,22 @@
                               </select>
                             </div>
                             <div class="col-xl-6">
-                              <label for="product-cost-add" class="form-label"
+                              <label for="contact_person" class="form-label"
                                 >Contact Person
                                 
                               </label>
                               <input
                                 type="text"
                                 class="form-control"
-                                id="product-cost-add"
+                                id="contact_person"
+                          name="contact_person"
+                          required
                                 placeholder="Name of the contact person..."
                               />
                             </div>
 
                             <div class="col-xl-6">
-                              <label for="contact-number" class="form-label"
+                              <label for="contact_number" class="form-label"
                                 >Contact Number</label
                               >
                               <div class="input-group">
@@ -207,7 +214,9 @@
                                 <input
                                   type="tel"
                                   class="form-control"
-                                  id="contact-number"
+                                  id="contact_number"
+                          name="contact_number"
+                          required
                                   placeholder="Enter phone number"
                                 />
                               </div>
@@ -216,14 +225,16 @@
                             
                             
                             <div class="col-xl-6">
-                              <label for="product-cost-add" class="form-label"
+                              <label for="email_id" class="form-label"
                                 >Email ID
                                 <span style="color: red">(If registered)</span>
                               </label>
                               <input
                                 type="text"
                                 class="form-control"
-                                id="product-cost-add"
+                                id="email_id"
+                          name="email_id"
+                          required
                                 placeholder="admin@bni.com"
                               />
                             </div>
@@ -424,54 +435,65 @@
 
 
                             <div class="col-xl-6">
-                              <label for="eoi-link" class="form-label">Chapter EOI Link</label>
+                              <label for="eoi_link" class="form-label">Chapter EOI Link</label>
                               <input
                                   type="text"
                                   class="form-control"
-                                  id="eoi-link"
+                                  id="eoi_link"
+                                  name="eoi_link"
+                                  required
                                   placeholder="https://-.."
                                   readonly
                               />
                           </div>
                             
 <div class="col-xl-6">
-  <label for="member-app-link" class="form-label">Member Application Link</label>
-  <input type="text" class="form-control" id="member-app-link" placeholder="https://-.." readonly />
+  <label for="member_app_link" class="form-label">Member Application Link</label>
+  <input type="text" class="form-control" id="member_app_link"
+  name="member_app_link"
+  required placeholder="https://-.." readonly />
 </div>
 
 
-<div class="col-xl-6">
-  <label for="region-mission" class="form-label"
-    >Chapter Vision</label
-  >
-  <textarea
-    class="form-control"
-    id="region-mission"
-    placeholder="Enter the chapter's vision"
-    rows="3"
-  ></textarea>
-</div>
 
 <div class="col-xl-6">
-  <label for="region-mission" class="form-label"
+  <label for="chapter_mission" class="form-label"
     >Chapter Mission</label
   >
   <textarea
     class="form-control"
-    id="region-mission"
+    id="chapter_mission"
+                          name="chapter_mission"
+                          required
     placeholder="Enter the chapter's mission"
     rows="3"
   ></textarea>
 </div>
 
 <div class="col-xl-6">
-  <label for="product-cost-add" class="form-label"
+  <label for="chapter_vision" class="form-label"
+    >Chapter Vision</label
+  >
+  <textarea
+    class="form-control"
+    id="chapter_vision"
+                          name="chapter_vision"
+                          required
+    placeholder="Enter the chapter's vision"
+    rows="3"
+  ></textarea>
+</div>
+
+<div class="col-xl-6">
+  <label for="chapter_kitty_fees" class="form-label"
     >Chapter Meeting/Kitty Fees <span style="color: #d01f2f;">(Weekly)</span> </label
   >
   <input
     type="text"
     class="form-control"
-    id="product-cost-add"
+    id="chapter_kitty_fees"
+    name="chapter_kitty_fees"
+    required
     placeholder="17,700/-.."
   />
   <div class="form-check mt-2">
@@ -491,13 +513,15 @@
   </div>
 </div>
 <div class="col-xl-6">
-  <label for="product-cost-add" class="form-label"
+  <label for="chapter_visitor_fees" class="form-label"
     >Chapter Visitor Fee</label
   >
   <input
     type="text"
     class="form-control"
-    id="product-cost-add"
+    id="chapter_visitor_fees"
+    name="chapter_visitor_fees"
+    required
     placeholder="1,200/-.."
   />
   <div class="form-check mt-2">
@@ -518,14 +542,15 @@
 </div>
 
 <div class="col-xl-6">
-  <label for="product-brand-add" class="form-label"
+  <label for="chapter_status" class="form-label"
     >Chapter Status</label
   >
   <select
     class="form-control"
     data-trigger=""
-    name="product-brand-add"
-    id="product-brand-add"
+    id="chapter_status"
+    name="chapter_status"
+    required
   >
     <option value="">Select</option>
     <option value="Onlime">Pre Launch</option>
@@ -543,8 +568,6 @@
               </div>
             </div>
           </div>
-
-
           <div class="row">
             <div class="col-xl-12">
               <div class="card custom-card">
@@ -563,13 +586,15 @@
                             </div>
       
                             <div class="col-xl-6">
-                              <label for="product-brand-add" class="form-label"
+                              <label for="country" class="form-label"
                                 >Country</label
                               >
                               <select
                                 class="form-control"
                                 name="product-brand-add"
-                                id="product-brand-add"
+                                id="country"
+                          name="country"
+                          required
                               >
                                 <option value="">Select Country</option>
                               </select>
@@ -583,6 +608,8 @@
                                 type="text"
                                 class="form-control"
                                 id="state"
+                          name="state"
+                          required
                                 placeholder="Enter state or province"
                               />
                             </div>
@@ -593,42 +620,50 @@
                                 type="text"
                                 class="form-control"
                                 id="city"
+                          name="city"
+                          required
                                 placeholder="Enter city"
                               />
                             </div>
       
                             <div class="col-xl-6">
-                              <label for="street" class="form-label"
+                              <label for="meeting_hotel_name" class="form-label"
                                 >Hotel Name</label
                               >
                               <input
                                 type="text"
                                 class="form-control"
-                                id="street"
+                                id="meeting_hotel_name"
+                                name="meeting_hotel_name"
+                                required
                                 placeholder="Vivanta by Taj.."
                               />
                             </div>
       
                             <div class="col-xl-6">
-                              <label for="street" class="form-label"
+                              <label for="street_address_line" class="form-label"
                                 >Street Address Line</label
                               >
                               <input
                                 type="text"
                                 class="form-control"
-                                id="street"
+                                id="street_address_line"
+                          name="street_address_line"
+                          required
                                 placeholder="Enter street address"
                               />
                             </div>
       
                             <div class="col-xl-6">
-                              <label for="postal-code" class="form-label"
+                              <label for="postal_code" class="form-label"
                                 >Postal Code</label
                               >
                               <input
                                 type="text"
                                 class="form-control"
-                                id="postal-code"
+                                id="postal_code"
+                          name="postal_code"
+                          required
                                 placeholder="Enter postal code"
                               />
                             </div>
@@ -648,8 +683,6 @@
               </div>
             </div>
           </div>
-
-
           <div class="row">
             <div class="col-xl-12">
               <div class="card custom-card">
@@ -667,65 +700,75 @@
                               >
                             </div>
                             <div class="col-xl-6">
-                              <label for="facebook-link" class="form-label">
+                              <label for="chapter_facebook-link" class="form-label">
                                 <i class="bi bi-facebook"></i> Facebook
                               </label>
                               <input
                                 type="text"
                                 class="form-control"
-                                id="facebook-link"
+                                id="chapter_facebook"
+                          name="chapter_facebook"
+                          required
                                 placeholder="www.facebook.com"
                               />
                             </div>
       
                             <div class="col-xl-6">
-                              <label for="instagram-link" class="form-label">
+                              <label for="chapter_instagram-link" class="form-label">
                                 <i class="bi bi-instagram"></i>
                                 Instagram
                               </label>
                               <input
                                 type="text"
                                 class="form-control"
-                                id="instagram-link"
+                                id="chapter_instagram"
+                          name="chapter_instagram"
+                          required
                                 placeholder="www.instagram.com"
                               />
                             </div>
       
                             <div class="col-xl-4">
-                              <label for="linkedin-link" class="form-label">
+                              <label for="chapter_linkedin-link" class="form-label">
                                 <i class="bi bi-linkedin"></i>
                                 Linkedin
                               </label>
                               <input
                                 type="text"
                                 class="form-control"
-                                id="linkedin-link"
+                                id="chapter_linkedin"
+                          name="chapter_linkedin"
+                          required
                                 placeholder="www.linkedin.com"
                               />
                             </div>
       
                             <div class="col-xl-4">
-                              <label for="youtube-link" class="form-label">
+                              <label for="chapter_youtube" class="form-label">
                                 <i class="bi bi-youtube"></i>
                                 Youtube
                               </label>
                               <input
                                 type="text"
                                 class="form-control"
-                                id="youtube-link"
+                                id="chapter_youtube"
+                          name="chapter_youtube"
+                          required
                                 placeholder="www.youtube.com"
                               />
                             </div>
       
                             <div class="col-xl-4">
-                              <label for="youtube-link" class="form-label">
+                              <label for="chapter_website" class="form-label">
                                 <i class="bi bi-https"></i>
                                 Chapter Website (If any)
                               </label>
                               <input
                                 type="text"
                                 class="form-control"
-                                id="youtube-link"
+                                id="chapter_website"
+                          name="chapter_website"
+                          required
                                 placeholder="www.yourwebsite.com"
                               />
                             </div>
@@ -737,12 +780,16 @@
                 </div>
                 <div class="card-footer border-top border-block-start-dashed d-sm-flex justify-content-end align-items-center">
                   <div class="me-3">
-                    <label for="publishDate" class="form-label mb-0 me-2"><b>Date of Publishing</b>:</label>
-                    <input type="date" class="form-control d-inline-block w-auto" id="publishDate" />
+                    <label for="date_of_publishing" class="form-label mb-0 me-2"><b>Date of Publishing</b>:</label>
+                    <input type="date" class="form-control d-inline-block w-auto" id="date_of_publishing"
+                    name="date_of_publishing"
+                    required />
                   </div>
                   <div class="me-3">
-                    <label for="personName" class="form-label mb-0 me-2"><b>Chapter Launched by</b>:</label>
-                    <input type="text" class="form-control d-inline-block w-auto" id="personName" 
+                    <label for="chapter_launched_by" class="form-label mb-0 me-2"><b>Chapter Launched by</b>:</label>
+                    <input type="text" class="form-control d-inline-block w-auto" id="chapter_launched_by"
+                    name="chapter_launched_by"
+                    required
                            placeholder="Chapter added by.." />
                   </div>
                   
@@ -754,12 +801,11 @@
               </div>
             </div>
           </div>
-
+        </form>
+        <div id="formMessage"></div>
         </div>
       </div>
       <!-- End::content  -->
-
-
 
     <script>
       document.addEventListener("DOMContentLoaded", function() {
@@ -925,12 +971,6 @@
 
     </script>
 
-
-<script>
-  // Set the current date as the default value
-  document.getElementById('publishDate').value = new Date().toISOString().split('T')[0];
-</script>
-
 <script>
   function updateTaxOptions(modalId) {
     const taxTypeSelect = document.getElementById(`taxType${modalId}`);
@@ -1016,6 +1056,53 @@
   });
 </script>
 
+<script>
+  document.getElementById("addChapterForm").addEventListener("submit", async function (event) {
+    event.preventDefault();  // Prevent form from submitting normally
+  
+    const formData = new FormData(this);
+    const formDataObj = {};
+  
+    formDataObj['chapterDays'] = [];
+    formDataObj['chapterStatus'] = [];  // For Chapter Status
+    formDataObj['chapterType'] = [];    // For Chapter Type
+    formDataObj['accolades_config'] = [];      // For Accolades
+  
+    formData.forEach((value, key) => {
+      if (key === 'chapterDays[]') {
+        formDataObj['chapterDays'].push(value);
+      } else if (key === 'chapterStatus[]') {  // Collect Chapter Status
+        formDataObj['chapterStatus'].push(value);
+      } else if (key === 'chapterType[]') {    // Collect Chapter Type
+        formDataObj['chapterType'].push(value);
+      } else if (key === 'accolades[]') {      // Collect Accolades
+        formDataObj['accolades_config'].push(value);
+      } else {
+        formDataObj[key] = value;  // Handle other fields
+      }
+    });
+  
+    try {
+      const response = await fetch('http://localhost:5000/api/chapters', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formDataObj),
+      });
+  
+      const result = await response.json();
+      if (response.ok) {
+        document.getElementById("formMessage").innerText = "Region added successfully!";
+      } else {
+        document.getElementById("formMessage").innerText = `Error: ${result.message}`;
+      }
+    } catch (error) {
+      console.error("Error submitting the form:", error);
+      document.getElementById("formMessage").innerText = "An error occurred. Please try again.";
+    }
+  });
+  </script>
 
 <%- include('../partials/footer') %> 
     

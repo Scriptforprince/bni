@@ -382,7 +382,7 @@
                       </div>
                       <div class="col-xl-6">
                         <label for="region_logo" class="form-label"
-                          >Region logo</label
+                          >Region logo <span style="color: red;">(jpg, png, jpeg)</span></label
                         >
                         <input
                           type="file"
@@ -390,7 +390,6 @@
                           id="region_logo"
                           name="region_logo"
                           required
-                          placeholder="Greater Kailash.."
                         />
                       </div>
                       <div class="col-xl-6">
@@ -1055,8 +1054,6 @@
     });
   });
 </script>
-
-
 <script>
   document.getElementById("addFee").addEventListener("click", function () {
     const newFeeRow = document.createElement("div");
@@ -1109,50 +1106,49 @@
 <script src="../../assets/js/country.js"></script>
 <script>
   document.getElementById("addRegionForm").addEventListener("submit", async function (event) {
-  event.preventDefault();  // Prevent form from submitting normally
-
-  const formData = new FormData(this);
-  const formDataObj = {};
-
-  formDataObj['chapterDays'] = [];
-  formDataObj['chapterStatus'] = [];  // For Chapter Status
-  formDataObj['chapterType'] = [];    // For Chapter Type
-
-  formData.forEach((value, key) => {
-    if (key === 'chapterDays[]') {
-      formDataObj['chapterDays'].push(value);
-    } else if (key === 'chapterStatus[]') {  // Collect Chapter Status
-      formDataObj['chapterStatus'].push(value);
-    } else if (key === 'chapterType[]') {    // Collect Chapter Type
-      formDataObj['chapterType'].push(value);
-    } else {
-      formDataObj[key] = value;  // Handle other fields
+    event.preventDefault();  // Prevent form from submitting normally
+  
+    const formData = new FormData(this);
+    const formDataObj = {};
+  
+    formDataObj['chapterDays'] = [];
+    formDataObj['chapterStatus'] = [];  // For Chapter Status
+    formDataObj['chapterType'] = [];    // For Chapter Type
+    formDataObj['accolades_config'] = [];      // For Accolades
+  
+    formData.forEach((value, key) => {
+      if (key === 'chapterDays[]') {
+        formDataObj['chapterDays'].push(value);
+      } else if (key === 'chapterStatus[]') {  // Collect Chapter Status
+        formDataObj['chapterStatus'].push(value);
+      } else if (key === 'chapterType[]') {    // Collect Chapter Type
+        formDataObj['chapterType'].push(value);
+      } else if (key === 'accolades[]') {      // Collect Accolades
+        formDataObj['accolades_config'].push(value);
+      } else {
+        formDataObj[key] = value;  // Handle other fields
+      }
+    });
+  
+    try {
+      const response = await fetch('http://localhost:5000/api/regions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formDataObj),
+      });
+  
+      const result = await response.json();
+      if (response.ok) {
+        document.getElementById("formMessage").innerText = "Region added successfully!";
+      } else {
+        document.getElementById("formMessage").innerText = `Error: ${result.message}`;
+      }
+    } catch (error) {
+      console.error("Error submitting the form:", error);
+      document.getElementById("formMessage").innerText = "An error occurred. Please try again.";
     }
   });
-
-  try {
-    const response = await fetch('http://localhost:5000/api/regions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(formDataObj),
-    });
-
-    const result = await response.json();
-    if (response.ok) {
-      document.getElementById("formMessage").innerText = "Region added successfully!";
-    } else {
-      document.getElementById("formMessage").innerText = `Error: ${result.message}`;
-    }
-  } catch (error) {
-    console.error("Error submitting the form:", error);
-    document.getElementById("formMessage").innerText = "An error occurred. Please try again.";
-  }
-});
-
-</script>
-
-
-
+  </script>
 <%- include('../partials/footer') %>
