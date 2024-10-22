@@ -115,6 +115,7 @@
       }
     </style>
 
+    <form id="addRegionForm">
     <div class="row">
       <div class="col-xl-12">
         <div class="card custom-card">
@@ -132,13 +133,15 @@
                         >
                       </div>
                       <div class="col-xl-6">
-                        <label for="product-cost-add" class="form-label"
+                        <label for="region_name" class="form-label"
                           >Enter Region Name</label
                         >
                         <input
                           type="text"
                           class="form-control"
-                          id="product-cost-add"
+                          id="region_name"
+                          name="region_name"
+                          required
                           placeholder="New region name.."
                         />
                         <label
@@ -150,14 +153,16 @@
                         >
                       </div>
                       <div class="col-xl-6">
-                        <label for="product-cost-add" class="form-label"
+                        <label for="contact_person" class="form-label"
                           >Contact Person
                           <span style="color: red">(Name)</span>
                         </label>
                         <input
                           type="text"
                           class="form-control"
-                          id="product-cost-add"
+                          id="contact_person"
+                          name="contact_person" 
+                          required
                           placeholder="Name of the contact Person.."
                         />
                       </div>
@@ -178,26 +183,29 @@
                           <input
                             type="tel"
                             class="form-control"
-                            id="contact-number"
+                            id="contact_number" 
+                            name="contact_number" 
+                            required
                             placeholder="Enter phone number"
                           />
                         </div>
                       </div>
-
                       <div class="col-xl-6">
-                        <label for="product-cost-add" class="form-label"
+                        <label for="email_id" class="form-label"
                           >Email ID
                           <span style="color: red">(If registered)</span>
                         </label>
                         <input
                           type="text"
                           class="form-control"
-                          id="product-cost-add"
+                          id="email_id" 
+                          name="email_id" 
+                          required
                           placeholder="admin@bni.com"
                         />
                       </div>
                       <div class="col-xl-6">
-                        <label for="chapterDays" class="form-label"
+                        <label for="days_of_chapter" class="form-label"
                           >Chapter Days</label
                         >
                         <div
@@ -290,62 +298,28 @@
                           </div>
                         </div>
                       </div>
-
                       <div class="col-xl-6">
-                        <label for="chapterIncludes" class="form-label"
-                          >Chapter Status</label
-                        >
-                        <div
-                          id="chapterIncludesContainer"
-                          style="display: flex; flex-wrap: wrap; gap: 10px"
-                        >
+                        <label for="chapterStatus" class="form-label">Chapter Status</label>
+                        <div id="chapterStatusContainer" style="display: flex; flex-wrap: wrap; gap: 10px">
                           <div class="form-check">
-                            <input
-                              class="form-check-input"
-                              type="checkbox"
-                              id="includeRunning"
-                              name="chapterIncludes[]"
-                              value="Running"
-                            />
-                            <label class="form-check-label" for="includeRunning"
-                              >Running</label
-                            >
+                            <input class="form-check-input" type="checkbox" id="statusRunning" name="chapterStatus[]" value="Running" />
+                            <label class="form-check-label" for="statusRunning">Running</label>
                           </div>
                           <div class="form-check">
-                            <input
-                              class="form-check-input"
-                              type="checkbox"
-                              id="includePreLaunch"
-                              name="chapterIncludes[]"
-                              value="Pre-Launch"
-                            />
-                            <label
-                              class="form-check-label"
-                              for="includePreLaunch"
-                              >Pre-Launch</label
-                            >
+                            <input class="form-check-input" type="checkbox" id="statusPreLaunch" name="chapterStatus[]" value="Pre-Launch" />
+                            <label class="form-check-label" for="statusPreLaunch">Pre-Launch</label>
                           </div>
                           <div class="form-check">
-                            <input
-                              class="form-check-input"
-                              type="checkbox"
-                              id="includeReLaunch"
-                              name="chapterIncludes[]"
-                              value="Re-Launch"
-                            />
-                            <label
-                              class="form-check-label"
-                              for="includeReLaunch"
-                              >Re-Launch</label
-                            >
+                            <input class="form-check-input" type="checkbox" id="statusReLaunch" name="chapterStatus[]" value="Re-Launch" />
+                            <label class="form-check-label" for="statusReLaunch">Re-Launch</label>
                           </div>
                         </div>
                       </div>
-
+                      
                       <div class="col-xl-6">
                         <label for="accolades" class="form-label">
                           Accolades Configuration
-                          <a href="add-accolades.html">
+                          <a href="/r/add-region">
                             <button
                               type="button"
                               class="btn btn-outline-danger btn-sm"
@@ -362,94 +336,71 @@
                           <!-- Dynamically populated accolades will go here -->
                         </div>
                       </div>
-
                       <div class="col-xl-6">
-                        <label for="chapterIncludes" class="form-label"
-                          >Chapter Type</label
-                        >
-                        <div
-                          id="chapterIncludesContainer"
-                          style="display: flex; flex-wrap: wrap; gap: 10px"
-                        >
+                        <label for="chapterType" class="form-label">Chapter Type</label>
+                        <div id="chapterTypeContainer" style="display: flex; flex-wrap: wrap; gap: 10px">
                           <div class="form-check">
-                            <input
-                              class="form-check-input"
-                              type="checkbox"
-                              id="includeRunning"
-                              name="chapterIncludes[]"
-                              value="Running"
-                            />
-                            <label class="form-check-label" for="includeRunning"
-                              >Online</label
-                            >
+                            <input class="form-check-input" type="checkbox" id="typeOnline" name="chapterType[]" value="Online" />
+                            <label class="form-check-label" for="typeOnline">Online</label>
                           </div>
                           <div class="form-check">
-                            <input
-                              class="form-check-input"
-                              type="checkbox"
-                              id="includePreLaunch"
-                              name="chapterIncludes[]"
-                              value="Pre-Launch"
-                            />
-                            <label
-                              class="form-check-label"
-                              for="includePreLaunch"
-                              >Offline</label
-                            >
+                            <input class="form-check-input" type="checkbox" id="typeOffline" name="chapterType[]" value="Offline" />
+                            <label class="form-check-label" for="typeOffline">Offline</label>
                           </div>
                           <div class="form-check">
-                            <input
-                              class="form-check-input"
-                              type="checkbox"
-                              id="includeReLaunch"
-                              name="chapterIncludes[]"
-                              value="Re-Launch"
-                            />
-                            <label
-                              class="form-check-label"
-                              for="includeReLaunch"
-                              >Hybrid</label
-                            >
+                            <input class="form-check-input" type="checkbox" id="typeHybrid" name="chapterType[]" value="Hybrid" />
+                            <label class="form-check-label" for="typeHybrid">Hybrid</label>
                           </div>
                         </div>
                       </div>
-
-                     
+                      
                       <div class="col-xl-6">
-                        <label for="region-mission" class="form-label"
+                        <label for="mission" class="form-label"
                           >Region Mission</label
                         >
                         <textarea
                           class="form-control"
-                          id="region-mission"
+                          id="mission"
+                          name="mission"
+                          required
                           placeholder="Enter the region's mission"
                           rows="3"
                         ></textarea>
                       </div>
                       <div class="col-xl-6">
-                        <label for="region-mission" class="form-label"
+                        <label for="vision" class="form-label"
                           >Region Vision</label
                         >
                         <textarea
                           class="form-control"
-                          id="region-mission"
+                          id="vision"
+                          name="vision"
+                          required
                           placeholder="Enter the region's vision"
                           rows="3"
                         ></textarea>
                       </div>
                       <div class="col-xl-6">
-                        <label for="product-cost-add" class="form-label"
+                        <label for="region_logo" class="form-label"
                           >Region logo</label
                         >
                         <input
                           type="file"
                           class="form-control"
-                          id="product-cost-add"
+                          id="region_logo"
+                          name="region_logo"
+                          required
                           placeholder="Greater Kailash.."
                         />
                       </div>
-                      
-
+                      <div class="col-xl-6">
+                        <label for="region_status" class="form-label">Region Status</label>
+                        <select class="form-control" name="region_status" id="region_status">
+                          <option value="">Select</option>
+                          <option value="active">Active</option>
+                          <option value="inactive">Inactive</option>
+                        </select>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -477,30 +428,28 @@
                       </div>
 
                       <div class="col-xl-6">
-                        <label for="product-cost-add" class="form-label"
+                        <label for="one_time_registration_fee" class="form-label"
                           >One time registration fee</label
                         >
                         <input
                           type="text"
                           class="form-control"
-                          id="product-cost-add"
+                          id="one_time_registration_fee"
+                          name="one_time_registration_fee"
+                          required
                           placeholder="5,999/-.."
                         />
                       </div>
-                      
-
-
-
-
                       <div id="membershipFeesContainer" class="container">
-
                         <div class="row">
                           <div class="col-xl-4 col-md-4">
                             <label>One Year</label>
                             <input
                               type="text"
                               class="form-control"
-                              name="fee[1]"
+                              id="one_year_fee"
+                              name="one_year_fee"
+                              required
                               value="35309.00"
                             />
                           </div>
@@ -510,7 +459,9 @@
                             <input
                               type="text"
                               class="form-control"
-                              name="fee[2]"
+                              id="two_year_fee"
+                              name="two_year_fee"
+                              required
                               value="56499.00"
                             />
                           </div>
@@ -520,7 +471,9 @@
                             <input
                               type="text"
                               class="form-control"
-                              name="fee[5]"
+                              id="five_year_fee"
+                              name="five_year_fee"
+                              required
                               value="103500.00"
                             />
                           </div>
@@ -532,7 +485,9 @@
                           <input
                             type="text"
                             class="form-control"
-                            id="product-cost-add"
+                            id="late_fees"
+                            name="late_fees"
+                            required
                             placeholder="1,000/-.."
                           />
                         </div>
@@ -790,10 +745,6 @@
                           </button>
                         </div>
                       </div>
-
-
-
-
                     </div>
                   </div>
                 </div>
@@ -827,12 +778,13 @@
                         <select
                           class="form-control"
                           name="product-brand-add"
-                          id="product-brand-add"
+                          id="country"
+                          name="country"
+                          required
                         >
                           <option value="">Select Country</option>
                         </select>
                       </div>
-
                       <div class="col-xl-6">
                         <label for="state" class="form-label"
                           >State/Province</label
@@ -841,44 +793,48 @@
                           type="text"
                           class="form-control"
                           id="state"
+                          name="state"
+                          required
                           placeholder="Enter state or province"
                         />
                       </div>
-
                       <div class="col-xl-6">
                         <label for="city" class="form-label">City</label>
                         <input
                           type="text"
                           class="form-control"
                           id="city"
+                          name="city"
+                          required
                           placeholder="Enter city"
                         />
                       </div>
-
                       <div class="col-xl-6">
-                        <label for="street" class="form-label"
+                        <label for="street_address_line_1" class="form-label"
                           >Street Address Line 1</label
                         >
                         <input
                           type="text"
                           class="form-control"
-                          id="street"
+                          id="street_address_line_1"
+                          name="street_address_line_1"
+                          required
                           placeholder="Enter street address"
                         />
                       </div>
-
                       <div class="col-xl-6">
-                        <label for="street" class="form-label"
+                        <label for="street_address_line_2" class="form-label"
                           >Street Address Line 2</label
                         >
                         <input
                           type="text"
                           class="form-control"
-                          id="street"
+                          id="street_address_line_2"
+                          name="street_address_line_2"
+                          required
                           placeholder="Enter street address"
                         />
                       </div>
-
                       <div class="col-xl-6">
                         <label for="postal-code" class="form-label"
                           >Postal Code</label
@@ -886,7 +842,9 @@
                         <input
                           type="text"
                           class="form-control"
-                          id="postal-code"
+                          id="postal_code"
+                          name="postal_code"
+                          required
                           placeholder="Enter postal code"
                         />
                       </div>
@@ -899,7 +857,6 @@
         </div>
       </div>
     </div>
-
     <div class="row">
       <div class="col-xl-12">
         <div class="card custom-card">
@@ -917,65 +874,74 @@
                         >
                       </div>
                       <div class="col-xl-6">
-                        <label for="facebook-link" class="form-label">
+                        <label for="social_facebook" class="form-label">
                           <i class="bi bi-facebook"></i> Facebook
                         </label>
                         <input
                           type="text"
                           class="form-control"
-                          id="facebook-link"
+                          id="social_facebook"
+                          name="social_facebook"
+                          required
                           placeholder="www.facebook.com"
                         />
                       </div>
-
                       <div class="col-xl-6">
-                        <label for="instagram-link" class="form-label">
+                        <label for="social_instagram" class="form-label">
                           <i class="bi bi-instagram"></i>
                           Instagram
                         </label>
                         <input
                           type="text"
                           class="form-control"
-                          id="instagram-link"
+                          id="social_instagram"
+                          name="social_instagram"
+                          required
                           placeholder="www.instagram.com"
                         />
                       </div>
 
                       <div class="col-xl-4">
-                        <label for="linkedin-link" class="form-label">
+                        <label for="social_linkedin" class="form-label">
                           <i class="bi bi-linkedin"></i>
                           Linkedin
                         </label>
                         <input
                           type="text"
                           class="form-control"
-                          id="linkedin-link"
+                          id="social_linkedin"
+                          name="social_linkedin"
+                          required
                           placeholder="www.linkedin.com"
                         />
                       </div>
 
                       <div class="col-xl-4">
-                        <label for="youtube-link" class="form-label">
+                        <label for="social_youtube" class="form-label">
                           <i class="bi bi-youtube"></i>
                           Youtube
                         </label>
                         <input
                           type="text"
                           class="form-control"
-                          id="youtube-link"
+                          id="social_youtube"
+                          name="social_youtube"
+                          required
                           placeholder="www.youtube.com"
                         />
                       </div>
 
                       <div class="col-xl-4">
-                        <label for="youtube-link" class="form-label">
+                        <label for="website_link" class="form-label">
                           <i class="bi bi-https"></i>
                           Region Website (If any)
                         </label>
                         <input
                           type="text"
                           class="form-control"
-                          id="youtube-link"
+                          id="website_link"
+                          name="website_link"
+                          required
                           placeholder="www.youtube.com"
                         />
                       </div>
@@ -987,16 +953,16 @@
           </div>
           <div class="card-footer border-top border-block-start-dashed d-sm-flex justify-content-end align-items-center">
             <div class="me-3">
-              <label for="publishDate" class="form-label mb-0 me-2"><b>Date of Publishing</b>:</label>
-              <input type="date" class="form-control d-inline-block w-auto" />
+              <label for="date_of_publishing" class="form-label mb-0 me-2"><b>Date of Publishing</b>:</label>
+              <input type="date" id="date_of_publishing" name="date_of_publishing" class="form-control d-inline-block w-auto" />
             </div>
             <div class="me-3">
-              <label for="personName" class="form-label mb-0 me-2"><b>Region Launched by</b>:</label>
-              <input type="text" class="form-control d-inline-block w-auto" id="personName" 
+              <label for="region_launched_by" class="form-label mb-0 me-2"><b>Region Launched by</b>:</label>
+              <input type="text" class="form-control d-inline-block w-auto" id="region_launched_by" name="region_launched_by" 
                      placeholder="Sunil Kuzhuvelil" />
             </div>
             
-            <button class="btn btn-success me-2 mb-2 mb-sm-0">
+            <button type="submit" class="btn btn-success me-2 mb-2 mb-sm-0">
               Add Region
             </button>
           </div>
@@ -1004,17 +970,19 @@
         </div>
       </div>
     </div>
+  </form>
+  <div id="formMessage"></div>
   </div>
 </div>
 <!-- End::content  -->
+
 <script>
   document.addEventListener("DOMContentLoaded", function () {
     // Fetch accolades from the live API
     fetch("https://bni-data-backend.onrender.com/api/accolades")
       .then((response) => response.json())
       .then((data) => {
-        const accoladesContainer =
-          document.getElementById("accoladesContainer");
+        const accoladesContainer = document.getElementById("accoladesContainer");
 
         // Clear existing content (if any)
         accoladesContainer.innerHTML = "";
@@ -1028,8 +996,8 @@
           checkbox.type = "checkbox";
           checkbox.className = "form-check-input";
           checkbox.id = `accolade${accolade.accolade_id}`;
-          checkbox.name = "accolades[]";
-          checkbox.value = accolade.accolade_name;
+          checkbox.name = "accolades[]";  // Use array syntax for multiple selections
+          checkbox.value = accolade.accolade_id;  // Use ID to store in accolades_config
 
           const label = document.createElement("label");
           label.className = "form-check-label";
@@ -1045,8 +1013,49 @@
         });
       })
       .catch((error) => console.error("Error fetching accolades:", error));
+
+    // Handle form submission
+    const form = document.getElementById("regionForm");
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();  // Prevent default form submission
+
+      // Gather accolades
+      const selectedAccolades = Array.from(form.elements["accolades[]"]) // Use the correct name here
+        .filter(checkbox => checkbox.checked)
+        .map(checkbox => checkbox.value);
+
+      // Prepare data for submission
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData);
+      data.accolades_config = selectedAccolades;  // Include selected accolades
+
+      // Send data to the backend
+      try {
+        const response = await fetch('/api/regions', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        });
+        
+        if (response.ok) {
+          const result = await response.json();
+          console.log('Region added successfully:', result);
+          document.getElementById("formMessage").innerText = "Region added successfully!";
+        } else {
+          console.error('Error adding region:', response.statusText);
+          const errorResult = await response.json();
+          document.getElementById("formMessage").innerText = `Error: ${errorResult.message}`;
+        }
+      } catch (error) {
+        console.error('Fetch error:', error);
+        document.getElementById("formMessage").innerText = "An error occurred. Please try again.";
+      }
+    });
   });
 </script>
+
 
 <script>
   document.getElementById("addFee").addEventListener("click", function () {
@@ -1059,10 +1068,6 @@
       `;
     document.getElementById("membershipFeesContainer").appendChild(newFeeRow);
   });
-</script>
-<script>
-  // Set the current date as the default value
-  document.getElementById('publishDate').value = new Date().toISOString().split('T')[0];
 </script>
 <script>
   function updateTaxOptions(modalId) {
@@ -1102,4 +1107,52 @@
   // Bootstrap JS
 </script>
 <script src="../../assets/js/country.js"></script>
+<script>
+  document.getElementById("addRegionForm").addEventListener("submit", async function (event) {
+  event.preventDefault();  // Prevent form from submitting normally
+
+  const formData = new FormData(this);
+  const formDataObj = {};
+
+  formDataObj['chapterDays'] = [];
+  formDataObj['chapterStatus'] = [];  // For Chapter Status
+  formDataObj['chapterType'] = [];    // For Chapter Type
+
+  formData.forEach((value, key) => {
+    if (key === 'chapterDays[]') {
+      formDataObj['chapterDays'].push(value);
+    } else if (key === 'chapterStatus[]') {  // Collect Chapter Status
+      formDataObj['chapterStatus'].push(value);
+    } else if (key === 'chapterType[]') {    // Collect Chapter Type
+      formDataObj['chapterType'].push(value);
+    } else {
+      formDataObj[key] = value;  // Handle other fields
+    }
+  });
+
+  try {
+    const response = await fetch('http://localhost:5000/api/regions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formDataObj),
+    });
+
+    const result = await response.json();
+    if (response.ok) {
+      document.getElementById("formMessage").innerText = "Region added successfully!";
+    } else {
+      document.getElementById("formMessage").innerText = `Error: ${result.message}`;
+    }
+  } catch (error) {
+    console.error("Error submitting the form:", error);
+    document.getElementById("formMessage").innerText = "An error occurred. Please try again.";
+  }
+});
+
+</script>
+
+
+
 <%- include('../partials/footer') %>

@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return response.json();
         })
         .then(data => {
-            const selectElement = document.getElementById('product-brand-add');
+            const selectElement = document.getElementById('country');
 
             // Populate the select element with country options
             data.forEach(country => {
