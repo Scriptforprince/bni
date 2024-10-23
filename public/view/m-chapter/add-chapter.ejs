@@ -143,10 +143,10 @@
                               </label>
                           </div>
                             <div class="col-xl-6">
-                              <label for="region-select" class="form-label">Choose Region <a href="/r/add-region">
+                              <label for="region_id" class="form-label">Choose Region <a href="/r/add-region">
                                 <button type="button" class="btn btn-outline-info btn-sm">Add Region +</button>
                               </a></label>
-                              <select class="form-control" name="region-select" id="region-select">
+                              <select class="form-control" name="region_id" id="region_id">
                                 <option value="">Select</option>
                               </select>
                             </div>
@@ -552,6 +552,19 @@
     <option value="">Select</option>
   </select>
 </div>
+
+<div class="col-xl-6">
+  <label for="chapter_logo" class="form-label"
+    >Chapter Logo <span style="color: red;">(jpg, png, jpeg)</span></label
+  >
+  <input
+    type="file"
+    class="form-control"
+    id="chapter_logo"
+    name="chapter_logo"
+    required
+  />
+</div>
                             
                             
                           </div>
@@ -663,7 +676,7 @@
                               />
                             </div>
                             <div class="col-12">
-                              <button class="btn btn-danger btn-sm me-2 mb-2 mb-sm-0" id="addLocationNoteBtn">
+                              <button class="btn btn-danger btn-sm me-2 mb-2 mb-sm-0" id="chapter_location_note">
                                 Add Note<i class="bi bi-plus-lg ms-2"></i>
                               </button>
                             </div>
@@ -773,6 +786,98 @@
                     </div>
                   </div>
                 </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xl-12">
+              <div class="card custom-card">
+                <div class="card-body add-products">
+                  <div class="row gx-4">
+                    <div class="col-xxl-12 col-xl-12 col-lg-12 col-md-6">
+                      <div class="card custom-card shadow-none mb-0 border-0">
+                        <div class="card-body p-0">
+                          <div class="row gy-3">
+                            <div class="col-xl-12">
+                              <label for="product-cost-add" class="form-label"
+                                ><span style="font-size: 15px"
+                                  ><b>Membership Fees Details <span style="color: #d01f2f;">(By Region)</span></b></span
+                                ></label
+                              >
+                            </div>
+
+                            <div class="col-xl-6">
+                              <label for="one_time_registration_fee" class="form-label">One Time Registration Fees</label>
+                              <input
+                                type="text"
+                                class="form-control"
+                                id="one_time_registration_fee"
+                                name="one_time_registration_fee"
+                                required
+                                placeholder="5,000/-"
+                                readonly
+                                style="background-color: rgb(240, 240, 240);"
+                              />
+                            </div>
+                            <div class="col-xl-6">
+                              <label for="chapter_late_fees" class="form-label">Late Fees</label>
+                              <input
+                                type="text"
+                                class="form-control"
+                                id="chapter_late_fees"
+                                name="chapter_late_fees"
+                                required
+                                placeholder="Enter late fees"
+                                readonly
+                                style="background-color: rgb(240, 240, 240);"
+                              />
+                            </div>
+                            <div class="col-xl-4">
+                              <label for="chapter_membership_fee" class="form-label">One Year Membership Fees</label>
+                              <input
+                                type="text"
+                                class="form-control"
+                                id="chapter_membership_fee"
+                                name="chapter_membership_fee"
+                                required
+                                placeholder="59,900/-"
+                                readonly
+                                style="background-color: rgb(240, 240, 240);"
+                              />
+                            </div>
+                            <div class="col-xl-4">
+                              <label for="chapter_membership_fee_two_year" class="form-label">Two Year Membership Fees</label>
+                              <input
+                                type="text"
+                                class="form-control"
+                                id="chapter_membership_fee_two_year"
+                                name="chapter_membership_fee_two_year"
+                                required
+                                placeholder="69,000/-"
+                                readonly
+                                style="background-color: rgb(240, 240, 240);"
+                              />
+                            </div>
+                            <div class="col-xl-4">
+                              <label for="chapter_membership_fee_five_year" class="form-label">Five Year Membership Fees</label>
+                              <input
+                                type="text"
+                                class="form-control"
+                                id="chapter_membership_fee_five_year"
+                                name="chapter_membership_fee_five_year"
+                                required
+                                placeholder="1,03,500/-"
+                                readonly
+                                style="background-color: rgb(240, 240, 240);"
+                              />
+                            </div>
+
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
                 <div class="card-footer border-top border-block-start-dashed d-sm-flex justify-content-end align-items-center">
                   <div class="me-3">
                     <label for="date_of_publishing" class="form-label mb-0 me-2"><b>Date of Publishing</b>:</label>
@@ -785,14 +890,13 @@
                     <input type="text" class="form-control d-inline-block w-auto" id="chapter_launched_by"
                     name="chapter_launched_by"
                     required
-                           placeholder="Chapter added by.." />
+                           placeholder="Chapter launched by.." />
                   </div>
                   
                   <button class="btn btn-success me-2 mb-2 mb-sm-0">
                     Add Chapter
                   </button>
                 </div>
-                
               </div>
             </div>
           </div>
@@ -807,12 +911,17 @@
   const regionsApiUrl = 'https://bni-data-backend.onrender.com/api/regions';
   const accoladesApiUrl = 'https://bni-data-backend.onrender.com/api/accolades';
   const chapterNameInput = document.getElementById('chapter_name');
-  const regionSelect = document.getElementById('region-select');
+  const regionSelect = document.getElementById('region_id');
   const eoiLinkInput = document.getElementById('eoi_link');
   const memberAppLinkInput = document.getElementById('member_app_link');
   const chapterMeetingDaySelect = document.getElementById('chapter_meeting_day');
   const chapterStatusSelect = document.getElementById('chapter_status');
   const chapterTypeSelect = document.getElementById('chapter_type');  // Add chapter type dropdown
+  const oneTimeRegistrationFeeInput = document.getElementById('one_time_registration_fee');
+  const chapterLateFeesInput = document.getElementById('chapter_late_fees');
+  const chapterMembershipFeeInput = document.getElementById('chapter_membership_fee');
+  const chapterMembershipFeeTwoYearInput = document.getElementById('chapter_membership_fee_two_year');
+  const chapterMembershipFeeFiveYearInput = document.getElementById('chapter_membership_fee_five_year');
   let accoladesMap = {};  // Mapping accolade_id to accolade_name
   let regionsData = [];   // Store fetched regions data
 
@@ -942,6 +1051,12 @@
         } else {
           console.warn('No chapter_type found or it is not an array');
         }
+
+        oneTimeRegistrationFeeInput.value = selectedRegion.one_time_registration_fee || '';
+        chapterLateFeesInput.value = selectedRegion.late_fees || '';
+        chapterMembershipFeeInput.value = selectedRegion.one_year_fee || '';
+        chapterMembershipFeeTwoYearInput.value = selectedRegion.two_year_fee || '';
+        chapterMembershipFeeFiveYearInput.value = selectedRegion.five_year_fee || '';
       }
     }
   });
@@ -1027,7 +1142,7 @@
 
 <script>
   // Handle the "Add Location Note" button click event
-  document.getElementById('addLocationNoteBtn').addEventListener('click', function() {
+  document.getElementById('chapter_location_note').addEventListener('click', function() {
     // Create a new div to hold the textarea and buttons
     const noteDiv = document.createElement('div');
     noteDiv.className = 'd-flex align-items-center mb-2';
@@ -1119,6 +1234,7 @@
     }
   });
   </script>
+  <script src="../../assets/js/country.js"></script>
 
 <%- include('../partials/footer') %> 
     
