@@ -138,12 +138,12 @@
                                   required
                                   placeholder="New chapter name.."
                               />
-                              <label for="chapter-name" class="form-label mt-1 fs-12 fw-normal text-muted mb-0">
+                              <label for="chapter_name" class="form-label mt-1 fs-12 fw-normal text-muted mb-0">
                                   <span style="color: red">*Mention the acknowledged name of the chapter</span>
                               </label>
                           </div>
                             <div class="col-xl-6">
-                              <label for="region-select" class="form-label">Choose Region <a href="add-region.html">
+                              <label for="region-select" class="form-label">Choose Region <a href="/r/add-region">
                                 <button type="button" class="btn btn-outline-info btn-sm">Add Region +</button>
                               </a></label>
                               <select class="form-control" name="region-select" id="region-select">
@@ -177,9 +177,6 @@
                                 required
                               >
                                 <option value="">Select</option>
-                                <option value="Onlime">Online</option>
-                                <option value="Offline">Offline</option>
-                                <option value="Hybrid">Hybrid</option>
                               </select>
                             </div>
                             <div class="col-xl-6">
@@ -553,8 +550,6 @@
     required
   >
     <option value="">Select</option>
-    <option value="Onlime">Pre Launch</option>
-    <option value="Offline">Launch</option>
   </select>
 </div>
                             
@@ -807,17 +802,17 @@
       </div>
       <!-- End::content  -->
 
-    <script>
-      document.addEventListener("DOMContentLoaded", function() {
+      <script>
+        document.addEventListener("DOMContentLoaded", function() {
   const regionsApiUrl = 'https://bni-data-backend.onrender.com/api/regions';
   const accoladesApiUrl = 'https://bni-data-backend.onrender.com/api/accolades';
-  const chapterNameInput = document.getElementById('chapter-name');
+  const chapterNameInput = document.getElementById('chapter_name');
   const regionSelect = document.getElementById('region-select');
-  const eoiLinkInput = document.getElementById('eoi-link');
-  const memberAppLinkInput = document.getElementById('member-app-link');
-  const chapterMeetingDaySelect = document.getElementById('chapter-meeting-day');
-  const chapterStatusSelect = document.getElementById('chapter-status');
-  
+  const eoiLinkInput = document.getElementById('eoi_link');
+  const memberAppLinkInput = document.getElementById('member_app_link');
+  const chapterMeetingDaySelect = document.getElementById('chapter_meeting_day');
+  const chapterStatusSelect = document.getElementById('chapter_status');
+  const chapterTypeSelect = document.getElementById('chapter_type');  // Add chapter type dropdown
   let accoladesMap = {};  // Mapping accolade_id to accolade_name
   let regionsData = [];   // Store fetched regions data
 
@@ -847,6 +842,7 @@
         option.textContent = region.region_name;
         option.dataset.accolades = JSON.stringify(region.accolades_config);
         option.dataset.daysOfChapter = JSON.stringify(region.days_of_chapter); // Store days_of_chapter in dataset
+        option.dataset.chapterStatus = region.chapter_status;  // Store chapter_status in dataset
         option.dataset.chapterType = JSON.stringify(region.chapter_type);      // Store chapter_type in dataset
         regionSelect.appendChild(option);
       });
@@ -896,6 +892,7 @@
     const selectedRegionId = this.value;
     chapterMeetingDaySelect.innerHTML = '<option value="">Select</option>';  // Clear previous options
     chapterStatusSelect.innerHTML = '<option value="">Select</option>';      // Clear previous status options
+    chapterTypeSelect.innerHTML = '<option value="">Select</option>';        // Clear previous type options
 
     if (selectedRegionId) {
       // Find the selected region in the stored regionsData
@@ -916,13 +913,31 @@
         }
 
         // Populate the Chapter Status dropdown
+        const chapterStatusString = selectedRegion.chapter_status;  // Access chapter_status directly from the selected region
+        if (chapterStatusString) {
+          // Remove curly braces and split the string into an array by commas
+          const chapterStatusArray = chapterStatusString.replace(/[{}]/g, '').split(',');
+
+          if (Array.isArray(chapterStatusArray) && chapterStatusArray.length > 0) {
+            chapterStatusArray.forEach(status => {
+              const option = document.createElement('option');
+              option.value = status.trim();  // Trim any extra spaces around the status
+              option.textContent = status.trim();  // Display the status
+              chapterStatusSelect.appendChild(option);
+            });
+          } else {
+            console.warn('No chapter_status found or it is not an array');
+          }
+        }
+
+        // Populate the Chapter Type dropdown
         const chapterType = selectedRegion.chapter_type;  // Access chapter_type directly from the selected region
         if (Array.isArray(chapterType) && chapterType.length > 0) {
           chapterType.forEach(type => {
             const option = document.createElement('option');
             option.value = type;  // Assuming the type is a string, adjust if necessary
             option.textContent = type;  // Display the type
-            chapterStatusSelect.appendChild(option);
+            chapterTypeSelect.appendChild(option);
           });
         } else {
           console.warn('No chapter_type found or it is not an array');
@@ -969,7 +984,8 @@
   });
 });
 
-    </script>
+      </script>
+      
 
 <script>
   function updateTaxOptions(modalId) {
