@@ -32,4 +32,10 @@ router.get('/membership-fee-api', (req, res) => {
     res.json({ apiUrl: process.env.MEMBERSHIP_FEE_API });
 });
 
+// Endpoint to get the membership fee API URL
+router.get('/universal-link-api', (req, res) => {
+    res.json({ apiUrl: process.env.UNIVERSAL_LINK_API });
+});
+
+
 module.exports = router;
