@@ -1,6 +1,7 @@
 let apiUrl;
 let allLinks = []; // To store fetched links globally
 let filteredLinks = []; // To store filtered links based on search
+let paymentGateways = []; // To store fetched payment gateways globally
 let entriesPerPage = 10; // Number of entries to display per page
 let currentPage = 1; // For pagination
 
@@ -19,28 +20,42 @@ function hideLoader() {
 // Fetch the API URL from the backend
 async function fetchApiUrl() {
   try {
-    const response = await fetch('/api/universal-link-api'); // Call the backend to get the API URL
+    const response = await fetch('/api/universal-link-api');
     const data = await response.json();
     apiUrl = data.apiUrl; // Store the API URL in apiUrl variable
     console.log('API URL fetched from backend:', apiUrl);
-    await fetchLinks(); // Now fetch regions using the API URL
+    await fetchLinks(); // Now fetch links using the API URL
   } catch (error) {
     console.error('Error fetching the API URL:', error);
   }
 }
 
-// Function to fetch regions data
+// Function to fetch payment gateways
+async function fetchPaymentGateways() {
+  try {
+    const response = await fetch('https://bni-data-backend.onrender.com/api/paymentGateway');
+    if (!response.ok) throw new Error('Network response was not ok');
+    paymentGateways = await response.json();
+    
+    // Log the payment gateways
+    console.log('Payment gateways fetched:', paymentGateways);
+  } catch (error) {
+    console.error('Error fetching payment gateways:', error);
+  }
+}
+
+// Function to fetch links data
 async function fetchLinks() {
   showLoader(); // Show the loader
   try {
-    const response = await fetch(apiUrl); // Use the fetched apiUrl here
+    const response = await fetch(apiUrl);
     if (!response.ok) throw new Error('Network response was not ok');
 
-    allLinks = await response.json(); // Store fetched regions in the global variable
-    filteredLinks = [...allLinks]; // Initialize filtered regions to all regions initially
+    allLinks = await response.json(); // Store fetched links in the global variable
+    filteredLinks = [...allLinks]; // Initialize filtered links to all links initially
 
-    // Display the first page of regions
-    displayRegions(filteredLinks.slice(0, entriesPerPage)); // Display only the first 10 entries
+    // Display the first page of links
+    displayLinks(filteredLinks.slice(0, entriesPerPage)); // Display only the first entriesPerPage
   } catch (error) {
     console.error('There was a problem fetching the links data:', error);
   } finally {
@@ -48,8 +63,8 @@ async function fetchLinks() {
   }
 }
 
-// Function to display regions in the table
-function displayRegions(regions) {
+// Function to display links in the table
+function displayLinks(regions) {
   const tableBody = document.getElementById('chaptersTableBody');
 
   // Clear existing rows
@@ -57,6 +72,17 @@ function displayRegions(regions) {
 
   // Loop through the regions and create table rows
   regions.forEach((region, index) => {
+    console.log('Region:', region);
+    
+    // Find the payment gateway name
+    const paymentGateway = paymentGateways.find(pg => {
+      console.log(`Comparing: ${pg.gateway_id} with ${region.payment_gateway}`);
+      return pg.gateway_id.toString() === region.payment_gateway.toString(); 
+    });
+    
+    // Get the payment gateway name or default to 'N/A'
+    const paymentGatewayName = paymentGateway ? paymentGateway.gateway_name : 'N/A'; 
+
     const row = document.createElement('tr');
     row.classList.add('order-list');
 
@@ -79,6 +105,11 @@ function displayRegions(regions) {
         </div>
       </td>
       <td style="border: 1px solid grey;">
+        <div class="d-flex align-items-center">
+          <em><u>${paymentGatewayName}</u></em>
+        </div>
+      </td>
+      <td style="border: 1px solid grey;">
         <span class="badge bg-${region.status === 'active' ? 'success' : 'danger'}">
           ${region.status}
         </span>
@@ -90,21 +121,24 @@ function displayRegions(regions) {
   });
 }
 
-// Function to filter regions based on search input
+// Function to filter links based on search input
 function filterRegions() {
   const searchValue = document.getElementById('searchChapterInput').value.toLowerCase();
 
   // Filter regions based on the search value
   filteredLinks = allLinks.filter(region => 
-    region.region_name.toLowerCase().includes(searchValue)
+    region.universal_link_name.toLowerCase().includes(searchValue)
   );
 
   // Display the filtered regions
-  displayRegions(filteredLinks.slice(0, entriesPerPage)); // Display only the first entriesPerPage results
+  displayLinks(filteredLinks.slice(0, entriesPerPage));
 }
 
 // Add event listener to the search input
 document.getElementById('searchChapterInput').addEventListener('input', filterRegions);
 
-// Call fetchApiUrl on page load to get the API URL first, then fetch regions
-window.onload = fetchApiUrl;
+// Call fetchApiUrl and fetchPaymentGateways on page load
+window.onload = async () => {
+  await fetchPaymentGateways(); // Fetch payment gateways first
+  await fetchApiUrl(); // Then fetch the API URL
+};

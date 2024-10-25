@@ -519,7 +519,7 @@
                             </div>
                             
                             <div class="col-xl-6">
-                              <label for="accolades" class="form-label">Accolades
+                              <label for="accolades_id" class="form-label">Accolades
                                 <a href="/m/add-member">
                                   <button type="button" class="btn btn-outline-info btn-sm">Add Accolades +</button>
                                 </a>
@@ -858,8 +858,8 @@
                   const checkbox = document.createElement('div');
                   checkbox.classList.add('form-check');
                   checkbox.innerHTML = `
-                    <input type="checkbox" class="form-check-input" id="accolade-${accolade.accolade_id}" value="${accolade.accolade_id}">
-                    <label class="form-check-label" for="accolade-${accolade.accolade_id}">${accolade.accolade_name}</label>
+                    <input type="checkbox" class="form-check-input" id="accolades_${accolade.accolade_id}" value="${accolade.accolade_id}">
+                    <label class="form-check-label" for="accolades_${accolade.accolade_id}">${accolade.accolade_name}</label>
                   `;
                   accoladesContainer.appendChild(checkbox);
                 }
@@ -918,7 +918,7 @@
     formDataObj['chapterDays'] = [];
     formDataObj['chapterStatus'] = [];  // For Chapter Status
     formDataObj['chapterType'] = [];    // For Chapter Type
-    formDataObj['accolades_config'] = [];      // For Accolades
+    formDataObj['accolades_id'] = [];      // For Accolades
   
     formData.forEach((value, key) => {
       if (key === 'chapterDays[]') {
@@ -928,7 +928,7 @@
       } else if (key === 'chapterType[]') {    // Collect Chapter Type
         formDataObj['chapterType'].push(value);
       } else if (key === 'accolades[]') {      // Collect Accolades
-        formDataObj['accolades_config'].push(value);
+        formDataObj['accolades_id'].push(value);
       } else {
         formDataObj[key] = value;  // Handle other fields
       }
