@@ -23,7 +23,6 @@ async function fetchApiUrl() {
     const response = await fetch('/api/universal-link-api');
     const data = await response.json();
     apiUrl = data.apiUrl; // Store the API URL in apiUrl variable
-    console.log('API URL fetched from backend:', apiUrl);
     await fetchLinks(); // Now fetch links using the API URL
   } catch (error) {
     console.error('Error fetching the API URL:', error);
@@ -38,7 +37,6 @@ async function fetchPaymentGateways() {
     paymentGateways = await response.json();
     
     // Log the payment gateways
-    console.log('Payment gateways fetched:', paymentGateways);
   } catch (error) {
     console.error('Error fetching payment gateways:', error);
   }
@@ -72,11 +70,9 @@ function displayLinks(regions) {
 
   // Loop through the regions and create table rows
   regions.forEach((region, index) => {
-    console.log('Region:', region);
     
     // Find the payment gateway name
     const paymentGateway = paymentGateways.find(pg => {
-      console.log(`Comparing: ${pg.gateway_id} with ${region.payment_gateway}`);
       return pg.gateway_id.toString() === region.payment_gateway.toString(); 
     });
     
