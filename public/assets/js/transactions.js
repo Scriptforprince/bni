@@ -100,7 +100,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 <td>${formattedDate}</td>
                 <td><img src="https://www.kindpng.com/picc/m/78-786207_user-avatar-png-user-avatar-icon-png-transparent.png" alt="Card" width="20" height="20">${order?.member_name || "Unknown"}</td>
                 <td><b><em>${chapterName}</em></b></td>
-                <td><b>${formattedAmount}</b><br><a href="javascript:void(0);" class="fw-medium text-success">View</a></td>
+                <td><b>${formattedAmount}</b><br><a href="/t/view-invoice?order_id=${transaction.order_id}" class="fw-medium text-success">View</a></td>
                 <td>${paymentImage} ${paymentMethod}</td>
                 <td><em>${transaction.order_id}</em></td>
                 <td><b><em>${transaction.cf_payment_id}</em></b></td>
