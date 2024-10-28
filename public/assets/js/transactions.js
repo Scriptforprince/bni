@@ -1,17 +1,19 @@
 document.addEventListener("DOMContentLoaded", async () => {
     try {
         // Fetch data from all necessary endpoints
-        const [ordersResponse, transactionsResponse, chaptersResponse, paymentGatewayResponse] = await Promise.all([
+        const [ordersResponse, transactionsResponse, chaptersResponse, paymentGatewayResponse, universalLinksResponse] = await Promise.all([
             fetch("https://bni-data-backend.onrender.com/api/allOrders"),
             fetch("https://bni-data-backend.onrender.com/api/allTransactions"),
             fetch("https://bni-data-backend.onrender.com/api/chapters"),
-            fetch("https://bni-data-backend.onrender.com/api/paymentGateway")
+            fetch("https://bni-data-backend.onrender.com/api/paymentGateway"),
+            fetch("https://bni-data-backend.onrender.com/api/universalLinks") // New fetch for universal links
         ]);
 
         const orders = await ordersResponse.json();
         const transactions = await transactionsResponse.json();
         const chapters = await chaptersResponse.json();
         const paymentGateways = await paymentGatewayResponse.json();
+        const universalLinks = await universalLinksResponse.json(); // Parse universal links response
 
         // Map chapter names by chapter_id for quick access
         const chapterMap = new Map();
@@ -23,6 +25,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         const paymentGatewayMap = new Map();
         paymentGateways.forEach(gateway => {
             paymentGatewayMap.set(gateway.gateway_id, gateway.gateway_name);
+        });
+
+        // Map universal link names by id for quick access
+        const universalLinkMap = new Map();
+        universalLinks.forEach(link => {
+            universalLinkMap.set(link.id, link.universal_link_name);
         });
 
         // Initialize totals
@@ -45,6 +53,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             // Get gateway name from paymentGatewayMap using order's gateway_id
             const gatewayName = paymentGatewayMap.get(order?.payment_gateway_id) || "Unknown";
+
+            // Get universal link name from universalLinkMap using order's universal_link_id
+            const universalLinkName = universalLinkMap.get(order?.universal_link_id) || "Not Applicable";
 
             // Update total transaction amount
             const transactionAmount = parseFloat(transaction.payment_amount);
@@ -87,7 +98,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             row.innerHTML = `
                 <td>${index + 1}</td>
                 <td>${formattedDate}</td>
-                <td>${order?.member_name || "Unknown"}</td>
+                <td><img src="https://www.kindpng.com/picc/m/78-786207_user-avatar-png-user-avatar-icon-png-transparent.png" alt="Card" width="20" height="20">${order?.member_name || "Unknown"}</td>
                 <td><b><em>${chapterName}</em></b></td>
                 <td><b>${formattedAmount}</b><br><a href="javascript:void(0);" class="fw-medium text-success">View</a></td>
                 <td>${paymentImage} ${paymentMethod}</td>
@@ -95,6 +106,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 <td><b><em>${transaction.cf_payment_id}</em></b></td>
                 <td><span class="badge ${transaction.payment_status === 'SUCCESS' ? 'bg-success' : 'bg-danger'}">${transaction.payment_status.toLowerCase()}</span></td>
                 <td><b><em>${gatewayName}</em></b></td>
+                <td><em>${universalLinkName}</em></td> <!-- Updated to display universal link name -->
                 <td><em>Not Applicable</em></td>
                 <td><em>Not Applicable</em></td>
                 <td>
