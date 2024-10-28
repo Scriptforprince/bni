@@ -59,15 +59,20 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             // Determine payment method
             let paymentMethod = "N/A";
+            let paymentImage = "";
             if (transaction.payment_method) {
                 if (transaction.payment_method.upi) {
                     paymentMethod = "UPI";
+                    paymentImage = '<img src="https://economictimes.indiatimes.com/thumb/msid-74960608,width-1200,height-900,resizemode-4,imgsize-49172/upi-twitter.jpg?from=mdr" alt="UPI" width="30" height="30">';
                 } else if (transaction.payment_method.card) {
                     paymentMethod = "Card";
+                    paymentImage = '<img src="https://www.investopedia.com/thmb/F8CKM3YkF1fmnRCU2g4knuK0eDY=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/MClogo-c823e495c5cf455c89ddfb0e17fc7978.jpg" alt="Card" width="20" height="20">';
                 } else if (transaction.payment_method.netbanking) {
                     paymentMethod = "Net Banking";
+                    paymentImage = '<img src="https://cdn.prod.website-files.com/64199d190fc7afa82666d89c/648b63af41676287e601542d_regular-bank-transfer.png" alt="Net Banking" width="20" height="20">';
                 } else if (transaction.payment_method.wallet) {
                     paymentMethod = "Wallet";
+                    paymentImage = '<img src="https://ibsintelligence.com/wp-content/uploads/2024/01/digital-wallet-application-mobile-internet-banking-online-payment-security-via-credit-card_228260-825.jpg" alt="Wallet" width="20" height="20">';
                 }
             }
 
@@ -85,7 +90,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 <td>${order?.member_name || "Unknown"}</td>
                 <td><b><em>${chapterName}</em></b></td>
                 <td><b>${formattedAmount}</b><br><a href="javascript:void(0);" class="fw-medium text-success">View</a></td>
-                <td>${paymentMethod}</td>
+                <td>${paymentImage} ${paymentMethod}</td>
                 <td><em>${transaction.order_id}</em></td>
                 <td><b><em>${transaction.cf_payment_id}</em></b></td>
                 <td><span class="badge ${transaction.payment_status === 'SUCCESS' ? 'bg-success' : 'bg-danger'}">${transaction.payment_status.toLowerCase()}</span></td>
