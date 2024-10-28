@@ -2,10 +2,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     try {
         // Fetch data from all necessary endpoints
         const [ordersResponse, transactionsResponse, chaptersResponse, paymentGatewayResponse] = await Promise.all([
-            fetch("http://localhost:5000/api/allOrders"),
-            fetch("http://localhost:5000/api/allTransactions"),
-            fetch("http://localhost:5000/api/chapters"),
-            fetch("http://localhost:5000/api/paymentGateway")
+            fetch("https://bni-data-backend.onrender.com/api/allOrders"),
+            fetch("https://bni-data-backend.onrender.com/api/allTransactions"),
+            fetch("https://bni-data-backend.onrender.com/api/chapters"),
+            fetch("https://bni-data-backend.onrender.com/api/paymentGateway")
         ]);
 
         const orders = await ordersResponse.json();
