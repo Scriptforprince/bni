@@ -9,6 +9,7 @@ const chapterRoutes = require('./r-chapter/chapterRoutes');
 const dashboardRoutes = require('./r-dashboard/dashboardRoutes');
 const universalRoutes = require('./r-unversalLinks/universalLinksRoutes');
 const transactionRoutes = require('./r-transactions/transactionsRoutes');
+const apiRoutes = require('./r-api/apiRoutes');
 
 // Use all the imported routes
 router.use('/', indexRoutes);
@@ -18,5 +19,6 @@ router.use('/r', regionRoutes);
 router.use('/c', chapterRoutes);
 router.use('/u', universalRoutes);
 router.use('/t', transactionRoutes);
+router.use('/a', apiRoutes);
 
 module.exports = router;
