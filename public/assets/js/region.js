@@ -4,16 +4,14 @@ let filteredRegions = []; // To store filtered regions based on search
 let entriesPerPage = 10; // Number of entries to display per page
 let currentPage = 1; // For pagination
 
-// Show the loader
+// Function to show the loader
 function showLoader() {
-  const loader = document.getElementById('loader');
-  loader.style.display = 'flex';
+  document.getElementById('loader').style.display = 'flex'; // Show loader
 }
 
-// Hide the loader
+// Function to hide the loader
 function hideLoader() {
-  const loader = document.getElementById('loader');
-  loader.style.display = 'none';
+  document.getElementById('loader').style.display = 'none'; // Hide loader
 }
 
 // Fetch the API URL from the backend

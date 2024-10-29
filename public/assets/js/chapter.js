@@ -1,58 +1,44 @@
-let allChapters = []; // To store fetched chapters globally
-let filteredChapters = []; // To store filtered chapters based on search
+let apiUrl = 'https://bni-data-backend.onrender.com/api/chapters';
+let allChapters = [];
+let filteredChapters = [];
 
 // Function to show the loader
 function showLoader() {
-    document.getElementById('loader').style.display = 'flex'; // Show loader
+    document.getElementById('loader').style.display = 'flex';
 }
 
 // Function to hide the loader
 function hideLoader() {
-    document.getElementById('loader').style.display = 'none'; // Hide loader
+    document.getElementById('loader').style.display = 'none';
 }
 
-// Function to fetch the chapters API URL from the backend
-async function getChaptersApiUrl() {
-    try {
-        const response = await fetch('/api/chapters-api'); // Fetching API URL from your server
-        if (!response.ok) {
-            throw new Error('Failed to fetch Chapters API URL');
-        }
-        const data = await response.json();
-        return data.apiUrl; // Return the API URL from the server
-    } catch (error) {
-        console.error('Error fetching chapters API URL:', error);
-        return null;
-    }
-}
-
-// Function to fetch chapters from the dynamically fetched API URL
+// Function to fetch chapters
 async function fetchChapters() {
-    showLoader(); // Show the loader when starting to fetch data
+    showLoader();
     try {
-        const apiUrl = await getChaptersApiUrl(); // Get the API URL from your server
-        if (!apiUrl) {
-            throw new Error('No valid API URL found');
+        console.log(`Fetching data from: ${apiUrl}`);
+        const response = await fetch(apiUrl);
+
+        if (!response.ok) {
+            throw new Error(`Network response was not ok. Status: ${response.status}`);
         }
 
-        const response = await fetch(apiUrl); // Fetch chapters from the dynamically retrieved API URL
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        allChapters = await response.json(); // Store fetched chapters in the global variable
-        filteredChapters = [...allChapters]; // Initialize filtered chapters to all chapters initially
-        displayChapters(filteredChapters); // Display all chapters initially
+        allChapters = await response.json();
+        console.log('Fetched chapters:', allChapters);
+
+        filteredChapters = [...allChapters];
+        displayChapters(filteredChapters);
     } catch (error) {
         console.error('Error fetching chapters:', error);
     } finally {
-        hideLoader(); // Hide the loader when done, regardless of success or failure
+        hideLoader();
     }
 }
 
 // Function to display chapters in the table
 function displayChapters(chapters) {
     const tableBody = document.querySelector('table tbody');
-    tableBody.innerHTML = ''; // Clear previous chapters
+    tableBody.innerHTML = '';
 
     chapters.forEach((chapter, index) => {
         const row = document.createElement('tr');
@@ -78,20 +64,20 @@ function displayChapters(chapters) {
 // Function to filter chapters based on search input
 function filterChapters(searchTerm) {
     if (searchTerm === '') {
-        filteredChapters = [...allChapters]; // Reset filtered chapters to all chapters if search term is empty
+        filteredChapters = [...allChapters];
     } else {
         filteredChapters = allChapters.filter(chapter =>
             chapter.chapter_name.toLowerCase().includes(searchTerm.toLowerCase())
         );
     }
 
-    displayChapters(filteredChapters); // Display filtered chapters
+    displayChapters(filteredChapters);
 }
 
 // Add event listener for the search input
 document.getElementById('searchChapterInput').addEventListener('input', function() {
     const searchTerm = this.value;
-    filterChapters(searchTerm); // Call the filter function with the search term
+    filterChapters(searchTerm);
 });
 
 // Call fetchChapters on page load
