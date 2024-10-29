@@ -1,4 +1,4 @@
-let apiUrl;
+let apiUrl = 'https://bni-data-backend.onrender.com/api/regions';
 let allRegions = []; // To store fetched regions globally
 let filteredRegions = []; // To store filtered regions based on search
 let entriesPerPage = 10; // Number of entries to display per page
@@ -19,7 +19,7 @@ function hideLoader() {
 // Fetch the API URL from the backend
 async function fetchApiUrl() {
   try {
-    const response = await fetch('/api/regions-api'); // Call the backend to get the API URL
+    const response = await fetch('https://bni-data-backend.onrender.com/api/regions'); // Call the backend to get the API URL
     const data = await response.json();
     apiUrl = data.apiUrl; // Store the API URL in apiUrl variable
     console.log('API URL fetched from backend:', apiUrl);
@@ -33,7 +33,7 @@ async function fetchApiUrl() {
 async function fetchRegions() {
   showLoader(); // Show the loader
   try {
-    const response = await fetch(apiUrl); // Use the fetched apiUrl here
+    const response = await fetch('https://bni-data-backend.onrender.com/api/regions'); // Use the fetched apiUrl here
     if (!response.ok) throw new Error('Network response was not ok');
 
     allRegions = await response.json(); // Store fetched regions in the global variable

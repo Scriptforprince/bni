@@ -1,4 +1,4 @@
-let apiUrl;
+let apiUrl = 'https://bni-data-backend.onrender.com/api/universalLinks';
 let allLinks = []; // To store fetched links globally
 let filteredLinks = []; // To store filtered links based on search
 let paymentGateways = []; // To store fetched payment gateways globally
@@ -20,7 +20,7 @@ function hideLoader() {
 // Fetch the API URL from the backend
 async function fetchApiUrl() {
   try {
-    const response = await fetch('/api/universal-link-api');
+    const response = await fetch('https://bni-data-backend.onrender.com/api/universalLinks');
     const data = await response.json();
     apiUrl = data.apiUrl; // Store the API URL in apiUrl variable
     await fetchLinks(); // Now fetch links using the API URL
@@ -46,7 +46,7 @@ async function fetchPaymentGateways() {
 async function fetchLinks() {
   showLoader(); // Show the loader
   try {
-    const response = await fetch(apiUrl);
+    const response = await fetch('https://bni-data-backend.onrender.com/api/universalLinks');
     if (!response.ok) throw new Error('Network response was not ok');
 
     allLinks = await response.json(); // Store fetched links in the global variable
