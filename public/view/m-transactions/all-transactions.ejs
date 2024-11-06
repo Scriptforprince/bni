@@ -413,8 +413,10 @@ function displayLinkName(universalLinkName) {
 // On page load
 document.addEventListener('DOMContentLoaded', () => {
     const ulid = getUrlParameter('ulid');
+    
     if (ulid) {
         updatePageWithLinkName(ulid);
+      
     } else {
         console.error('No ulid found in the URL');
     }

@@ -141,7 +141,6 @@
                           class="form-control"
                           id="region_name"
                           name="region_name"
-                          required
                           placeholder="New region name.."
                         />
                         <label
@@ -162,7 +161,6 @@
                           class="form-control"
                           id="contact_person"
                           name="contact_person" 
-                          required
                           placeholder="Name of the contact Person.."
                         />
                       </div>
@@ -185,7 +183,7 @@
                             class="form-control"
                             id="contact_number" 
                             name="contact_number" 
-                            required
+
                             placeholder="Enter phone number"
                           />
                         </div>
@@ -200,7 +198,6 @@
                           class="form-control"
                           id="email_id" 
                           name="email_id" 
-                          required
                           placeholder="admin@bni.com"
                         />
                       </div>
@@ -362,7 +359,6 @@
                           class="form-control"
                           id="mission"
                           name="mission"
-                          required
                           placeholder="Enter the region's mission"
                           rows="3"
                         ></textarea>
@@ -375,7 +371,6 @@
                           class="form-control"
                           id="vision"
                           name="vision"
-                          required
                           placeholder="Enter the region's vision"
                           rows="3"
                         ></textarea>
@@ -389,7 +384,6 @@
                           class="form-control"
                           id="region_logo"
                           name="region_logo"
-                          required
                         />
                       </div>
                       <div class="col-xl-6">
@@ -435,7 +429,6 @@
                           class="form-control"
                           id="one_time_registration_fee"
                           name="one_time_registration_fee"
-                          required
                           placeholder="5,999/-.."
                         />
                       </div>
@@ -448,7 +441,7 @@
                               class="form-control"
                               id="one_year_fee"
                               name="one_year_fee"
-                              required
+  
                               value="35309.00"
                             />
                           </div>
@@ -460,7 +453,7 @@
                               class="form-control"
                               id="two_year_fee"
                               name="two_year_fee"
-                              required
+  
                               value="56499.00"
                             />
                           </div>
@@ -472,7 +465,7 @@
                               class="form-control"
                               id="five_year_fee"
                               name="five_year_fee"
-                              required
+  
                               value="103500.00"
                             />
                           </div>
@@ -486,7 +479,7 @@
                             class="form-control"
                             id="late_fees"
                             name="late_fees"
-                            required
+
                             placeholder="1,000/-.."
                           />
                         </div>
@@ -779,7 +772,6 @@
                           name="product-brand-add"
                           id="country"
                           name="country"
-                          required
                         >
                           <option value="">Select Country</option>
                         </select>
@@ -793,7 +785,6 @@
                           class="form-control"
                           id="state"
                           name="state"
-                          required
                           placeholder="Enter state or province"
                         />
                       </div>
@@ -804,7 +795,6 @@
                           class="form-control"
                           id="city"
                           name="city"
-                          required
                           placeholder="Enter city"
                         />
                       </div>
@@ -817,7 +807,6 @@
                           class="form-control"
                           id="street_address_line_1"
                           name="street_address_line_1"
-                          required
                           placeholder="Enter street address"
                         />
                       </div>
@@ -830,7 +819,6 @@
                           class="form-control"
                           id="street_address_line_2"
                           name="street_address_line_2"
-                          required
                           placeholder="Enter street address"
                         />
                       </div>
@@ -843,7 +831,6 @@
                           class="form-control"
                           id="postal_code"
                           name="postal_code"
-                          required
                           placeholder="Enter postal code"
                         />
                       </div>
@@ -881,7 +868,6 @@
                           class="form-control"
                           id="social_facebook"
                           name="social_facebook"
-                          required
                           placeholder="www.facebook.com"
                         />
                       </div>
@@ -895,7 +881,6 @@
                           class="form-control"
                           id="social_instagram"
                           name="social_instagram"
-                          required
                           placeholder="www.instagram.com"
                         />
                       </div>
@@ -910,7 +895,6 @@
                           class="form-control"
                           id="social_linkedin"
                           name="social_linkedin"
-                          required
                           placeholder="www.linkedin.com"
                         />
                       </div>
@@ -925,7 +909,6 @@
                           class="form-control"
                           id="social_youtube"
                           name="social_youtube"
-                          required
                           placeholder="www.youtube.com"
                         />
                       </div>
@@ -940,7 +923,6 @@
                           class="form-control"
                           id="website_link"
                           name="website_link"
-                          required
                           placeholder="www.youtube.com"
                         />
                       </div>
@@ -1040,15 +1022,19 @@
         
         if (response.ok) {
           const result = await response.json();
+        
+          toastr.success('Region Created successfully!');
           console.log('Region added successfully:', result);
           document.getElementById("formMessage").innerText = "Region added successfully!";
         } else {
           console.error('Error adding region:', response.statusText);
           const errorResult = await response.json();
+          toastr.error(`${errorResult.message}`);
           document.getElementById("formMessage").innerText = `Error: ${errorResult.message}`;
         }
       } catch (error) {
         console.error('Fetch error:', error);
+        toastr.error(`${error.message}`);
         document.getElementById("formMessage").innerText = "An error occurred. Please try again.";
       }
     });
@@ -1060,8 +1046,8 @@
     newFeeRow.className = "feeRow";
     newFeeRow.innerHTML = `
         <label>Year:</label>
-        <input type="number" name="year" placeholder="Enter Year" required />
-        <input type="text" name="fee" placeholder="Enter Fee" required />
+        <input type="number" name="year" placeholder />
+        <input type="text" name="fee" placeholde />
       `;
     document.getElementById("membershipFeesContainer").appendChild(newFeeRow);
   });
@@ -1141,12 +1127,15 @@
   
       const result = await response.json();
       if (response.ok) {
+        toastr.success('Region added successfully!');
         document.getElementById("formMessage").innerText = "Region added successfully!";
       } else {
         document.getElementById("formMessage").innerText = `Error: ${result.message}`;
+        toastr.error( result.message);
       }
     } catch (error) {
       console.error("Error submitting the form:", error);
+      toastr.error(error.message);
       document.getElementById("formMessage").innerText = "An error occurred. Please try again.";
     }
   });

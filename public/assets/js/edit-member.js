@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', async function () {
   // Get the member ID from the URL
   const urlParams = new URLSearchParams(window.location.search);
   const memberId = urlParams.get('member_id');
-
+console.log(memberId)
   if (!memberId) {
     alert('No member ID provided!');
     return;

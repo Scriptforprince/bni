@@ -945,12 +945,16 @@
   
       const result = await response.json();
       if (response.ok) {
+        toastr.success('Member added successfully!');
         document.getElementById("formMessage").innerText = "Member added successfully!";
+   
       } else {
+        toastr.error(result.error.message||result.message);
         document.getElementById("formMessage").innerText = `Error: ${result.message}`;
       }
     } catch (error) {
       console.error("Error submitting the form:", error);
+      toastr.error(error.message);
       document.getElementById("formMessage").innerText = "An error occurred. Please try again.";
     }
   });

@@ -102,7 +102,7 @@
                             <div class="col-xl-12">
                               <label for="product-cost-add" class="form-label"
                                 ><span style="font-size: 15px;"
-                                  ><b>It's time for a new member!</b></span
+                                  ><b>It's time for edit member details!</b></span
                                 ></label
                               >
                             </div>
@@ -748,6 +748,11 @@
 
       <script>
         document.addEventListener("DOMContentLoaded", function () {
+
+       const url = window.location.href; // Get the current URL
+    const urlParams = new URL(url).searchParams;
+    const memberId = urlParams.get('member_id');
+    const memberApiUrl='https://bni-data-backend.onrender.com/api/members';
           const regionsApiUrl = 'https://bni-data-backend.onrender.com/api/regions';
           const chaptersApiUrl = 'https://bni-data-backend.onrender.com/api/chapters';
           const accoladesApiUrl = 'https://bni-data-backend.onrender.com/api/accolades';
@@ -762,6 +767,23 @@
           let allChapters = []; // To store fetched chapters
           let allAccolades = []; // To store fetched accolades
       
+ // Fetch member data
+ fetch(memberApiUrl)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(memberData => {
+        console.log(memberData); // Output the member data
+        // You can now use memberData to populate fields in your form or display it as needed
+      })
+      .catch(error => {
+        console.error('Error fetching member data:', error);
+      });
+
+
           // Fetch and populate categories
           fetch(categoriesApiUrl)
             .then(response => response.json())
@@ -869,7 +891,6 @@
           });
         });
       </script>
-
 
 <script>
   function calculateRenewalDate() {
