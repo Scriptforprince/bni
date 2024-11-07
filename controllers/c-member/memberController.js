@@ -9,3 +9,7 @@ exports.addMember = (req, res) => {
 exports.editMember = (req, res) => {
     res.render('m-member/edit-members', { title: 'editMember' });
 };
+
+exports.viewMember = (req, res) => {
+    res.render('m-member/view-members', { title: 'viewMember' });
+};

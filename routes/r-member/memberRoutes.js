@@ -6,5 +6,6 @@ const memberController = require('../../controllers/c-member/memberController');
 router.get('/manage-members', memberController.manageMembers);
 router.get('/add-member', memberController.addMember);
 router.get('/edit-member', memberController.editMember);
+router.get('/view-member',memberController.viewMember)
 
 module.exports = router;

@@ -81,7 +81,7 @@ function displayMembers(members) {
           <span class="avatar avatar-sm me-2 avatar-rounded">
             <img src="https://bniconnectglobal.com/web/open/networkViewProfileImage/667047103355150001b6ca93.jpg" alt="" />
           </span>
-          <a href="/m/edit-member/?member_id=${member.member_id}">${fullName}</a>
+          <a href="/m/view-member/?member_id=${member.member_id}">${fullName}</a>
         </div>
       </td>
       <td style="border: 1px solid grey;">
@@ -229,6 +229,5 @@ function displayChapters(chapters) {
     tableBody.appendChild(row);
   });
 }
-
 // Call fetchMembers on page load
 window.onload = fetchMembers;
