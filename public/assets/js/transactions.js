@@ -6,14 +6,14 @@ document.addEventListener("DOMContentLoaded", async () => {
             fetch("https://bni-data-backend.onrender.com/api/allTransactions"),
             fetch("https://bni-data-backend.onrender.com/api/chapters"),
             fetch("https://bni-data-backend.onrender.com/api/paymentGateway"),
-            fetch("https://bni-data-backend.onrender.com/api/universalLinks") // New fetch for universal links
+            fetch("https://bni-data-backend.onrender.com/api/universalLinks")
         ]);
 
         const orders = await ordersResponse.json();
         const transactions = await transactionsResponse.json();
         const chapters = await chaptersResponse.json();
         const paymentGateways = await paymentGatewayResponse.json();
-        const universalLinks = await universalLinksResponse.json(); // Parse universal links response
+        const universalLinks = await universalLinksResponse.json();
 
         // Map chapter names by chapter_id for quick access
         const chapterMap = new Map();
@@ -95,6 +95,10 @@ document.addEventListener("DOMContentLoaded", async () => {
             const row = document.createElement("tr");
             row.classList.add("invoice-list");
 
+            const invoiceButton = transaction.payment_status === 'SUCCESS'
+                ? `<a href="#" data-order-id="${order.order_id}" class="btn btn-sm btn-success btn-wave waves-light generate-invoice">Generate E-Invoice</a>`
+                : `<em>Not Applicable</em>`;
+
             row.innerHTML = `
                 <td>${index + 1}</td>
                 <td>${formattedDate}</td>
@@ -106,12 +110,10 @@ document.addEventListener("DOMContentLoaded", async () => {
                 <td><b><em>${transaction.cf_payment_id}</em></b></td>
                 <td><span class="badge ${transaction.payment_status === 'SUCCESS' ? 'bg-success' : 'bg-danger'}">${transaction.payment_status.toLowerCase()}</span></td>
                 <td><b><em>${gatewayName}</em></b></td>
-                <td><em>${universalLinkName}</em></td> <!-- Updated to display universal link name -->
+                <td><em>${universalLinkName}</em></td>
                 <td><em>Not Applicable</em></td>
                 <td><em>Not Applicable</em></td>
-                <td>
-                    <a href="/t/new-invoice" class="btn btn-sm btn-success btn-wave waves-light">Generate E-Invoice</a>
-                </td>
+                <td>${invoiceButton}</td>
             `;
 
             tableBody.appendChild(row);
@@ -121,7 +123,72 @@ document.addEventListener("DOMContentLoaded", async () => {
         document.querySelector(".count-up[data-count='385']").textContent = `₹ ${totalTransactionAmount.toLocaleString("en-IN")}`;
         document.querySelectorAll(".count-up")[1].textContent = `₹ ${settledPayments.toLocaleString("en-IN")}`;
         document.querySelectorAll(".count-up")[2].textContent = `₹ ${pendingPayments.toLocaleString("en-IN")}`;
+
+        document.addEventListener("click", (event) => {
+            if (event.target.classList.contains("generate-invoice")) {
+                event.preventDefault();
+        
+                // Get the order ID from the data attribute
+                const orderId = event.target.getAttribute("data-order-id");
+        
+                // Find the corresponding order and transaction details
+                const order = orders.find(o => o.order_id === orderId);
+                const transaction = transactions.find(t => t.order_id === orderId);
+                const chapterName = chapterMap.get(order?.chapter_id) || "N/A";
+                const gatewayName = paymentGatewayMap.get(order?.payment_gateway_id) || "Unknown";
+                const universalLinkName = universalLinkMap.get(order?.universal_link_id) || "Not Applicable";
+        
+                // Log the details to the console for confirmation
+                console.log("Order Details:", order);
+                console.log("Transaction Details:", transaction);
+                console.log("Chapter Name:", chapterName);
+                console.log("Payment Gateway Name:", gatewayName);
+                console.log("Universal Link Name:", universalLinkName);
+        
+                // Show the SweetAlert asking for the final confirmation
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: `You are about to generate IRN and QR code for Order ID: ${orderId} and Transaction ID: ${transaction.cf_payment_id}.`,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, Generate!',
+                    cancelButtonText: 'No, Cancel'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Show second confirmation with all the details before generating IRN
+                        Swal.fire({
+                            title: 'Please check the details',
+                            html: `
+                                <strong>Order ID:</strong> ${orderId}<br>
+                                <strong>Transaction ID:</strong> ${transaction.cf_payment_id}<br>
+                                <strong>Chapter Name:</strong> ${chapterName}<br>
+                                <strong>Payment Gateway:</strong> ${gatewayName}<br>
+                                <strong>Universal Link:</strong> ${universalLinkName}<br>
+                            `,
+                            icon: 'info',
+                            showCancelButton: true,
+                            confirmButtonText: 'Confirm and Generate',
+                            cancelButtonText: 'Cancel'
+                        }).then((finalResult) => {
+                            if (finalResult.isConfirmed) {
+                                // If the user confirms, console the verified details
+                                console.log("Verified Order Details:", order);
+                                console.log("Verified Transaction Details:", transaction);
+                                console.log("Verified Chapter Name:", chapterName);
+                                console.log("Verified Payment Gateway Name:", gatewayName);
+                                console.log("Verified Universal Link Name:", universalLinkName);
+        
+                                // You can proceed with generating IRN and QR code here
+                                // (Call your API or generate the IRN and QR code)
+                            }
+                        });
+                    }
+                });
+            }
+        });
+        
     } catch (error) {
         console.error("Error loading transactions:", error);
     }
 });
+
