@@ -172,39 +172,32 @@ document.addEventListener("DOMContentLoaded", async () => {
                             cancelButtonText: 'Cancel'
                         }).then(async (secondResult) => {
                             if (secondResult.isConfirmed) {
-                                // Show timer alert for IRN generation
-                                let timerInterval;
-                                Swal.fire({
-                                    title: "Processing...",
-                                    html: "Generating IRN and QR code... <b></b>",
-                                    timer: 4200,
-                                    timerProgressBar: true,
-                                    didOpen: () => {
-                                        Swal.showLoading();
-                                        const timer = Swal.getPopup().querySelector("b");
-                                        timerInterval = setInterval(() => {
-                                            timer.textContent = `${Swal.getTimerLeft()}`;
-                                        }, 100);
+                                // Prepare data to send to backend
+                                const invoiceData = {
+                                    orderId: orderId,
+                                    transactionId: transaction.cf_payment_id,
+                                    amount: transaction.payment_amount,
+                                    chapterName: chapterName,
+                                    gatewayName: gatewayName,
+                                    universalLinkName: universalLinkName,
+                                };
+
+                                // Send data to backend to generate IRN
+                                const backendResponse = await fetch("http://localhost:5000/einvoice/generate-irn", {
+                                    method: "POST",
+                                    headers: {
+                                        "Content-Type": "application/json",
                                     },
-                                    willClose: () => {
-                                        clearInterval(timerInterval);
-                                    }
-                                }).then((timerResult) => {
-                                    if (timerResult.dismiss === Swal.DismissReason.timer) {
-                                        console.log("Timer closed");
-
-                                        // Update IRN and QR code in the table row
-                                        const irnCode = "678075375b68c8e7308894868a40f8780803675eab4d44583729fb8fcbbd2b0c";
-                                        const qrCodeImg = '<img src="https://bni-xq0f.onrender.com/assets/images/qr-code-irn.png" alt="QR Code" width="100" height="100">';
-
-                                        // Find and update the corresponding row
-                                        const rowToUpdate = event.target.closest("tr");
-                                        rowToUpdate.cells[11].innerHTML = `<em>${irnCode}</em>`;
-                                        rowToUpdate.cells[12].innerHTML = qrCodeImg;
-
-                                        Swal.fire("Success", "IRN and QR code have been generated!", "success");
-                                    }
+                                    body: JSON.stringify(invoiceData),
                                 });
+
+                                if (backendResponse.ok) {
+                                    // Handle success response from backend
+                                    Swal.fire("Success", "IRN and QR code generated successfully!", "success");
+                                } else {
+                                    // Handle failure response from backend
+                                    Swal.fire("Error", "Failed to generate IRN and QR code. Please try again later.", "error");
+                                }
                             }
                         });
                     }
