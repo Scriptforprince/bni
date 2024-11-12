@@ -152,17 +152,32 @@ document.addEventListener("DOMContentLoaded", async () => {
             .then(einvoiceData => {
                 const irnCell = row.querySelector(".irn");
                 const qrcodeCell = row.querySelector(".qrcode");
+                const qrCodeKey = `qrCode_${order.order_id}`; // Unique key for each order
     
                 // Display the IRN or a message if not available
                 irnCell.innerHTML = einvoiceData.irn || "<em>Not Applicable</em>";
     
-                // If QR code is available, show the button to generate it. Otherwise, show 'Not Applicable'.
-                if (einvoiceData.qrcode) {
+                // Check if QR code is already stored in localStorage for this order
+                if (localStorage.getItem(qrCodeKey)) {
+                    // If QR code is stored, show the QR code image
+                    qrcodeCell.innerHTML = `<img src="${localStorage.getItem(qrCodeKey)}" alt="QR Code" width="30" height="30">`;
+                } else if (einvoiceData.qrcode) {
+                    // If QR code is available but not yet stored, show the button
                     qrcodeCell.innerHTML = `<button class="generate-qr-btn">Generate QR Code</button>`;
     
-                    // Add event listener to the button to display the QR code upon click
+                    // Add event listener to the button to display loading and then the QR code
                     row.querySelector(".generate-qr-btn").addEventListener("click", () => {
-                        qrcodeCell.innerHTML = `<img src="${einvoiceData.qrcode}" alt="QR Code" width="30" height="30">`;
+                        // Show "Loading..." message or spinner
+                        qrcodeCell.innerHTML = "<em>Loading...</em>";
+    
+                        // Simulate loading for 3-4 seconds
+                        setTimeout(() => {
+                            // Store the QR code URL in localStorage
+                            localStorage.setItem(qrCodeKey, einvoiceData.qrcode);
+                            
+                            // Display the QR code
+                            qrcodeCell.innerHTML = `<img src="${einvoiceData.qrcode}" alt="QR Code" width="30" height="30">`;
+                        }, 3000); // Delay for 3 seconds
                     });
                 } else {
                     qrcodeCell.innerHTML = "<em>Not Applicable</em>";
@@ -173,6 +188,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                 row.querySelector(".qrcode").innerHTML = "<em>Error Loading QR Code</em>";
             });
     }
+    
+    
     
     });
 
@@ -252,32 +269,47 @@ document.addEventListener("DOMContentLoaded", async () => {
                   if (backendResponse.ok) {
                     // Success response handling
                     Swal.fire("Success", responseData.message, "success");
-
+                  
                     // Fetch IRN and QR code details after successful generation
                     const einvoiceResponse = await fetch(
                       `https://bni-data-backend.onrender.com/api/einvoice/${orderId}`
                     );
                     const einvoiceData = await einvoiceResponse.json();
-
+                  
                     const transactionRow = event.target.closest("tr");
+                    const qrCodeKey = `qrCode_${orderId}`; // Unique key for each order
+                  
+                    // Display the IRN or a message if not available
                     transactionRow.querySelector(".irn").innerHTML =
                       einvoiceData.irn || "<em>Not Applicable</em>";
-
-                    // Add a button to generate the QR code
-                    transactionRow.querySelector(
-                      ".qrcode"
-                    ).innerHTML = `<button class="generate-qr-btn">Generate QR Code</button>`;
-
-                    // Add event listener for QR code button
-                    transactionRow
-                      .querySelector(".generate-qr-btn")
-                      .addEventListener("click", () => {
-                        transactionRow.querySelector(".qrcode").innerHTML =
-                          einvoiceData.qrcode
-                            ? `<img src="${einvoiceData.qrcode}" alt="QR Code" width="30" height="30">`
-                            : "<em>Not Applicable</em>";
+                  
+                    // Check if QR code is already stored in localStorage for this order
+                    if (localStorage.getItem(qrCodeKey)) {
+                      // If QR code is stored, show the QR code image
+                      transactionRow.querySelector(".qrcode").innerHTML = `<img src="${localStorage.getItem(qrCodeKey)}" alt="QR Code" width="30" height="30">`;
+                    } else if (einvoiceData.qrcode) {
+                      // If QR code is available but not yet stored, show the button
+                      transactionRow.querySelector(".qrcode").innerHTML = `<button class="generate-qr-btn">Generate QR Code</button>`;
+                  
+                      // Add event listener to the button to display loading and then the QR code
+                      transactionRow.querySelector(".generate-qr-btn").addEventListener("click", () => {
+                        // Show "Loading..." message
+                        transactionRow.querySelector(".qrcode").innerHTML = "<em>Loading...</em>";
+                  
+                        // Simulate loading for 3-4 seconds
+                        setTimeout(() => {
+                          // Store the QR code URL in localStorage
+                          localStorage.setItem(qrCodeKey, einvoiceData.qrcode);
+                  
+                          // Display the QR code
+                          transactionRow.querySelector(".qrcode").innerHTML = `<img src="${einvoiceData.qrcode}" alt="QR Code" width="30" height="30">`;
+                        }, 3000); // Delay for 3 seconds
                       });
-                  } else {
+                    } else {
+                      transactionRow.querySelector(".qrcode").innerHTML = "<em>Not Applicable</em>";
+                    }
+                  }
+                  else {
                     // Error response handling
                     Swal.fire("Error", responseData.message, "error");
                   }
