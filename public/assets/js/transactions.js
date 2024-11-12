@@ -1,24 +1,19 @@
-
-function showLoader() {
-  
-  document.getElementById('loader').style.display = 'flex'; // Show loader
-
-}
-
-// Function to hide the loader
-function hideLoader() {
-  document.getElementById('loader').style.display = 'none'; // Hide loader
-}
 document.addEventListener("DOMContentLoaded", async () => {
-    try {
-        // Fetch data from all necessary endpoints
-        const [ordersResponse, transactionsResponse, chaptersResponse, paymentGatewayResponse, universalLinksResponse] = await Promise.all([
-            fetch("https://bni-data-backend.onrender.com/api/allOrders"),
-            fetch("https://bni-data-backend.onrender.com/api/allTransactions"),
-            fetch("https://bni-data-backend.onrender.com/api/chapters"),
-            fetch("https://bni-data-backend.onrender.com/api/paymentGateway"),
-            fetch("https://bni-data-backend.onrender.com/api/universalLinks")
-        ]);
+  try {
+    // Fetch data from all necessary endpoints
+    const [
+      ordersResponse,
+      transactionsResponse,
+      chaptersResponse,
+      paymentGatewayResponse,
+      universalLinksResponse,
+    ] = await Promise.all([
+      fetch("https://bni-data-backend.onrender.com/api/allOrders"),
+      fetch("https://bni-data-backend.onrender.com/api/allTransactions"),
+      fetch("https://bni-data-backend.onrender.com/api/chapters"),
+      fetch("https://bni-data-backend.onrender.com/api/paymentGateway"),
+      fetch("https://bni-data-backend.onrender.com/api/universalLinks"),
+    ]);
 
     const orders = await ordersResponse.json();
     const transactions = await transactionsResponse.json();
@@ -304,3 +299,4 @@ document.addEventListener("DOMContentLoaded", async () => {
     console.error("Error loading data:", error);
   }
 });
+
