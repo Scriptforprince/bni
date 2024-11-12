@@ -1,4 +1,4 @@
-let apiUrl = 'https://bni-data-backend.onrender.com/api/regions';
+let apiUrl = 'https://bni-data-backend.onrender.com/api/regions'; // Default value
 let allRegions = []; // To store fetched regions globally
 let filteredRegions = []; // To store filtered regions based on search
 let entriesPerPage = 10; // Number of entries to display per page
@@ -19,9 +19,8 @@ async function fetchApiUrl() {
   try {
     const response = await fetch('https://bni-data-backend.onrender.com/api/regions'); // Call the backend to get the API URL
     const data = await response.json();
-    apiUrl = data.apiUrl; // Store the API URL in apiUrl variable
+    apiUrl = data.apiUrl || apiUrl; // Update apiUrl if provided in the response
     console.log('API URL fetched from backend:', apiUrl);
-    await fetchRegions(); // Now fetch regions using the API URL
   } catch (error) {
     console.error('Error fetching the API URL:', error);
   }
@@ -29,20 +28,17 @@ async function fetchApiUrl() {
 
 // Function to fetch regions data
 async function fetchRegions() {
-  showLoader(); // Show the loader
   try {
-    const response = await fetch('https://bni-data-backend.onrender.com/api/regions'); // Use the fetched apiUrl here
+    const response = await fetch(apiUrl); // Use the fetched apiUrl here
     if (!response.ok) throw new Error('Network response was not ok');
 
     allRegions = await response.json(); // Store fetched regions in the global variable
     filteredRegions = [...allRegions]; // Initialize filtered regions to all regions initially
 
-    // Display the first page of regions
+    // Display the first page of regions and hide the loader once the table is updated
     displayRegions(filteredRegions.slice(0, entriesPerPage)); // Display only the first 10 entries
   } catch (error) {
     console.error('There was a problem fetching the regions data:', error);
-  } finally {
-    hideLoader(); // Hide the loader when done
   }
 }
 
@@ -86,6 +82,9 @@ function displayRegions(regions) {
     // Append the row to the table body
     tableBody.appendChild(row);
   });
+
+  // Hide the loader after the regions are displayed
+  hideLoader();
 }
 
 // Function to filter regions based on search input
@@ -104,5 +103,8 @@ function filterRegions() {
 // Add event listener to the search input
 document.getElementById('searchChapterInput').addEventListener('input', filterRegions);
 
-// Call fetchApiUrl on page load to get the API URL first, then fetch regions
-window.onload = fetchApiUrl;
+window.addEventListener('DOMContentLoaded', async () => {
+  showLoader(); // Show loader immediately on page load
+  await fetchApiUrl(); // Fetch API URL first
+  await fetchRegions(); // Then fetch regions after apiUrl is fetched
+});

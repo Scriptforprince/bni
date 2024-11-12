@@ -1,6 +1,26 @@
+
+function showLoader() {
+  
+  document.getElementById('loader').style.display = 'flex'; // Show loader
+
+}
+
+// Function to hide the loader
+function hideLoader() {
+  document.getElementById('loader').style.display = 'none'; // Hide loader
+}
 document.addEventListener("DOMContentLoaded", async () => {
+
+    
+    const loader = document.getElementById('loader');  // Make sure you have a loader element in your HTML
+
+    // Show the loader when starting the data fetch process
+    loader.style.display = 'flex';
+
+
     try {
         // Fetch data from all necessary endpoints
+        showLoader()
         const [ordersResponse, transactionsResponse, chaptersResponse, paymentGatewayResponse, universalLinksResponse] = await Promise.all([
             fetch("https://bni-data-backend.onrender.com/api/allOrders"),
             fetch("https://bni-data-backend.onrender.com/api/allTransactions"),
@@ -121,7 +141,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         document.querySelector(".count-up[data-count='385']").textContent = `₹ ${totalTransactionAmount.toLocaleString("en-IN")}`;
         document.querySelectorAll(".count-up")[1].textContent = `₹ ${settledPayments.toLocaleString("en-IN")}`;
         document.querySelectorAll(".count-up")[2].textContent = `₹ ${pendingPayments.toLocaleString("en-IN")}`;
+hideLoader()
     } catch (error) {
+        hideLoader()
         console.error("Error loading transactions:", error);
+    } finally {
+        hideLoader()
+        // Hide the loader once all data is processed and inserted into the table
+        loader.style.display = 'none';
     }
 });
