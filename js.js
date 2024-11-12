@@ -1,26 +1,6 @@
-
-function showLoader() {
-  
-  document.getElementById('loader').style.display = 'flex'; // Show loader
-
-}
-
-// Function to hide the loader
-function hideLoader() {
-  document.getElementById('loader').style.display = 'none'; // Hide loader
-}
 document.addEventListener("DOMContentLoaded", async () => {
-
-    
-    const loader = document.getElementById('loader');  // Make sure you have a loader element in your HTML
-
-    // Show the loader when starting the data fetch process
-    loader.style.display = 'flex';
-
-
     try {
         // Fetch data from all necessary endpoints
-        showLoader()
         const [ordersResponse, transactionsResponse, chaptersResponse, paymentGatewayResponse, universalLinksResponse] = await Promise.all([
             fetch("https://bni-data-backend.onrender.com/api/allOrders"),
             fetch("https://bni-data-backend.onrender.com/api/allTransactions"),
@@ -131,31 +111,12 @@ document.addEventListener("DOMContentLoaded", async () => {
                 <td><span class="badge ${transaction.payment_status === 'SUCCESS' ? 'bg-success' : 'bg-danger'}">${transaction.payment_status.toLowerCase()}</span></td>
                 <td><b><em>${gatewayName}</em></b></td>
                 <td><em>${universalLinkName}</em></td>
-                <td class="irn"><em>Not Applicable</em></td>
-                <td class="qrcode"><em>Not Applicable</em></td>
+                <td><em>Not Applicable</em></td>
+                <td><em>Not Applicable</em></td>
                 <td>${invoiceButton}</td>
             `;
 
             tableBody.appendChild(row);
-
-            // Fetch IRN and QR code details for each order from the einvoice table
-            if (transaction.payment_status === 'SUCCESS') {
-                fetch(`https://bni-data-backend.onrender.com/api/einvoice/${order.order_id}`)
-                    .then(response => response.json())
-                    .then(einvoiceData => {
-                        const irnCell = row.querySelector(".irn");
-                        const qrcodeCell = row.querySelector(".qrcode");
-                        irnCell.innerHTML = einvoiceData.irn || "<em>Not Applicable</em>";
-                        qrcodeCell.innerHTML = einvoiceData.qrcode 
-                            ? `<img src="${einvoiceData.qrcode}" alt="QR Code" width="30" height="30">`
-                            : "<em>Not Applicable</em>";
-                    })
-                    .catch(() => {
-                        row.querySelector(".irn").innerHTML = "<em>Error Loading IRN</em>";
-                        row.querySelector(".qrcode").innerHTML = "<em>Error Loading QR Code</em>";
-                    });
-            }
-
         });
 
         // Display the totals
@@ -165,89 +126,84 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         document.addEventListener("click", (event) => {
             if (event.target.classList.contains("generate-invoice")) {
-              event.preventDefault();
-          
-              // Get the order and transaction details, as in your original code
-              const orderId = event.target.getAttribute("data-order-id");
-              const order = orders.find(o => o.order_id === orderId);
-              const transaction = transactions.find(t => t.order_id === orderId);
-              const chapterName = chapterMap.get(order?.chapter_id) || "N/A";
-              const gatewayName = paymentGatewayMap.get(order?.payment_gateway_id) || "Unknown";
-              const universalLinkName = universalLinkMap.get(order?.universal_link_id) || "Not Applicable";
-          
-              // SweetAlert for confirmation, as in your original code
-              Swal.fire({
-                title: 'Are you sure?',
-                text: `You are about to generate IRN and QR code for Order ID: ${orderId} and Transaction ID: ${transaction.cf_payment_id}.`,
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Yes, Generate!',
-                cancelButtonText: 'No, Cancel'
-              }).then((result) => {
-                if (result.isConfirmed) {
-                  Swal.fire({
-                    title: 'Please check the details',
-                    html: `
-                      <strong>Order ID:</strong> ${orderId}<br>
-                      <strong>Transaction ID:</strong> ${transaction.cf_payment_id}<br>
-                      <strong>Chapter Name:</strong> ${chapterName}<br>
-                      <strong>Payment Gateway:</strong> ${gatewayName}<br>
-                      <strong>Universal Link:</strong> ${universalLinkName}<br>
-                      <strong>Amount:</strong> ₹ ${transaction.payment_amount}
-                    `,
-                    icon: 'info',
+                event.preventDefault();
+        
+                // Get the order ID from the data attribute
+                const orderId = event.target.getAttribute("data-order-id");
+        
+                // Find the corresponding order and transaction details
+                const order = orders.find(o => o.order_id === orderId);
+                const transaction = transactions.find(t => t.order_id === orderId);
+                const chapterName = chapterMap.get(order?.chapter_id) || "N/A";
+                const gatewayName = paymentGatewayMap.get(order?.payment_gateway_id) || "Unknown";
+                const universalLinkName = universalLinkMap.get(order?.universal_link_id) || "Not Applicable";
+        
+                // Log the details to the console for confirmation
+                console.log("Order Details:", order);
+                console.log("Transaction Details:", transaction);
+                console.log("Chapter Name:", chapterName);
+                console.log("Payment Gateway Name:", gatewayName);
+                console.log("Universal Link Name:", universalLinkName);
+        
+                // Show the SweetAlert asking for the final confirmation
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: `You are about to generate IRN and QR code for Order ID: ${orderId} and Transaction ID: ${transaction.cf_payment_id}.`,
+                    icon: 'warning',
                     showCancelButton: true,
-                    confirmButtonText: 'Confirm and Generate',
-                    cancelButtonText: 'Cancel'
-                  }).then(async (secondResult) => {
-                    if (secondResult.isConfirmed) {
-                      const invoiceData = {
-                        orderId: order,
-                        transactionId: transaction,
-                        amount: transaction.payment_amount,
-                        chapterName: chapterName,
-                        gatewayName: gatewayName,
-                        universalLinkName: universalLinkName,
-                      };
-          
-                      try {
-                        const backendResponse = await fetch("http://localhost:5000/einvoice/generate-irn", {
-                          method: "POST",
-                          headers: {
-                            "Content-Type": "application/json",
-                          },
-                          body: JSON.stringify(invoiceData),
+                    confirmButtonText: 'Yes, Generate!',
+                    cancelButtonText: 'No, Cancel'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Show second confirmation with all the details before generating IRN
+                        Swal.fire({
+                            title: 'Please check the details',
+                            html: `
+                                <strong>Order ID:</strong> ${orderId}<br>
+                                <strong>Transaction ID:</strong> ${transaction.cf_payment_id}<br>
+                                <strong>Chapter Name:</strong> ${chapterName}<br>
+                                <strong>Payment Gateway:</strong> ${gatewayName}<br>
+                                <strong>Universal Link:</strong> ${universalLinkName}<br>
+                                <strong>Amount:</strong> ₹ ${transaction.payment_amount}
+                            `,
+                            icon: 'info',
+                            showCancelButton: true,
+                            confirmButtonText: 'Confirm and Generate',
+                            cancelButtonText: 'Cancel'
+                        }).then(async (secondResult) => {
+                            if (secondResult.isConfirmed) {
+                                // Prepare data to send to backend
+                                const invoiceData = {
+                                    orderId: orderId,
+                                    transactionId: transaction.cf_payment_id,
+                                    amount: transaction.payment_amount,
+                                    chapterName: chapterName,
+                                    gatewayName: gatewayName,
+                                    universalLinkName: universalLinkName,
+                                };
+
+                                // Send data to backend to generate IRN
+                                const backendResponse = await fetch("http://localhost:5000/einvoice/generate-irn", {
+                                    method: "POST",
+                                    headers: {
+                                        "Content-Type": "application/json",
+                                    },
+                                    body: JSON.stringify(invoiceData),
+                                });
+
+                                if (backendResponse.ok) {
+                                    // Handle success response from backend
+                                    Swal.fire("Success", "IRN and QR code generated successfully!", "success");
+                                } else {
+                                    // Handle failure response from backend
+                                    Swal.fire("Error", "Failed to generate IRN and QR code. Please try again later.", "error");
+                                }
+                            }
                         });
-          
-                        const responseData = await backendResponse.json();
-                        if (backendResponse.ok) {
-                          // Success response handling
-                          Swal.fire("Success", responseData.message, "success");
-
-                          // Fetch IRN and QR code details after successful generation
-                          const einvoiceResponse = await fetch(`https://bni-data-backend.onrender.com/api/einvoice/${orderId}`);
-                                const einvoiceData = await einvoiceResponse.json();
-
-                                const transactionRow = event.target.closest("tr");
-                                transactionRow.querySelector(".irn").innerHTML = einvoiceData.irn || "<em>Not Applicable</em>";
-                                transactionRow.querySelector(".qrcode").innerHTML = einvoiceData.qrcode
-                                    ? `<img src="${einvoiceData.qrcode}" alt="QR Code" width="30" height="30">`
-                                    : "<em>Not Applicable</em>";
-                        } else {
-                          // Error response handling
-                          Swal.fire("Error", responseData.message, "error");
-                        }
-                      } catch (error) {
-                        // Handle any fetch errors
-                        Swal.fire("Error", "There was an issue connecting to the server. Please try again later.", "error");
-                      }
                     }
-                  });
-                }
-              });
+                });
             }
-          });
-          
+        });
     } catch (error) {
         console.error("Error loading data:", error);
     }
