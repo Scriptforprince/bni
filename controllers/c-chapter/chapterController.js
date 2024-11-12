@@ -5,3 +5,8 @@ exports.manageChapter = (req, res) => {
 exports.addChapter = (req, res) => {
     res.render('m-chapter/add-chapter', { title: 'addChapter' });
 };
+
+exports.editChapter = (req, res) => {
+    res.render('m-chapter/edit-chapter', { title: 'editChapter' });
+};
+

@@ -51,11 +51,20 @@ function displayChapters(chapters) {
             <td>${chapter.chapter_meeting_day}</td>
             <td>${chapter.chapter_type}</td>
             <td><b>${chapter.chapter_kitty_fees}</b></td>
+        
             <td>
                 <span class="badge bg-${chapter.chapter_status === 'running' ? 'success' : 'danger'}">
                     ${chapter.chapter_status}
                 </span>
             </td>
+                     <td style="border: 1px solid grey">
+        <span class="badge bg-warning" style="cursor:pointer">
+           <a href="/c/edit-chapter/?chapter_id=${chapter.chapter_id}">Edit</a>
+        </span>
+        <span class="badge bg-danger "  style="cursor:pointer">
+         <a href="/c/view-chapter/?chapter_id=${chapter.chapter_id}">Delete</a>
+        </span>
+      </td>
         `;
         tableBody.appendChild(row);
     });

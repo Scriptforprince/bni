@@ -100,6 +100,14 @@ function displayMembers(members) {
           ${member.member_status}
         </span>
       </td>
+       <td style="border: 1px solid grey">
+        <span class="badge bg-warning" style="cursor:pointer">
+           <a href="/m/edit-member/?member_id=${member.member_id}">Edit</a>
+        </span>
+        <span class="badge bg-danger"  style="cursor:pointer">
+         <a href="/m/view-member/?member_id=${member.member_id}">Delete</a>
+        </span>
+      </td>
     `;
     
     // Append the row to the table body
@@ -230,4 +238,19 @@ function displayChapters(chapters) {
   });
 }
 // Call fetchMembers on page load
+window.addEventListener('DOMContentLoaded', async () => {
+  showLoader(); // Show loader immediately on page load
+
+  const memberId = getMemberIdFromUrl(); // Get the member ID from the URL
+  console.log('Member ID:', memberId); // Check if the memberId is being extracted correctly
+
+  try {
+    await fetchMembers(); // Wait for data to be fetched
+  } catch (error) {
+    console.error("Failed to fetch member data:", error);
+  } finally {
+    hideLoader(); // Hide loader after data is fetched, whether successful or not
+  }
+});
+
 window.onload = fetchMembers;
