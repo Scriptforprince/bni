@@ -102,10 +102,10 @@ function displayMembers(members) {
       </td>
        <td style="border: 1px solid grey">
         <span class="badge bg-warning text-light" style="cursor:pointer; color:white;">
-           <a href="/m/edit-member/?member_id=${member.member_id} style="cursor:pointer; color:white;"">Edit</a>
+           <a href="/m/edit-member/?member_id=${member.member_id} "style="cursor:pointer; color:white;">Edit</a>
         </span>
         <span class="badge bg-danger text-light"  style="cursor:pointer; color:white;">
-         <a href="/m/view-member/?member_id=${member.member_id} style="cursor:pointer; color:white;"">Delete</a>
+         <a href="/m/view-member/?member_id=${member.member_id}" style="cursor:pointer; color:white;">Delete</a>
         </span>
       </td>
     `;

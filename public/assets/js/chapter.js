@@ -59,10 +59,10 @@ function displayChapters(chapters) {
             </td>
                      <td style="border: 1px solid grey">
         <span class="badge bg-warning text-light" style="cursor:pointer; color:white;">
-           <a href="/c/edit-chapter/?chapter_id=${chapter.chapter_id}">Edit</a>
+           <a href="/c/edit-chapter/?chapter_id=${chapter.chapter_id}" style="cursor:pointer; color:white;">Edit</a>
         </span>
         <span class="badge bg-danger text-light "  style="cursor:pointer; color:white;">
-         <a href="/c/view-chapter/?chapter_id=${chapter.chapter_id}">Delete</a>
+         <a href="/c/view-chapter/?chapter_id=${chapter.chapter_id}" style="cursor:pointer; color:white;">Delete</a>
         </span>
       </td>
         `;

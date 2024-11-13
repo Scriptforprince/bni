@@ -79,10 +79,10 @@ function displayRegions(regions) {
       </td>
         <td style="border: 1px solid grey">
         <span class="badge bg-warning text-light" style="cursor:pointer; color:white;">
-           <a href="/r/edit-region/?region_id=${region.region_id} style="cursor:pointer; color:white;"">Edit</a>
+           <a href="/r/edit-region/?region_id=${region.region_id}" style="color:white">Edit</a>
         </span>
         <span class="badge bg-danger text-light"  style="cursor:pointer; color:white;">
-         <a href="/r/view-region/?region_id=${region.region_id} style="cursor:pointer; color:white;"">Delete</a>
+         <a href="/r/view-region/?region_id=${region.region_id}" style="cursor:pointer; color:white;">Delete</a>
         </span>
       </td>
     `;
