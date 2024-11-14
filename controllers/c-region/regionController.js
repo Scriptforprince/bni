@@ -5,3 +5,7 @@ exports.manageRegion = (req, res) => {
 exports.addRegion = (req, res) => {
     res.render('m-region/add-region', { title: 'addRegion' });
 };
+
+exports.editRegion = (req, res) => {
+    res.render('m-region/edit-region', { title: 'editRegion' });
+};
