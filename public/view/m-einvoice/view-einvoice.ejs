@@ -1,5 +1,109 @@
-<%- include('../partials/header') %> 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="images/favicon.png" rel="icon">
+<title>General Invoice - Koice</title>
+<meta name="author" content="harnishdesign.net">
 
-<%- include('../partials/sidebar') %>
+<!-- Web Fonts
+======================= -->
+<link rel='stylesheet' href='../../../css-2?family=Poppins:100,200,300,400,500,600,700,800,900' type='text/css'>
 
-<%- include('../partials/footer') %> 
+<!-- Stylesheet
+======================= -->
+<link rel="stylesheet" type="text/css" href="../../assets/einvoice/vendor/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="../../assets/einvoice/vendor/font-awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="../../assets/einvoice/css/stylesheet.css">
+</head>
+<body>
+<!-- Container -->
+<div class="container-fluid invoice-container">
+  <!-- Header -->
+  <header>
+	  <div class="row align-items-center gy-3">
+		<div class="col-sm-7 text-center text-sm-start">
+		  <img id="logo" src="https://bni-xq0f.onrender.com/assets/images/bni-new-logo.jpg" title="Koice" alt="Koice" width="250px">
+		</div>
+		<div class="col-sm-5 text-center text-sm-end">
+            <img id="logo" src="../../assets/images/demo-qr-code.png" title="Koice" alt="Koice" width="150px">
+		</div>
+	  </div>
+	  <hr>
+  </header>
+  
+  <!-- Main Content -->
+  <main>
+	  <div class="row">
+		<div class="col-sm-6"><strong>Date:</strong> 11/11/24</div>
+		<div class="col-sm-6 text-sm-end"> <strong>Invoice No:</strong> 16835</div>
+		  
+	  </div>
+	  <hr>
+	  <div class="row">
+		<div class="col-sm-6 text-sm-end order-sm-1"> <strong>Invoice To:</strong>
+		  <address>
+		  Raja Shukla<br>
+		  National Marketing Projects INC<br>
+		  B-27/A, Third Floor, Dwarka Mor, <br>
+Patel Garden Sec-15, Dwarka <br> (Near,
+Dwarka Hospital) Delhi-110078
+		  </address>
+		</div>
+		<div class="col-sm-6 order-sm-0"> <strong>Invoiced by:</strong>
+		  <address>
+            ADI CORPORATE TRAINING<br>
+            Dda Sfs Flat, Flat No 12, Pocket 1, Sector 19, Dwarka New Delhi, Delhi, 110075 India <br>
+           <p> <span><b>IRN:</b></span><i>a8165431fa267d6da3ca0fc55 <br> ea82a9e831d91dabb8533c56d6421affc5b564f</i> </p>
+		  </address>
+		</div>
+	  </div>
+		<div class="table-responsive">
+		<table class="table border mb-0">
+			<thead>
+			  <tr class="bg-light">
+				<td class="col-3"><strong>Service</strong></td>
+                <td class="col-2 text-center"><strong>HSN</strong></td>
+				<td class="col-2 text-center"><strong>Rate</strong></td>
+				<td class="col-2 text-end"><strong>Amount</strong></td>
+			  </tr>
+			</thead>
+			<tbody>
+				<tr>
+				  <td class="col-3">New Memeber Payment</td>
+                  <td class="col-2 text-center">999511</td>
+				  <td class="col-2 text-center">₹41,308</td>
+				  <td class="col-2 text-end">₹41,308</td>
+				</tr>
+
+			</tbody>
+		</table>
+		</div>
+		<div class="table-responsive">
+			<table class="table border border-top-0 mb-0">
+				<tr class="bg-light">
+				  <td class="text-end"><strong>Sub Total:</strong></td>
+				  <td class="col-sm-2 text-end">₹41,308</td>
+				</tr>
+				<tr class="bg-light">
+				  <td class="text-end"><strong>Tax:</strong></td>
+				  <td class="col-sm-2 text-end">₹7,435</td>
+				</tr>
+				<tr class="bg-light">
+				  <td class="text-end"><strong>Total:</strong></td>
+				  <td class="col-sm-2 text-end">₹48,743</td>
+				</tr>
+			</table>
+		</div>
+  </main>
+  <!-- Footer -->
+  <footer class="text-center mt-4">
+  <p class="text-1"><strong>NOTE :</strong> This is computer generated receipt and does not require physical signature.</p>
+  
+  <div class="btn-group btn-group-sm d-print-none"> <a href="javascript:window.print()" class="btn btn-light border text-black-50 shadow-none"><i class="fa fa-print"></i> Print & Download</a> </div>
+  </footer>
+</div>
+</body>
+</html>

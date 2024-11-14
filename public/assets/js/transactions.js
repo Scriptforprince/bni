@@ -157,11 +157,17 @@ document.addEventListener("DOMContentLoaded", async () => {
     
                 // Display the IRN or a message if not available
                 irnCell.innerHTML = einvoiceData.irn || "<em>Not Applicable</em>";
+
+                // Construct the URL with all data as query parameters
+            const einvoiceUrl = new URL('/v/einvoice', window.location.origin);
+            einvoiceUrl.searchParams.append('transaction_id', order.order_id);
+            einvoiceUrl.searchParams.append('irn', einvoiceData.irn || 'Not Applicable');
+            einvoiceUrl.searchParams.append('qrcode', einvoiceData.qrcode || '');
     
                 // Check if both IRN and QR code are available
                 if (einvoiceData.irn && einvoiceData.qrcode) {
                     // Update the Generate E-Invoice button to View E-Invoice with link
-                    btnCell.innerHTML = `<a href="/v/einvoice" class="btn btn-sm btn-link">View E-Invoice</a>`;
+                    btnCell.innerHTML = `<a href="${einvoiceUrl.toString()}" class="btn btn-sm btn-link">View E-Invoice</a>`;
                 }
     
                 // Check if QR code is already stored in localStorage for this order
