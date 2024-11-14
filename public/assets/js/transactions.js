@@ -140,7 +140,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 <td><em>${universalLinkName}</em></td>
                 <td class="irn"><em>Not Applicable</em></td>
                 <td class="qrcode"><em>Not Applicable</em></td>
-                <td>${invoiceButton}</td>
+                <td class="generate-invoice-btn">${invoiceButton}</td>
             `;
 
       tableBody.appendChild(row);
@@ -156,6 +156,17 @@ document.addEventListener("DOMContentLoaded", async () => {
     
                 // Display the IRN or a message if not available
                 irnCell.innerHTML = einvoiceData.irn || "<em>Not Applicable</em>";
+
+                // Check if both IRN and QR code are available
+            if (einvoiceData.irn && einvoiceData.qrcode) {
+              // Update the Generate E-Invoice button to View E-Invoice with link
+              const generateInvoiceButton = row.querySelector(".generate-invoice-btn");
+              generateInvoiceButton.textContent = "View E-Invoice";
+              generateInvoiceButton.setAttribute("href", "/einvoice");
+              generateInvoiceButton.classList.add("view-invoice-btn"); // Add class for styling if needed
+          }
+
+                
     
                 // Check if QR code is already stored in localStorage for this order
                 if (localStorage.getItem(qrCodeKey)) {
@@ -290,6 +301,12 @@ document.addEventListener("DOMContentLoaded", async () => {
                     } else if (einvoiceData.qrcode) {
                       // If QR code is available but not yet stored, show the button
                       transactionRow.querySelector(".qrcode").innerHTML = `<button class="generate-qr-btn">Generate QR Code</button>`;
+
+                      // Update the Generate E-Invoice button to View E-Invoice with link
+    const generateInvoiceButton = transactionRow.querySelector(".generate-invoice-btn");
+    generateInvoiceButton.textContent = "View E-Invoice";
+    generateInvoiceButton.setAttribute("href", "/einvoice");
+    generateInvoiceButton.classList.add("view-invoice-btn"); // Add a class for styling if needed
                   
                       // Add event listener to the button to display loading and then the QR code
                       transactionRow.querySelector(".generate-qr-btn").addEventListener("click", () => {

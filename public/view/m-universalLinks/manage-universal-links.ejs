@@ -1,5 +1,5 @@
       <!-- header -->
-      <%- include('../partials/header') %> 
+      <%- include('../partials/header') %>
       <!-- end header -->
 
       <!-- sidebar -->
@@ -47,15 +47,39 @@
               <div class="card-title">All Universal Links</div>
               <div class="d-flex gap-3 align-items-center flex-wrap">
                 <div class="btn-group">
+                  <div class="dropdown">
+                    <a
+                      href="javascript:void(0);"
+                      class="btn btn-sm btn-light text-muted dropdown-toggle"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="true"
+                    >
+                    <i class="ti ti-sort-descending-2 me-1"></i>
+                      Filter</a
+                    >
+                    <ul
+                      class="dropdown-menu"
+                      role="menu"
+                      data-popper-placement="bottom-end"
+                    >
+                      <li>
+                        <a class="dropdown-item" href="javascript:void(0);"
+                          >This Week</a
+                        >
+                      </li>
+                      <li>
+                        <a class="dropdown-item" href="javascript:void(0);"
+                          >Last Week</a
+                        >
+                      </li>
+                      <li>
+                        <a class="dropdown-item" href="javascript:void(0);"
+                          >This Month</a
+                        >
+                      </li>
+                    </ul>
+                  </div>
 
-                  <button
-                    class="btn btn-outline-light border dropdown-toggle"
-                    type="button"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                    <i class="ti ti-sort-descending-2 me-1"></i> Filter
-                  </button>
                 </div>
                 <div class="custom-form-group flex-grow-1">
                   <input
@@ -72,7 +96,7 @@
                     ><i class="ti ti-search"></i
                   ></a>
                 </div>
-                
+
               </div>
             </div>
             <div class="card-body p-0">
@@ -92,7 +116,7 @@
                     </tr>
                   </thead>
                   <tbody id="chaptersTableBody">
-                 
+
                   </tbody>
                 </table>
               </div>
@@ -123,4 +147,4 @@
 
       <script src="../../assets/js/universalLinks.js"></script>
 
-      <%- include('../partials/footer') %> 
+      <%- include('../partials/footer') %>
