@@ -10,6 +10,7 @@ const dashboardRoutes = require('./r-dashboard/dashboardRoutes');
 const universalRoutes = require('./r-unversalLinks/universalLinksRoutes');
 const transactionRoutes = require('./r-transactions/transactionsRoutes');
 const apiRoutes = require('./r-api/apiRoutes');
+const eInvoiceRoutes = require('./r-eInvoice/eInvoiceRoutes');
 
 // Use all the imported routes
 router.use('/', indexRoutes);
@@ -20,5 +21,6 @@ router.use('/c', chapterRoutes);
 router.use('/u', universalRoutes);
 router.use('/t', transactionRoutes);
 router.use('/a', apiRoutes);
+router.use('/v', eInvoiceRoutes);
 
 module.exports = router;
