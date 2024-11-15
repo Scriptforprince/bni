@@ -1,8 +1,18 @@
 const orderId = new URLSearchParams(window.location.search).get('order_id'); // Get order_id from query params
 let universalLinkName = 'Unknown'; // Default value for universal link name
+// Function to show the loader
+function showLoader() {
+    document.getElementById('loader').style.display = 'flex';
+}
+
+// Function to hide the loader
+function hideLoader() {
+    document.getElementById('loader').style.display = 'none';
+}
 
 // Fetch all orders and display details
 async function fetchAllOrders() {
+    showLoader();
     try {
         const response = await fetch('https://bni-data-backend.onrender.com/api/allOrders');
         if (!response.ok) {
@@ -35,6 +45,7 @@ async function fetchAllOrders() {
 
 // Function to fetch and display member address
 async function fetchMemberAddress(customerId) {
+    showLoader();
     try {
         const response = await fetch('https://bni-data-backend.onrender.com/api/members');
         if (!response.ok) {
@@ -55,6 +66,7 @@ async function fetchMemberAddress(customerId) {
 
 // Function to fetch transactions for a specific order
 async function fetchTransactionsForOrder(orderId) {
+    showLoader();
     try {
         const response = await fetch('https://bni-data-backend.onrender.com/api/allTransactions');
         if (!response.ok) {
@@ -71,6 +83,7 @@ async function fetchTransactionsForOrder(orderId) {
 
 // Function to fetch the universal link name
 async function fetchUniversalLinkName(universalLinkId) {
+    showLoader();
     try {
         const response = await fetch('https://bni-data-backend.onrender.com/api/universalLinks');
         if (!response.ok) {

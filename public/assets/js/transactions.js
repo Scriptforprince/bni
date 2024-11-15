@@ -1,4 +1,14 @@
 document.addEventListener("DOMContentLoaded", async () => {
+  // Function to show the loader
+function showLoader() {
+  document.getElementById('loader').style.display = 'flex';
+}
+
+// Function to hide the loader
+function hideLoader() {
+  document.getElementById('loader').style.display = 'none';
+}
+showLoader();
   try {
     // Fetch data from all necessary endpoints
     const [
@@ -147,6 +157,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       // Fetch IRN and QR code details for each order from the einvoice table
       if (transaction.payment_status === 'SUCCESS') {
+        showLoader();
         fetch(`https://bni-data-backend.onrender.com/api/einvoice/${order.order_id}`)
             .then(response => response.json())
             .then(einvoiceData => {
@@ -275,6 +286,25 @@ document.addEventListener("DOMContentLoaded", async () => {
                   universalLinkName: universalLinkName,
                 };
 
+                // Show the "Fetching IRN and QR code" loading SweetAlert
+          let timerInterval;
+          const loadingSwal = Swal.fire({
+            title: "Fetching IRN and QR code",
+            html: "Please wait while we fetch the IRN and QR code...",
+            timer: 2000,
+            timerProgressBar: true,
+            didOpen: () => {
+              Swal.showLoading();
+              const timer = Swal.getPopup().querySelector("b");
+              timerInterval = setInterval(() => {
+                timer.textContent = `${Swal.getTimerLeft()}`;
+              }, 4000);
+            },
+            willClose: () => {
+              clearInterval(timerInterval);
+            }
+          });
+
                 try {
                   const backendResponse = await fetch(
                     "http://localhost:5000/einvoice/generate-irn",
@@ -364,6 +394,33 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   } catch (error) {
     console.error("Error loading data:", error);
-  }
+  } finally {
+    hideLoader();
+}
 });
 
+
+
+// Define and inject CSS styles in JavaScript
+const style = document.createElement('style');
+style.innerHTML = `
+  .generate-qr-btn {
+    color: transparent;
+    cursor: pointer;
+    text-align: center;
+    background: linear-gradient(90deg, red, blue, red);
+    background-size: 200% 100%;
+    background-clip: text;
+    -webkit-background-clip: text; /* for Safari */
+    animation: gradient-move 1s infinite linear;
+  }
+
+  @keyframes gradient-move {
+    0% { background-position: 0% 0%; }
+    100% { background-position: 100% 0%; }
+  }
+
+`;
+
+// Append the style to the head of the document
+document.head.appendChild(style);
