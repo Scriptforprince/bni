@@ -17,6 +17,11 @@
 <link rel="stylesheet" type="text/css" href="../../assets/einvoice/vendor/bootstrap/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="../../assets/einvoice/vendor/font-awesome/css/all.min.css">
 <link rel="stylesheet" type="text/css" href="../../assets/einvoice/css/stylesheet.css">
+<style>
+	.lin {
+		border: 1px solid grey;
+	}
+</style>
 </head>
 <body>
 <!-- Container -->
@@ -31,15 +36,15 @@
 		  <h2 style="font-family: Arial, Helvetica, sans-serif; font-weight: 500;">Tax Invoice</h2>
 		</div>
 		<div class="col-sm-4 text-center text-sm-end">
-            <img id="logo" src="../../assets/images/demo-qr-code.png" title="Koice" alt="Koice" width="150px">
+            <img id="logo qr_code" class="qr_code" src="../../assets/images/demo-qr-code.png" title="Koice" alt="Koice" width="150px">
 		</div>
 	  </div>
 	  <div class="row align-items-center gy-3">
 		<div class="col-sm-4 text-center text-sm-start">
-			<span><span><b>IRN :</b></span> a8165431fa267d6da3ca0fc55
-			ea82a9e831d91dabb8533c56d6421affc5b564f</span> <br>
-			<span><span><b>Ack No. :</b></span> 172416019112450</span> <br>
-			<span><span><b>Ack Date :</b> 11-Nov-2024</span></span>
+			<span><b>IRN :</b></span> <span class="irn_number">a8165431fa267d6da3ca0fc55
+				ea82a9e831d91dabb8533c56d6421affc5b564f</span> <br>
+			<span><b>Ack No. :</b></span> <span class="ack_no">172416019112450</span> <br>
+			<span><b>Ack Date :</b></span> <span class="ack_date">11-Nov-2024</span> 
 		  </div>
 	  </div>
 	  <hr>
@@ -48,61 +53,59 @@
   <!-- Main Content -->
   <main>
 	  <div class="row">
-		<div class="col-sm-6"><strong>Dated:</strong> 14/11/24</div>
-		<div class="col-sm-6 text-sm-end"> <strong>Invoice No:</strong> 16835</div>
+		<div class="col-sm-6"><strong>Dated:</strong> <span class="invoice_date">14/11/24</span></div>
+		<div class="col-sm-6 text-sm-end"> <strong>Invoice No:</strong> IDW-<span class="invoice_number">16835</span> </div>
 		  
 	  </div>
 	  <hr>
 	  <div class="row">
-		<div class="col-sm-4 text-sm-end order-sm-1"> <strong>Consignee (Ship to):</strong>
+		<div class="col-sm-4 text-sm-end order-sm-1"> <i>Consignee (Ship to):</i> 
 		  <address>
-		  Raja Shukla<br>
-		  National Marketing Projects INC<br>
-		  B-27/A, Third Floor, Dwarka Mor, <br>
-Patel Garden Sec-15, Dwarka <br> (Near,
-Dwarka Hospital) Delhi-110078
+		<span class="ship_to_company"><strong>National Marketing Projects</strong></span>  <br>
+		<span class="ship_to_address">B-27/A, Third Floor, Dwarka Mor, <br>
+			Patel Garden Sec-15, Dwarka</span>   <br>
+<span>GSTIN/UIN: <span class="ship_to_gst">07AHIPK0486D1ZH</span></span>
+<span>State Name : <span class="ship_to_state">Delhi, Code : 07</span> </span>
 		  </address>
 		</div>
 		<div class="col-sm-4 order-sm-0"> <strong>ADI CORPORATE TRAINING</strong>
 		  <address>
             Pocket 1, Flat No. 09, Sector 19
-Dwarka, <br> New Delhi Delhi, 110075. <br>
+Dwarka, New Delhi Delhi, 110075. <br>
 <span><b>GSTIN/UIN:</b></span> 07AHIPK0486D1ZH <br>
 <span><b>State Name :</b></span> Delhi, Code : 07
 		  </address>
 		</div>
-		<div class="col-sm-4 text-sm-end order-sm-1"> <strong>Buyer (Bill to):</strong>
+		<div class="col-sm-4 text-sm-end order-sm-1"> <i>Buyer (Bill to):</i> 
 			<address>
-			Raja Shukla<br>
-			National Marketing Projects INC<br>
-			B-27/A, Third Floor, Dwarka Mor, <br>
-  Patel Garden Sec-15, Dwarka <br> (Near,
-  Dwarka Hospital) Delhi-110078
-			</address>
+				<span class="bill_to_company"><strong>National Marketing Projects</strong></span>  <br>
+				<span class="bill_to_address">B-27/A, Third Floor, Dwarka Mor, <br>
+					Patel Garden Sec-15, Dwarka</span>   <br>
+		<span>GSTIN/UIN: <span class="bill_to_gst">07AHIPK0486D1ZH</span></span>
+		<span>State Name : <span class="bill_to_state">Delhi, Code : 07</span> </span>
+				  </address>
 		  </div>
 	  </div>
 		<div class="table-responsive">
 		<table class="table border mb-0" style="border: 1px solid black;">
 			<thead style="border: 1px solid grey;">
 			  <tr class="bg-light">
-				<td class="col-2 text-center"><strong>SI No.</strong></td>
-				<td class="col-3"><strong>Particulars</strong></td>
-                <td class="col-2 text-center"><strong>HSN/SAC</strong></td>
-				<td class="col-2 text-center"><strong>Quantity</strong></td>
-				<td class="col-2 text-center"><strong>Rate</strong></td>
-				<td class="col-2 text-center"><strong>Per</strong></td>
-				<td class="col-2 text-end"><strong>Amount</strong></td>
+				<td class="col-2 text-center lin"><strong>SI No.</strong></td>
+				<td class="col-3 lin"><strong>Particulars</strong></td>
+                <td class="col-2 text-center lin"><strong>HSN/SAC</strong></td>
+				<td class="col-2 text-center lin"><strong>Quantity</strong></td>
+				<td class="col-2 text-center lin"><strong>Rate</strong></td>
+				<td class="col-2 text-end lin"><strong>Amount</strong></td>
 			  </tr>
 			</thead>
 			<tbody style="border: 1px solid grey;">
 				<tr>
-					<td class="col-2 text-center">1</td>
-				  <td class="col-3">New Memeber Payment</td>
-                  <td class="col-2 text-center">999511</td>
-				  <td class="col-2 text-center">₹41,308</td>
-				  <td class="col-2 text-end">₹41,308</td>
-				  <td class="col-2 text-end">₹41,308</td>
-				  <td class="col-2 text-end">₹41,308</td>
+					<td class="col-1 text-center lin">1</td>
+				  <td class="col-3 lin">New Memeber Payment</td>
+                  <td class="col-2 text-center lin">999511</td>
+				  <td class="col-2 text-center lin">-</td>
+				  <td class="col-2 text-end lin">₹41,308 <br><b>(18%)</b></td>
+				  <td class="col-2 text-end lin">₹41,308</td>
 				</tr>
 
 			</tbody>
@@ -111,22 +114,33 @@ Dwarka, <br> New Delhi Delhi, 110075. <br>
 		<div class="table-responsive">
 			<table class="table border border-top-0 mb-0">
 				<tr class="bg-light">
-				  <td class="text-end"><strong>Sub Total:</strong></td>
-				  <td class="col-sm-2 text-end">₹41,308</td>
+				  <td class="text-end"><strong>Total Taxable Value :</strong></td>
+				  <td class="col-sm-2 text-end sub_total"><b>₹41,308</b></td>
 				</tr>
 				<tr class="bg-light">
-				  <td class="text-end"><strong>Tax:</strong></td>
-				  <td class="col-sm-2 text-end">₹7,435</td>
+				  <td class="text-end"><strong>Add IGST (18%) :</strong></td>
+				  <td class="col-sm-2 text-end tax">₹7,435</td>
 				</tr>
 				<tr class="bg-light">
-				  <td class="text-end"><strong>Total:</strong></td>
-				  <td class="col-sm-2 text-end">₹48,743</td>
+					<td class="text-end"><strong>Add CGST (9%) :</strong></td>
+					<td class="col-sm-2 text-end tax">₹7,435</td>
+				  </tr>
+				  <tr class="bg-light">
+					<td class="text-end"><strong>Add SGST (9%) :</strong></td>
+					<td class="col-sm-2 text-end tax">₹7,435</td>
+				  </tr>
+				<tr class="bg-light">
+				  <td class="text-end"><strong>Grand Total :</strong></td>
+				  <td class="col-sm-2 text-end grand_total"><b>₹48,743</b></td>
 				</tr>
 			</table>
+			<span>Amount Chargeable (in words):</span>
+			<p class="text-1 amount_in_words"><strong><em>INR Forty One Thousand Six Hundred Sixty Four and Sixty Two paise Only</strong></em></p>
 		</div>
   </main>
   <!-- Footer -->
   <footer class="text-center mt-4">
+	
   <p class="text-1"><strong>NOTE :</strong> This is computer generated receipt and does not require physical signature.</p>
   
   <div class="btn-group btn-group-sm d-print-none"> <a href="javascript:window.print()" class="btn btn-light border text-black-50 shadow-none"><i class="fa fa-print"></i> Print & Download</a> </div>
