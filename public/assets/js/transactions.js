@@ -165,6 +165,21 @@ showLoader();
                 const qrcodeCell = row.querySelector(".qrcode");
                 const btnCell = row.querySelector(".generate-invoice-btn");
                 const qrCodeKey = `qrCode_${order.order_id}`; // Unique key for each order
+                const orderId = order.order_id;
+                const orderr = orders.find((o) => o.order_id === orderId);
+                const transaction = transactions.find((t) => t.order_id === orderId);
+                const chapterName = chapterMap.get(order?.chapter_id) || "N/A";
+                const gatewayName = paymentGatewayMap.get(order?.payment_gateway_id) || "Unknown";
+                const universalLinkName = universalLinkMap.get(order?.universal_link_id) || "Not Applicable";
+
+                const invoiceData = {
+                  orderId: orderr,
+                  transactionId: transaction,
+                  amount: transaction.payment_amount,
+                  chapterName: chapterName,
+                  gatewayName: gatewayName,
+                  universalLinkName: universalLinkName,
+                };
     
                 // Display the IRN or a message if not available
                 irnCell.innerHTML = einvoiceData.irn || "<em>Not Applicable</em>";
@@ -172,7 +187,9 @@ showLoader();
                 // Check if both IRN and QR code are available
                 if (einvoiceData.irn && einvoiceData.qrcode) {
                     // Update the Generate E-Invoice button to View E-Invoice with link
-                    btnCell.innerHTML = `<a href="/v/einvoice?einvoiceData=${einvoiceData}" class="btn btn-sm btn-link">View E-Invoice</a>`;
+                    const encodedInvoiceData = encodeURIComponent(JSON.stringify(invoiceData));
+                    const encodedEinvoiceData = encodeURIComponent(JSON.stringify(einvoiceData));
+                    btnCell.innerHTML = `<a href="/v/einvoice?invoiceData=${encodedInvoiceData}&einvoiceData=${encodedEinvoiceData}" class="btn btn-sm btn-link">View E-Invoice</a>`;
                 }
     
                 // Check if QR code is already stored in localStorage for this order
