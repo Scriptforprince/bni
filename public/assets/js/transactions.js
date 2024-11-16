@@ -169,16 +169,10 @@ showLoader();
                 // Display the IRN or a message if not available
                 irnCell.innerHTML = einvoiceData.irn || "<em>Not Applicable</em>";
 
-                // Construct the URL with all data as query parameters
-            const einvoiceUrl = new URL('/v/einvoice', window.location.origin);
-            einvoiceUrl.searchParams.append('transaction_id', order.order_id);
-            einvoiceUrl.searchParams.append('irn', einvoiceData.irn || 'Not Applicable');
-            einvoiceUrl.searchParams.append('qrcode', einvoiceData.qrcode || '');
-    
                 // Check if both IRN and QR code are available
                 if (einvoiceData.irn && einvoiceData.qrcode) {
                     // Update the Generate E-Invoice button to View E-Invoice with link
-                    btnCell.innerHTML = `<a href="${einvoiceUrl.toString()}" class="btn btn-sm btn-link">View E-Invoice</a>`;
+                    btnCell.innerHTML = `<a href="/v/einvoice?einvoiceData=${einvoiceData}" class="btn btn-sm btn-link">View E-Invoice</a>`;
                 }
     
                 // Check if QR code is already stored in localStorage for this order
@@ -341,8 +335,10 @@ showLoader();
                       transactionRow.querySelector(".qrcode").innerHTML = `<img src="${localStorage.getItem(qrCodeKey)}" alt="QR Code" width="30" height="30">`;
                     } else if (einvoiceData.qrcode) {
                       // If QR code is available but not yet stored, show the button
+                      const encodedInvoiceData = encodeURIComponent(JSON.stringify(invoiceData));
+                      const encodedEinvoiceData = encodeURIComponent(JSON.stringify(einvoiceData));
                       transactionRow.querySelector(".qrcode").innerHTML = `<span class="generate-qr-btn">Generate QR Code</span>`;
-                      transactionRow.querySelector(".generate-invoice-btn").innerHTML = `<a href="/v/einvoice" class="btn btn-sm btn-link">View E-Invoice</a>`;
+                      transactionRow.querySelector(".generate-invoice-btn").innerHTML = `<a href="/v/einvoice?invoiceData=${encodedInvoiceData}&einvoiceData=${encodedEinvoiceData}" class="btn btn-sm btn-link">View E-Invoice</a>`;
                   
                       // Add event listener to the button to display loading and then the QR code
                       transactionRow.querySelector(".generate-qr-btn").addEventListener("click", () => {
