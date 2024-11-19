@@ -313,11 +313,8 @@ const filteredTransactions = transactions.filter((transaction) => {
       const orderPaymentMethodStatus = transaction.payment_group; 
       const filterPaymentMethodStatus = filters.payment_method;
 
-      console.log(`Order ${order.order_id} - Payment Type Method: ${orderPaymentMethodStatus}, Filter Payment Type Method: ${filterPaymentMethodStatus}`);
-
       // Compare as strings (or numbers, depending on the data type)
       if (orderPaymentMethodStatus !== filterPaymentMethodStatus) {
-        console.log(`Payment Type Method is filter failed for order ${order.order_id} with payment type method ${filterPaymentMethodStatus}`);
         isValid = false;
       }
     } else {
@@ -325,13 +322,27 @@ const filteredTransactions = transactions.filter((transaction) => {
     }
   }
 
+  // Assuming `filters.month` is the selected month filter (e.g., "4" for April)
+if (filters.month && transaction.order_id) {
+  const order = orders.find(order => order.order_id === transaction.order_id);
+
+  if (order) {
+    // Ensure both the order's created_at and the filter are in comparable formats
+    const orderDate = new Date(order.created_at);  // Convert the created_at string to a Date object
+    const orderMonth = orderDate.getMonth() + 1; // Get the month (1-12, because we add 1 to zero-indexed value)
+    const filterMonth = parseInt(filters.month, 10); // Convert the filter to an integer
+
+    // Compare the months (both are now 1-12 values)
+    if (orderMonth !== filterMonth) {
+      isValid = false;
+    }
+  } else {
+    console.log(`No matching order found for transaction ${transaction.order_id}`);
+  }
+}
 
   return isValid;
 });
-
-console.log(`Filtered Transactions: ${filteredTransactions.length}`);
-
-    
 
     // Map chapter names by chapter_id for quick access
     const chapterMap = new Map();
