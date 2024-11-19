@@ -172,6 +172,23 @@ const populatePaymentMethodDropdown = () => {
 // Call the function to populate payment methods
 populatePaymentMethodDropdown();
 
+// Function to check if there are any filters in the query parameters
+function checkFiltersAndToggleResetButton() {
+  const urlParams = new URLSearchParams(window.location.search);
+
+  // Check if any query parameters exist (indicating filters are applied)
+  if (urlParams.toString()) {
+    // Show the Reset Filter button if filters are applied
+    document.getElementById("reset-filters-btn").style.display = "inline-block";
+  } else {
+    // Hide the Reset Filter button if no filters are applied
+    document.getElementById("reset-filters-btn").style.display = "none";
+  }
+}
+
+// Call this function on page load to check the filters
+window.addEventListener("load", checkFiltersAndToggleResetButton);
+
 // Attach event listener to a "Filter" button or trigger
 document.getElementById("apply-filters-btn").addEventListener("click", () => {
   // Capture selected values
@@ -199,6 +216,19 @@ document.getElementById("apply-filters-btn").addEventListener("click", () => {
   const filterUrl = `/t/all-transactions?${queryParams.toString()}`;
   window.location.href = filterUrl;
 });
+
+// Attach event listener to "Reset Filter" button to clear query params
+document.getElementById("reset-filters-btn").addEventListener("click", () => {
+  // Clear all query parameters from the URL
+  const url = new URL(window.location);
+  url.search = ''; // Remove query parameters
+
+  // Reload the page without filters (cleared query string)
+  window.location.href = url.toString();
+});
+
+// Check for filters on page load
+checkFiltersAndToggleResetButton();
 
 const urlParams = new URLSearchParams(window.location.search);
 const filters = {
