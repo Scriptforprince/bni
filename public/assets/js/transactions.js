@@ -73,11 +73,6 @@ const populateDropdown = (dropdown, data, valueField, textField, defaultText) =>
       });
     });
   };
-  
-  
-  
-
-
 
 showLoader();
   try {
@@ -204,6 +199,103 @@ document.getElementById("apply-filters-btn").addEventListener("click", () => {
   window.location.href = filterUrl;
 });
 
+const urlParams = new URLSearchParams(window.location.search);
+const filters = {
+  region_id: urlParams.get("region_id"),
+  chapter_id: urlParams.get("chapter_id"),
+  month: urlParams.get("month"),
+  payment_status: urlParams.get("payment_status"),
+  payment_type: urlParams.get("payment_type"),
+  payment_gateway: urlParams.get("payment_gateway"),
+  payment_method: urlParams.get("payment_method"),
+};
+
+// Show filters in the console for debugging
+console.log(filters);
+
+
+// Filter transactions based on the region_id
+const filteredTransactions = transactions.filter((transaction) => {
+  let isValid = true;
+
+  console.log("Checking transaction for region:", transaction.order_id);
+
+  if (filters.region_id && transaction.order_id) {
+    const order = orders.find(order => order.order_id === transaction.order_id);
+    if (order) {
+      // Ensure both region_id values are strings (or numbers)
+      const orderRegionId = String(order.region_id);  // Convert to string
+      const filterRegionId = String(filters.region_id);  // Convert to string
+
+      // Compare as strings (or numbers, depending on the data type)
+      if (orderRegionId !== filterRegionId) {
+        isValid = false;
+      }
+    } else {
+      console.log(`No matching order found for transaction ${transaction.order_id}`);
+    }
+  }
+
+  if (filters.chapter_id && transaction.order_id) {
+    const order = orders.find(order => order.order_id === transaction.order_id);
+
+    if (order) {
+      // Ensure both region_id values are strings (or numbers)
+      const orderChapterId = String(order.chapter_id);  // Convert to string
+      const filterChapterId = String(filters.chapter_id);  // Convert to string
+
+      // Compare as strings (or numbers, depending on the data type)
+      if (orderChapterId !== filterChapterId) {
+        isValid = false;
+      }
+    } else {
+      console.log(`No matching order found for transaction ${transaction.order_id}`);
+    }
+  }
+
+  if (filters.payment_type && transaction.order_id) {
+    const order = orders.find(order => order.order_id === transaction.order_id);
+
+    if (order) {
+      // Ensure both region_id values are strings (or numbers)
+      const orderPaymentId = String(order.universal_link_id);  // Convert to string
+      const filterPaymentId = String(filters.payment_type);  // Convert to string
+
+      // Compare as strings (or numbers, depending on the data type)
+      if (orderPaymentId !== filterPaymentId) {
+        isValid = false;
+      }
+    } else {
+      console.log(`No matching order found for transaction ${transaction.order_id}`);
+    }
+  }
+
+  if (filters.payment_gateway && transaction.order_id) {
+    const order = orders.find(order => order.order_id === transaction.order_id);
+
+    if (order) {
+      // Ensure both region_id values are strings (or numbers)
+      const orderGatewayId = String(order.payment_gateway_id);  // Convert to string
+      const filterGatewayId = String(filters.payment_gateway);  // Convert to string
+
+      console.log(`Order ${order.order_id} - Payment Gateway ID: ${orderGatewayId}, Filter Gateway Type ID: ${filterGatewayId}`);
+
+      // Compare as strings (or numbers, depending on the data type)
+      if (orderGatewayId !== filterGatewayId) {
+        console.log(`Gateway Type filter failed for order ${order.order_id} with gateway_id ${filterGatewayId}`);
+        isValid = false;
+      }
+    } else {
+      console.log(`No matching order found for transaction ${transaction.order_id}`);
+    }
+  }
+
+
+  return isValid;
+});
+
+console.log(`Filtered Transactions: ${filteredTransactions.length}`);
+
     
 
     // Map chapter names by chapter_id for quick access
@@ -230,14 +322,15 @@ document.getElementById("apply-filters-btn").addEventListener("click", () => {
     let pendingPayments = 0;
 
     // Sort transactions by payment time (latest first)
-    transactions.sort(
+    filteredTransactions.sort(
       (a, b) => new Date(b.payment_time) - new Date(a.payment_time)
     );
 
     // Get the table body to insert rows
     const tableBody = document.querySelector(".table tbody");
 
-    transactions.forEach((transaction, index) => {
+    filteredTransactions.forEach((transaction, index) => {
+      console.log("Transaction in filtered list:", transaction);
       // Find the associated order
       const order = orders.find(
         (order) => order.order_id === transaction.order_id
