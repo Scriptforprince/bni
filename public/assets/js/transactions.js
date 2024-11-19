@@ -46,16 +46,36 @@ const populateDropdown = (dropdown, data, valueField, textField, defaultText) =>
     attachDropdownListeners(dropdown);
   };
 
-// Helper function to attach event listeners to dropdown items
-const attachDropdownListeners = (dropdown) => {
-  dropdown.querySelectorAll('.dropdown-item').forEach(item => {
-    item.addEventListener('click', () => {
-      const selectedValue = item.getAttribute('data-value');
-      console.log(`Selected Value from ${dropdown.id}:`, selectedValue);
-      // You can add additional logic here to handle selection changes
+  const attachDropdownListeners = (dropdown) => {
+    // Find the dropdown toggle specific to the current dropdown
+    const dropdownToggle = dropdown.closest('.dropdown').querySelector('.dropdown-toggle');
+  
+    dropdown.querySelectorAll('.dropdown-item').forEach(item => {
+      item.addEventListener('click', () => {
+        // Remove 'active' class from all items in the dropdown
+        dropdown.querySelectorAll('.dropdown-item.active').forEach(activeItem => {
+          activeItem.classList.remove('active');
+        });
+  
+        // Add 'active' class to the selected item
+        item.classList.add('active');
+  
+        // Get the selected value and text
+        const selectedValue = item.getAttribute('data-value');
+        const selectedText = item.textContent.trim();
+  
+        // Update the specific dropdown's toggle label
+        if (dropdownToggle) {
+          dropdownToggle.textContent = selectedText;
+        }
+  
+        console.log(`Selected Value from ${dropdown.id}:`, selectedValue);
+      });
     });
-  });
-};
+  };
+  
+  
+  
 
 
 
@@ -156,6 +176,34 @@ const populatePaymentMethodDropdown = () => {
 
 // Call the function to populate payment methods
 populatePaymentMethodDropdown();
+
+// Attach event listener to a "Filter" button or trigger
+document.getElementById("apply-filters-btn").addEventListener("click", () => {
+  // Capture selected values
+  const regionId = regionsDropdown.querySelector('.dropdown-item.active')?.getAttribute('data-value') || '';
+  const chapterId = chaptersDropdown.querySelector('.dropdown-item.active')?.getAttribute('data-value') || '';
+  const month = monthsDropdown.querySelector('.dropdown-item.active')?.getAttribute('data-value') || '';
+  const paymentStatus = paymentStatusDropdown.querySelector('.dropdown-item.active')?.getAttribute('data-value') || '';
+  const paymentType = paymentTypeDropdown.querySelector('.dropdown-item.active')?.getAttribute('data-value') || '';
+  const paymentGateway = paymentGatewayDropdown.querySelector('.dropdown-item.active')?.getAttribute('data-value') || '';
+  const paymentMethod = paymentMethodDropdown.querySelector('.dropdown-item.active')?.getAttribute('data-value') || '';
+
+  // Construct the query string
+  const queryParams = new URLSearchParams();
+
+  if (regionId) queryParams.append('region_id', regionId);
+  if (chapterId) queryParams.append('chapter_id', chapterId);
+  if (month) queryParams.append('month', month);
+  if (paymentStatus) queryParams.append('payment_status', paymentStatus);
+  if (paymentType) queryParams.append('payment_type', paymentType);
+  if (paymentGateway) queryParams.append('payment_gateway', paymentGateway);
+  if (paymentMethod) queryParams.append('payment_method', paymentMethod);
+
+  // Redirect to the filtered URL
+  const filterUrl = `/t/all-transactions?${queryParams.toString()}`;
+  window.location.href = filterUrl;
+});
+
     
 
     // Map chapter names by chapter_id for quick access
