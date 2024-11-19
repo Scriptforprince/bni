@@ -181,7 +181,8 @@ document.getElementById("apply-filters-btn").addEventListener("click", () => {
   const paymentStatus = paymentStatusDropdown.querySelector('.dropdown-item.active')?.getAttribute('data-value') || '';
   const paymentType = paymentTypeDropdown.querySelector('.dropdown-item.active')?.getAttribute('data-value') || '';
   const paymentGateway = paymentGatewayDropdown.querySelector('.dropdown-item.active')?.getAttribute('data-value') || '';
-  const paymentMethod = paymentMethodDropdown.querySelector('.dropdown-item.active')?.getAttribute('data-value') || '';
+  const paymentMethod = (paymentMethodDropdown.querySelector('.dropdown-item.active')?.getAttribute('data-value') || '').toLowerCase();
+
 
   // Construct the query string
   const queryParams = new URLSearchParams();
@@ -278,11 +279,45 @@ const filteredTransactions = transactions.filter((transaction) => {
       const orderGatewayId = String(order.payment_gateway_id);  // Convert to string
       const filterGatewayId = String(filters.payment_gateway);  // Convert to string
 
-      console.log(`Order ${order.order_id} - Payment Gateway ID: ${orderGatewayId}, Filter Gateway Type ID: ${filterGatewayId}`);
-
       // Compare as strings (or numbers, depending on the data type)
       if (orderGatewayId !== filterGatewayId) {
-        console.log(`Gateway Type filter failed for order ${order.order_id} with gateway_id ${filterGatewayId}`);
+        isValid = false;
+      }
+    } else {
+      console.log(`No matching order found for transaction ${transaction.order_id}`);
+    }
+  }
+
+  if (filters.payment_status && transaction.order_id) {
+    const order = orders.find(order => order.order_id === transaction.order_id);
+
+    if (order) {
+      // Ensure both region_id values are strings (or numbers)
+      const orderPaymentStatus = transaction.payment_status; 
+      const filterPaymentStatus = filters.payment_status;
+
+      // Compare as strings (or numbers, depending on the data type)
+      if (orderPaymentStatus !== filterPaymentStatus) {
+        isValid = false;
+      }
+    } else {
+      console.log(`No matching order found for transaction ${transaction.order_id}`);
+    }
+  }
+
+  if (filters.payment_method && transaction.order_id) {
+    const order = orders.find(order => order.order_id === transaction.order_id);
+
+    if (order) {
+      // Ensure both region_id values are strings (or numbers)
+      const orderPaymentMethodStatus = transaction.payment_group; 
+      const filterPaymentMethodStatus = filters.payment_method;
+
+      console.log(`Order ${order.order_id} - Payment Type Method: ${orderPaymentMethodStatus}, Filter Payment Type Method: ${filterPaymentMethodStatus}`);
+
+      // Compare as strings (or numbers, depending on the data type)
+      if (orderPaymentMethodStatus !== filterPaymentMethodStatus) {
+        console.log(`Payment Type Method is filter failed for order ${order.order_id} with payment type method ${filterPaymentMethodStatus}`);
         isValid = false;
       }
     } else {
