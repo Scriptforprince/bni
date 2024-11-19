@@ -1,5 +1,29 @@
       <!-- header -->
       <%- include('../partials/header') %> 
+
+      <style>
+        /* Style for dropdown menu to enable scrolling */
+.dropdown-menu {
+  max-height: 200px; /* Adjust the height as needed */
+  overflow-y: auto;  /* Enables vertical scrolling */
+  overflow-x: hidden; /* Prevents horizontal scrolling */
+}
+
+
+.dropdown-menu::-webkit-scrollbar {
+  width: 8px; /* Width of the scrollbar */
+}
+
+.dropdown-menu::-webkit-scrollbar-thumb {
+  background-color: #888; /* Color of the scrollbar thumb */
+  border-radius: 4px; /* Rounded edges for the thumb */
+}
+
+.dropdown-menu::-webkit-scrollbar-thumb:hover {
+  background-color: #555; /* Darker shade on hover */
+}
+
+      </style>
       <!-- end header -->
       <div id="loader" style="display:none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center;">
         <div class="spinner-border text-light" role="status">
@@ -276,35 +300,22 @@
                   <div class="d-flex">
                     <div class="dropdown">
                       <a
-                        href="javascript:void(0);"
-                        class="btn btn-sm btn-light text-muted dropdown-toggle"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="true"
-                      >
-                      <i class="ti ti-sort-descending-2 me-1"></i>
-                        Region</a
-                      >
-                      <ul
-                        class="dropdown-menu"
-                        role="menu"
-                        data-popper-placement="bottom-end"
-                      >
-                        <li>
-                          <a class="dropdown-item" href="javascript:void(0);"
-                            >This Week</a
-                          >
-                        </li>
-                        <li>
-                          <a class="dropdown-item" href="javascript:void(0);"
-                            >Last Week</a
-                          >
-                        </li>
-                        <li>
-                          <a class="dropdown-item" href="javascript:void(0);"
-                            >This Month</a
-                          >
-                        </li>
-                      </ul>
+                      href="javascript:void(0);"
+                      class="btn btn-sm btn-light text-muted dropdown-toggle"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="true"
+                    >
+                      <i class="ti ti-sort-descending-2 me-1"></i> Region
+                    </a>
+                    <ul
+                      class="dropdown-menu"
+                      id="region-filter"
+                      role="menu"
+                      data-popper-placement="bottom-end"
+                    >
+                      <!-- Items will be dynamically inserted here -->
+                    </ul>
+                    
 
                       <a
                       href="javascript:void(0);"
@@ -317,26 +328,11 @@
                     >
                     <ul
                       class="dropdown-menu"
+                      id="chapter-filter"
                       role="menu"
                       data-popper-placement="bottom-end"
                     >
-                      <li>
-                        <a class="dropdown-item" href="javascript:void(0);"
-                          >This Week</a
-                        >
-                      </li>
-                      <li>
-                        <a class="dropdown-item" href="javascript:void(0);"
-                          >Last Week</a
-                        >
-                      </li>
-                      <li>
-                        <a class="dropdown-item" href="javascript:void(0);"
-                          >This Month</a
-                        >
-                      </li>
                     </ul>
-
                     <a
                     href="javascript:void(0);"
                     class="btn btn-sm btn-light text-muted dropdown-toggle"
@@ -349,45 +345,79 @@
                   <ul
                     class="dropdown-menu"
                     role="menu"
+                    id="month-filter"
                     data-popper-placement="bottom-end"
                   >
-                    <li>
-                      <a class="dropdown-item" href="javascript:void(0);"
-                        >This Week</a
-                      >
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="javascript:void(0);"
-                        >Last Week</a
-                      >
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="javascript:void(0);"
-                        >This Month</a
-                      >
-                    </li>
+                  </ul>
+                 
+
+                  <a
+                    href="javascript:void(0);"
+                    class="btn btn-sm btn-light text-muted dropdown-toggle"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="true"
+                  >
+                  <i class="ti ti-sort-descending-2 me-1"></i>
+                    Payment Type</a
+                  >
+                  <ul
+                    class="dropdown-menu"
+                    role="menu"
+                    id="payment-type-filter"
+                    data-popper-placement="bottom-end"
+                  >
                   </ul>
 
                   <a
-  href="javascript:void(0);"
-  class="btn btn-sm btn-light text-muted dropdown-toggle"
-  data-bs-toggle="dropdown"
-  aria-expanded="false"
->
-  <i class="ti ti-sort-descending-2 me-1"></i>
-  Filter
-</a>
+                    href="javascript:void(0);"
+                    class="btn btn-sm btn-light text-muted dropdown-toggle"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="true"
+                  >
+                  <i class="ti ti-sort-descending-2 me-1"></i>
+                    Gateway</a
+                  >
+                  <ul
+                    class="dropdown-menu"
+                    role="menu"
+                    id="payment-gateway-filter"
+                    data-popper-placement="bottom-end"
+                  >
+                  </ul>
 
-<div class="dropdown-menu p-3">
-  <label for="filterDate">Select Date:</label>
-  <input
-    type="text"
-    id="filterDate"
-    class="form-control"
-    placeholder="YYYY-MM-DD"
-  />
-</div>
+                  <a
+                  href="javascript:void(0);"
+                  class="btn btn-sm btn-light text-muted dropdown-toggle"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="true"
+                >
+                <i class="ti ti-sort-descending-2 me-1"></i>
+                  PG Status</a
+                >
+                <ul
+                  class="dropdown-menu"
+                  role="menu"
+                  id="payment-status-filter"
+                  data-popper-placement="bottom-end"
+                >
+                </ul>
 
+                <a
+                  href="javascript:void(0);"
+                  class="btn btn-sm btn-light text-muted dropdown-toggle"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="true"
+                >
+                <i class="ti ti-sort-descending-2 me-1"></i>
+                  Method</a
+                >
+                <ul
+                  class="dropdown-menu"
+                  role="menu"
+                  id="payment-method-filter"
+                  data-popper-placement="bottom-end"
+                >
+                </ul>
                     </div>
                     <a
                       href="/t/new-invoice"

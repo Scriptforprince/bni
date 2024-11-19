@@ -1,4 +1,12 @@
 document.addEventListener("DOMContentLoaded", async () => {
+
+  const regionsDropdown = document.getElementById("region-filter");
+  const chaptersDropdown = document.getElementById("chapter-filter");
+  const monthsDropdown = document.getElementById("month-filter");
+  const paymentStatusDropdown = document.getElementById("payment-status-filter");
+  const paymentTypeDropdown = document.getElementById("payment-type-filter");
+  const paymentGatewayDropdown = document.getElementById("payment-gateway-filter");
+  const paymentMethodDropdown = document.getElementById("payment-method-filter");
   // Function to show the loader
 function showLoader() {
   document.getElementById('loader').style.display = 'flex';
@@ -8,6 +16,44 @@ function showLoader() {
 function hideLoader() {
   document.getElementById('loader').style.display = 'none';
 }
+
+// Populate a dropdown with options
+const populateDropdown = (dropdown, data, valueField, textField, defaultText) => {
+  // Clear the dropdown
+  dropdown.innerHTML = '';
+
+  // Add a default option
+  dropdown.innerHTML += `
+    <li>
+      <a class="dropdown-item" href="javascript:void(0);" data-value="">
+        ${defaultText}
+      </a>
+    </li>
+  `;
+
+  // Add options dynamically
+  data.forEach(item => {
+    dropdown.innerHTML += `
+      <li>
+        <a class="dropdown-item" href="javascript:void(0);" data-value="${item[valueField]}">
+          ${item[textField]}
+        </a>
+      </li>
+    `;
+  });
+
+  // Attach event listeners to handle clicks (optional)
+  dropdown.querySelectorAll('.dropdown-item').forEach(item => {
+    item.addEventListener('click', () => {
+      const selectedValue = item.getAttribute('data-value');
+      console.log('Selected Value:', selectedValue);
+      // Perform any other action here
+    });
+  });
+};
+
+
+
 showLoader();
   try {
     // Fetch data from all necessary endpoints
@@ -17,11 +63,15 @@ showLoader();
       chaptersResponse,
       paymentGatewayResponse,
       universalLinksResponse,
+      regionsResponse,
+      paymentTypeResponse,
     ] = await Promise.all([
       fetch("https://bni-data-backend.onrender.com/api/allOrders"),
       fetch("https://bni-data-backend.onrender.com/api/allTransactions"),
       fetch("https://bni-data-backend.onrender.com/api/chapters"),
       fetch("https://bni-data-backend.onrender.com/api/paymentGateway"),
+      fetch("https://bni-data-backend.onrender.com/api/universalLinks"),
+      fetch("https://bni-data-backend.onrender.com/api/regions"),
       fetch("https://bni-data-backend.onrender.com/api/universalLinks"),
     ]);
 
@@ -30,6 +80,77 @@ showLoader();
     const chapters = await chaptersResponse.json();
     const paymentGateways = await paymentGatewayResponse.json();
     const universalLinks = await universalLinksResponse.json();
+    const regions = await regionsResponse.json();
+    const paymentType = await paymentTypeResponse.json();
+
+    // Populate region and chapter dropdowns
+    populateDropdown(regionsDropdown, regions, "region_id", "region_name", "Select Region");
+    populateDropdown(chaptersDropdown, chapters, "chapter_id", "chapter_name", "Select Chapter");
+    populateDropdown(paymentTypeDropdown, paymentType, "id", "universal_link_name", "Select Payment Type");
+    populateDropdown(paymentGatewayDropdown, paymentGateways, "gateway_id", "gateway_name", "Select Gateway");
+
+    // Populate month dropdown
+    const months = [
+      "January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"
+    ];
+    months.forEach((month, index) => {
+      monthsDropdown.innerHTML += `<li>
+      <a class="dropdown-item" href="javascript:void(0);" data-value="${index + 1}">
+        ${month}
+      </a>
+    </li>`;
+    });
+
+    // Function to populate dropdown dynamically
+const populatePaymentStatusDropdown = async () => {
+  try {
+    // Extract unique payment statuses
+    const uniqueStatuses = [...new Set(transactions.map(transaction => transaction.payment_status))];
+
+    // Populate the dropdown with unique statuses
+    paymentStatusDropdown.innerHTML = ""; // Clear any existing dropdown items
+    uniqueStatuses.forEach(status => {
+      paymentStatusDropdown.innerHTML += `<li>
+        <a class="dropdown-item" href="javascript:void(0);" data-value="${status.toUpperCase()}">
+          ${status}
+        </a>
+      </li>`;
+    });
+  } catch (error) {
+    console.error("Error fetching payment statuses:", error);
+  }
+};
+
+// Call the function to populate the payment status dropdown
+populatePaymentStatusDropdown();
+
+const populatePaymentMethodDropdown = async () => {
+  try {
+    // Extract unique payment statuses
+    const uniqueMethod = [...new Set(transactions.map(transaction => transaction.payment_group))];
+
+    // Populate the dropdown with unique statuses
+    paymentMethodDropdown.innerHTML = ""; // Clear any existing dropdown items
+    uniqueMethod.forEach(status => {
+      paymentMethodDropdown.innerHTML += `<li>
+        <a class="dropdown-item" href="javascript:void(0);" data-value="${status.toUpperCase()}">
+          ${status}
+        </a>
+      </li>`;
+    });
+  } catch (error) {
+    console.error("Error fetching payment statuses:", error);
+  }
+};
+
+// Call the function to populate the payment status dropdown
+populatePaymentMethodDropdown();
+    
+    // Filter transactions based on selected filters
+    document.querySelectorAll(".filter").forEach(filter => {
+      filter.addEventListener("change", () => applyFilters(transactions));
+    });
 
     // Map chapter names by chapter_id for quick access
     const chapterMap = new Map();
