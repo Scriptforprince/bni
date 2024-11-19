@@ -42,12 +42,17 @@ const populateDropdown = (dropdown, data, valueField, textField, defaultText) =>
     `;
   });
 
-  // Attach event listeners to handle clicks (optional)
+    // Attach event listeners
+    attachDropdownListeners(dropdown);
+  };
+
+// Helper function to attach event listeners to dropdown items
+const attachDropdownListeners = (dropdown) => {
   dropdown.querySelectorAll('.dropdown-item').forEach(item => {
     item.addEventListener('click', () => {
       const selectedValue = item.getAttribute('data-value');
-      console.log('Selected Value:', selectedValue);
-      // Perform any other action here
+      console.log(`Selected Value from ${dropdown.id}:`, selectedValue);
+      // You can add additional logic here to handle selection changes
     });
   });
 };
@@ -90,26 +95,31 @@ showLoader();
     populateDropdown(paymentGatewayDropdown, paymentGateways, "gateway_id", "gateway_name", "Select Gateway");
 
     // Populate month dropdown
-    const months = [
-      "January", "February", "March", "April", "May", "June",
-      "July", "August", "September", "October", "November", "December"
-    ];
-    months.forEach((month, index) => {
-      monthsDropdown.innerHTML += `<li>
+const populateMonthDropdown = () => {
+  const months = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
+  monthsDropdown.innerHTML = ""; // Clear existing options
+  months.forEach((month, index) => {
+    monthsDropdown.innerHTML += `<li>
       <a class="dropdown-item" href="javascript:void(0);" data-value="${index + 1}">
         ${month}
       </a>
     </li>`;
-    });
+  });
+  // Attach listeners after populating
+  attachDropdownListeners(monthsDropdown);
+};
 
-    // Function to populate dropdown dynamically
-const populatePaymentStatusDropdown = async () => {
+// Call the function to populate months
+populateMonthDropdown();
+
+// Populate payment status dropdown
+const populatePaymentStatusDropdown = () => {
   try {
-    // Extract unique payment statuses
     const uniqueStatuses = [...new Set(transactions.map(transaction => transaction.payment_status))];
-
-    // Populate the dropdown with unique statuses
-    paymentStatusDropdown.innerHTML = ""; // Clear any existing dropdown items
+    paymentStatusDropdown.innerHTML = ""; // Clear existing options
     uniqueStatuses.forEach(status => {
       paymentStatusDropdown.innerHTML += `<li>
         <a class="dropdown-item" href="javascript:void(0);" data-value="${status.toUpperCase()}">
@@ -117,40 +127,36 @@ const populatePaymentStatusDropdown = async () => {
         </a>
       </li>`;
     });
+    // Attach listeners after populating
+    attachDropdownListeners(paymentStatusDropdown);
   } catch (error) {
-    console.error("Error fetching payment statuses:", error);
+    console.error("Error populating payment status dropdown:", error);
   }
 };
 
-// Call the function to populate the payment status dropdown
 populatePaymentStatusDropdown();
-
-const populatePaymentMethodDropdown = async () => {
+// Populate payment method dropdown
+const populatePaymentMethodDropdown = () => {
   try {
-    // Extract unique payment statuses
-    const uniqueMethod = [...new Set(transactions.map(transaction => transaction.payment_group))];
-
-    // Populate the dropdown with unique statuses
-    paymentMethodDropdown.innerHTML = ""; // Clear any existing dropdown items
-    uniqueMethod.forEach(status => {
+    const uniqueMethods = [...new Set(transactions.map(transaction => transaction.payment_group))];
+    paymentMethodDropdown.innerHTML = ""; // Clear existing options
+    uniqueMethods.forEach(method => {
       paymentMethodDropdown.innerHTML += `<li>
-        <a class="dropdown-item" href="javascript:void(0);" data-value="${status.toUpperCase()}">
-          ${status}
+        <a class="dropdown-item" href="javascript:void(0);" data-value="${method.toUpperCase()}">
+          ${method}
         </a>
       </li>`;
     });
+    // Attach listeners after populating
+    attachDropdownListeners(paymentMethodDropdown);
   } catch (error) {
-    console.error("Error fetching payment statuses:", error);
+    console.error("Error populating payment method dropdown:", error);
   }
 };
 
-// Call the function to populate the payment status dropdown
+// Call the function to populate payment methods
 populatePaymentMethodDropdown();
     
-    // Filter transactions based on selected filters
-    document.querySelectorAll(".filter").forEach(filter => {
-      filter.addEventListener("change", () => applyFilters(transactions));
-    });
 
     // Map chapter names by chapter_id for quick access
     const chapterMap = new Map();
