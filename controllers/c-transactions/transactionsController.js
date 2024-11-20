@@ -13,3 +13,7 @@ exports.allTransactions = (req, res) => {
 exports.viewInvoice = (req, res) => {
     res.render('m-transactions/view-transaction', { title: 'View Transactions' });
 };
+
+exports.generateInvoice = (req, res) => {
+    res.render('m-transactions/generate-invoice', { title: 'Generate Invoice' });
+};
