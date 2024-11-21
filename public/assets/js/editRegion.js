@@ -1,120 +1,157 @@
-function showLoader() { 
-    const loader = document.getElementById('loader');
-    if (loader) loader.style.display = 'flex';
+// Function to show the loader
+function showLoader() {
+    document.getElementById("loader").style.display = "flex";
 }
 
+// Function to hide the loader
 function hideLoader() {
-    const loader = document.getElementById('loader');
-    if (loader) loader.style.display = 'none';
+    document.getElementById("loader").style.display = "none";
 }
 
-const dummyData = {};
+const region_id = new URLSearchParams(window.location.search).get("region_id");
 
-function formatDateToInputFormat(date) {
-    if (!date) return ''; // Return empty string if no date is provided
-    const dateObj = new Date(date);
-    const year = dateObj.getFullYear();
-    const month = String(dateObj.getMonth() + 1).padStart(2, '0');
-    const day = String(dateObj.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
+if (!region_id) {
+    console.error("Error: region_id is missing in the URL");
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    const url = window.location.href;
-    const urlObj = new URL(url);
-    const regionId = urlObj.searchParams.get('region_id');
+let accoladeMap = {};
 
+// Fetch accolades data
+
+
+const fetchRegionDetails = async () => {
     showLoader();
-
-    fetch(`https://bni-data-backend.onrender.com/api/getRegion/${regionId}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error("Network response was not ok");
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log(data)
-            hideLoader();
-            populateData(data || dummyData); // Use fetched data or dummyData if empty
-        })
-        .catch(error => {
-            hideLoader();
-            toastr.error("Something went wrong, using fallback data");
-            console.error('Error fetching data:', error.message || error);
-            populateData(dummyData); // Use dummy data if fetch fails
-        });
-
-        function populateData(data) {
-            // Use optional chaining and null checks to prevent errors if elements are missing
-            document.getElementById("region_name").value = data?.region_name || "Not Available";
-            document.getElementById("late_fees").value = data?.late_fees || "Not Available";
-            document.getElementById("contact_person").value = data?.contact_person || "Not Available";
-            document.getElementById("contact_number").value = data?.contact_number || "Not Available";
-            document.getElementById("email_id").value = data?.email_id || "Not Available";
-            document.getElementById("mission").value = data?.mission || "Not Available";
-            document.getElementById("vision").value = data?.vision || "Not Available";
-            document.getElementById("region_status").value = data?.region_status || "Not Available";
-            document.getElementById("region_logo").src = data?.region_logo || "Not Available";
-            document.getElementById("country").value = data?.country || "IN";
-            document.getElementById("state").value = data?.state || "Not Available";
-            document.getElementById("city").value = data?.city || "Not Available";
-            const daysOfChapter = data?.days_of_chapter || [];
-    const dayCheckboxes = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-
-    dayCheckboxes.forEach(day => {
-        const checkbox = document.getElementById(`day${day}`);
-        if (checkbox) {
-            checkbox.checked = daysOfChapter.includes(day);
+    try {
+        const response = await fetch(`https://bni-data-backend.onrender.com/api/getRegion/${region_id}`);
+        if (!response.ok) {
+            throw new Error(`API error: ${response.status} ${response.statusText}`);
         }
-    });
+        const data = await response.json();
+        populateFormFields(data);
+    } catch (error) {
+        console.error("Error fetching region details:", error);
+        alert("Failed to load region details. Please try again.");
+    } finally {
+        hideLoader();
+    }
+};
 
-
-    const regionTypes = data?.chapter_type || [];
-    
-    // Define an array of checkbox elements with corresponding values
-    const statusCheckboxes = [
-        { id: "statusRunning", value: "running" },
-        { id: "statusPreLaunch", value: "pre-launch" },
-        { id: "statusReLaunch", value: "re-launch" }
-    ];
-
-    // Loop through each checkbox and check it if its value is in the chapterTypes array
-    const chapterTypes = data?.chapter_type || []; // ["Online", "Offline", "Hybrid"]
-
-    // Define the array of checkbox elements with corresponding values
-    const typeCheckboxes = [
-        { id: "typeOnline", value: "Online" },
-        { id: "typeOffline", value: "Offline" },
-        { id: "typeHybrid", value: "Hybrid" }
-    ];
-
-    // Loop through each checkbox and check it if its value is in the chapterTypes array
-    typeCheckboxes.forEach(type => {
-        const checkbox = document.getElementById(type.id);
-        if (checkbox) {
-            // Check if the chapter type exists in the data array and check the checkbox
-            checkbox.checked = chapterTypes.includes(type.value);
+// Fetch all accolades
+const fetchAccolades = async () => {
+    showLoader();
+    try {
+        const response = await fetch("https://bni-data-backend.onrender.com/api/accolades");
+        if (!response.ok) {
+            throw new Error(`Accolades API error: ${response.status} ${response.statusText}`);
         }
-    });
-    
-            document.getElementById("street_address_line_1").value = data?.street_address_line_1 || "Not Available";
-            document.getElementById("street_address_line_2").value = data?.street_address_line_2 || "Not Available";
-            document.getElementById("postal_code").value = data?.postal_code || "Not Available";
-            document.getElementById("social_facebook").value = data?.social_facebook || "Not Available";
-            document.getElementById("social_instagram").value = data?.social_instagram || "Not Available";
-            document.getElementById("social_linkedin").value = data?.social_linkedin || "Not Available";
-            document.getElementById("social_youtube").value = data?.social_youtube || "Not Available";
-            document.getElementById("website_link").value = data?.website_link || "Not Available";
-            document.getElementById("one_time_registration_fee").value = data?.one_time_registration_fee || "Not Available";
-            // document.getElementById("region_late_fees").value = data?.late_fees || "Not Available";
-            // document.getElementById("region_membership_fee").value = data?.one_year_fee || "Not Available";
-            // document.getElementById("region_membership_fee_two_year").value = data?.two_year_fee || "Not Available";
-            // document.getElementById("region_membership_fee_five_year").value = data?.five_year_fee || "Not Available";
-            document.getElementById("date_of_publishing").value = formatDateToInputFormat(data?.date_of_publishing) || "Not Available";
-            document.getElementById("region_launched_by").value = data?.region_launched_by || "Not Available";
+        const accolades = await response.json();
+        // Create a map of accolade IDs to names
+        accoladeMap = accolades.reduce((map, accolade) => {
+            map[accolade.accolade_id] = accolade.accolade_name;
+            return map;
+        }, {});
+
+        // Display all accolades in the container
+        const accoladesContainer = document.getElementById("accoladesContainer");
+        accoladesContainer.innerHTML = ""; // Clear container
+        accolades.forEach(accolade => {
+            const checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.name = "accolades[]";
+            checkbox.value = accolade.accolade_id;
+            checkbox.id = `accolade_${accolade.accolade_id}`;
             
-            // If formMessage is not directly in data, ensure it is accessible
-            document.getElementById("formMessage").value = data?.formMessage || "Not Available";
+            const label = document.createElement("label");
+            label.htmlFor = `accolade_${accolade.accolade_id}`;
+            label.textContent = accolade.accolade_name;
+
+            const div = document.createElement("div");
+            div.appendChild(checkbox);
+            div.appendChild(label);
+
+            accoladesContainer.appendChild(div);
+        });
+    } catch (error) {
+        console.error("Error fetching accolades:", error);
+        alert("Failed to load accolades. Please try again.");
+    }
+};
+
+const populateFormFields = (data) => {
+    // Standard fields
+    document.querySelector("#region_name").value = data.region_name || "Not Found";
+    document.querySelector("#contact_person").value = data.contact_person || "Not Found";
+    document.querySelector("#contact_number").value = data.contact_number || "Not Found";
+    document.querySelector("#email_id").value = data.email_id || "Not Found";
+    document.querySelector("#mission").value = data.mission || "Not Found";
+    document.querySelector("#vision").value = data.vision || "Not Found";
+
+    const logo = document.querySelector("#region_logo");
+    if (logo) {
+        logo.src = data.region_logo || "";
+    }
+
+    document.querySelector("#region_status").value = data.region_status || "null";
+    document.querySelector("#one_time_registration_fee").value = data.one_time_registration_fee || "Not Found";
+    document.querySelector("#one_year_fee").value = data.one_year_fee || "Not Found";
+    document.querySelector("#two_year_fee").value = data.two_year_fee || "Not Found";
+    document.querySelector("#five_year_fee").value = data.five_year_fee || "Not Found";
+    document.querySelector("#late_fees").value = data.late_fees || "Not Found";
+    document.querySelector("#region_country").value = data.country || "Not Found";
+    document.querySelector("#state").value = data.state || "Not Found";
+    document.querySelector("#city").value = data.city || "Not Found";
+    document.querySelector("#street_address_line_1").value = data.street_address_line_1 || "Not Found";
+    document.querySelector("#street_address_line_2").value = data.street_address_line_2 || "Not Found";
+    document.querySelector("#postal_code").value = data.postal_code || "Not Found";
+    document.querySelector("#social_facebook").value = data.social_facebook || "Not Found";
+    document.querySelector("#social_instagram").value = data.social_instagram || "Not Found";
+    document.querySelector("#social_linkedin").value = data.social_linkedin || "Not Found";
+    document.querySelector("#social_youtube").value = data.social_youtube || "Not Found";
+    document.querySelector("#website_link").value = data.website_link || "Not Found";
+    document.querySelector("#date_of_publishing").value =
+        data.date_of_publishing ? new Date(data.date_of_publishing).toISOString().split("T")[0] : "Not Found";
+    document.querySelector("#region_launched_by").value = data.region_launched_by || "Not Found";
+
+    // Chapter Days
+    const chapterDays = data.days_of_chapter || [];
+    chapterDays.forEach(day => {
+        const checkbox = document.querySelector(`input[name="chapterDays[]"][value="${day}"]`);
+        if (checkbox) checkbox.checked = true;
+    });
+
+    // Chapter Status
+    const chapterStatus = parseArrayString(data.chapter_status);
+    chapterStatus.forEach(status => {
+        const checkbox = document.querySelector(`input[name="chapterStatus[]"][value="${status}"]`);
+        if (checkbox) checkbox.checked = true;
+    });
+
+    // Chapter Type
+    const chapterType = data.chapter_type || [];
+    chapterType.forEach(type => {
+        const checkbox = document.querySelector(`input[name="chapterType[]"][value="${type}"]`);
+        if (checkbox) checkbox.checked = true;
+    });
+
+     // Accolades Configuration
+       // Pre-check accolades based on accolades_config
+    const accoladesConfig = data.accolades_config || [];
+    accoladesConfig.forEach(accoladeId => {
+        const checkbox = document.querySelector(`input[name="accolades[]"][value="${accoladeId}"]`);
+        if (checkbox) {
+            checkbox.checked = true;
         }
+    });
+};
+
+// Helper Function to Parse Chapter Status
+const parseArrayString = (str) => {
+    if (!str) return [];
+    return str.replace(/[{}]/g, "").split(",").map(item => item.trim());
+};
+
+// Initialize the page
+document.addEventListener("DOMContentLoaded", async () => {
+    await fetchAccolades(); // Fetch all accolades first
+    await fetchRegionDetails(); // Then fetch and populate region details
 });
