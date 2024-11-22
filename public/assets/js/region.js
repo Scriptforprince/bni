@@ -26,21 +26,41 @@ async function fetchApiUrl() {
   }
 }
 
-// Function to fetch regions data
-async function fetchRegions() {
+// Fetch regions with the applied filter
+const fetchRegions = async (filter = '') => {
   try {
-    const response = await fetch(apiUrl); // Use the fetched apiUrl here
+    const filterQuery = filter ? `?filter=${filter}` : ''; // Append filter to URL
+    const response = await fetch(`${apiUrl}${filterQuery}`); // Make the request with the filter
     if (!response.ok) throw new Error('Network response was not ok');
 
     allRegions = await response.json(); // Store fetched regions in the global variable
     filteredRegions = [...allRegions]; // Initialize filtered regions to all regions initially
 
-    // Display the first page of regions and hide the loader once the table is updated
+    // Display the filtered regions in the table
     displayRegions(filteredRegions.slice(0, entriesPerPage)); // Display only the first 10 entries
   } catch (error) {
     console.error('There was a problem fetching the regions data:', error);
   }
+};
+
+// Add event listener for filter options
+document.querySelectorAll('.filter-option').forEach((filterItem) => {
+  filterItem.addEventListener('click', (event) => {
+    const filter = event.target.getAttribute('data-filter'); // Get filter value from clicked item
+    fetchRegions(filter); // Fetch regions with selected filter
+    updateURLWithFilter(filter); // Update URL to reflect the applied filter
+  });
+});
+
+// Function to update the URL with the selected filter
+function updateURLWithFilter(filter) {
+  const url = new URL(window.location); // Get the current page URL
+  url.searchParams.set('filter', filter); // Set or update the 'filter' query parameter
+  window.history.pushState({}, '', url); // Update the browser's URL without reloading the page
 }
+
+
+
 
 // Function to display regions in the table
 function displayRegions(regions) {
@@ -161,4 +181,5 @@ document.getElementById('chaptersTableBody').addEventListener('click', (event) =
     deleteRegion(region_id);
   }
 });
+
 
