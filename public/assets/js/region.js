@@ -78,12 +78,12 @@ function displayRegions(regions) {
         </span>
       </td>
         <td style="border: 1px solid grey">
-        <span class="badge bg-warning text-light" style="cursor:pointer; color:white;">
+        <span class="badge bg-primary text-light" style="cursor:pointer; color:white;">
            <a href="/r/edit-region/?region_id=${region.region_id}" style="color:white">Edit</a>
         </span>
-        <span class="badge bg-danger text-light"  style="cursor:pointer; color:white;">
-         <a href="/r/view-region/?region_id=${region.region_id}" style="cursor:pointer; color:white;">Delete</a>
-        </span>
+        <span class="badge bg-danger text-light delete-btn" style="cursor:pointer; color:white;" data-region-id="${region.region_id}">
+     Delete
+    </span>
       </td>
     `;
 
@@ -116,3 +116,49 @@ window.addEventListener('DOMContentLoaded', async () => {
   await fetchApiUrl(); // Fetch API URL first
   await fetchRegions(); // Then fetch regions after apiUrl is fetched
 });
+
+
+const deleteRegion = async (region_id) => {
+  // Show confirmation using SweetAlert
+  const result = await Swal.fire({
+      title: 'Are you sure?',
+      text: "This action will mark the region as deleted.",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'No, cancel'
+  });
+
+  if (result.isConfirmed) {
+      try {
+          showLoader();  // Show loading indicator
+          const response = await fetch(`http://localhost:5000/api/deleteRegion/${region_id}`, {
+              method: 'PUT',
+          });
+
+          if (response.ok) {
+              const data = await response.json();
+              Swal.fire('Deleted!', data.message, 'success');
+              // After deletion, remove the region from the table
+              document.querySelector(`[data-region-id="${region_id}"]`).closest('tr').remove();
+          } else {
+              const errorResponse = await response.json();
+              Swal.fire('Failed!', errorResponse.message, 'error');
+          }
+      } catch (error) {
+          console.error('Error deleting region:', error);
+          Swal.fire('Error!', 'Failed to delete region. Please try again.', 'error');
+      } finally {
+          hideLoader();  // Hide loading indicator
+      }
+  }
+};
+
+// Add event listener for delete buttons dynamically
+document.getElementById('chaptersTableBody').addEventListener('click', (event) => {
+  if (event.target.classList.contains('delete-btn')) {
+    const region_id = event.target.getAttribute('data-region-id');
+    deleteRegion(region_id);
+  }
+});
+

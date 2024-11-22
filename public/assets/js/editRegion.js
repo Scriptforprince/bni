@@ -303,8 +303,7 @@ const updateRegionData = async () => {
         console.log('Update canceled');
     }
 };
-
-
 // Event listener to trigger the update
 document.getElementById("updateRegionBtn").addEventListener("click", updateRegionData);
+
 

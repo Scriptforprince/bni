@@ -72,7 +72,7 @@
                       aria-expanded="true"
                     >
                       <i class="ti ti-sort-descending-2 me-1"></i>
-                      Filter</a
+                      Status</a
                     >
                     <ul
                       class="dropdown-menu"
@@ -81,62 +81,30 @@
                     >
                       <li>
                         <a class="dropdown-item" href="javascript:void(0);"
-                          >This Week</a
+                          >Active</a
                         >
                       </li>
                       <li>
                         <a class="dropdown-item" href="javascript:void(0);"
-                          >Last Week</a
+                          >Inactive</a
                         >
                       </li>
                       <li>
                         <a class="dropdown-item" href="javascript:void(0);"
-                          >This Month</a
+                          >Deleted</a
                         >
                       </li>
                     </ul>
-                    <a
-            href="javascript:void(0);"
-            class="btn btn-sm btn-light text-muted dropdown-toggle"
-            data-bs-toggle="dropdown"
-            aria-expanded="true"
-          >
-            <i class="ti ti-sort-descending-2 me-1"></i>
-            Filter</a
-          >
-          <ul
-            class="dropdown-menu"
-            role="menu"
-            data-popper-placement="bottom-end"
-          >
-            <li>
-              <a class="dropdown-item" href="javascript:void(0);"
-                >This Week</a
-              >
-            </li>
-            <li>
-              <a class="dropdown-item" href="javascript:void(0);"
-                >Last Week</a
-              >
-            </li>
-            <li>
-              <a class="dropdown-item" href="javascript:void(0);"
-                >This Month</a
-              >
-            </li>
-          </ul>
                   </div>
         <div class="dropdown">
           
           </div>
-                  <button
-                    class="btn btn-outline-light border"
-                    type="button"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                    + Add New Region
-                  </button>
+               <a href="/r/add-region"><button
+                class="btn btn-outline-light border"
+                type="button"
+              >
+                + Add New Region
+              </button></a>   
                 </div>
                 <div class="custom-form-group flex-grow-1">
                   <input
@@ -204,5 +172,6 @@
       <!-- End::content  -->
 
       <script src="../../assets/js/region.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
       <%- include('../partials/footer') %> 
