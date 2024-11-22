@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return response.json();
         })
         .then(data => {
-            const selectElement = document.getElementById('country');
+            const selectElement = document.getElementById('region_country');
 
             // Populate the select element with country options
             data.forEach(country => {
@@ -21,3 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .catch(error => console.error('Error fetching data:', error));
 });
+
+
+
+

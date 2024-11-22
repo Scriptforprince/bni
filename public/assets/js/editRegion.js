@@ -77,6 +77,52 @@ const fetchAccolades = async () => {
     }
 };
 
+// Fetch country data
+const fetchCountries = async () => {
+    try {
+        const response = await fetch('https://restcountries.com/v3.1/all');
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+
+        const data = await response.json();
+        const selectElement = document.getElementById('region_country');
+
+        if (!selectElement) {
+            console.error("Dropdown element with ID 'region_country' not found!");
+            return;
+        }
+
+        // Clear existing options
+        selectElement.innerHTML = '<option value="">Select Country</option>';
+
+        // Add "India" as the first option
+        const indiaOption = document.createElement('option');
+        indiaOption.value = "IN"; // Country code for India
+        indiaOption.innerHTML = "India";
+        selectElement.appendChild(indiaOption);
+
+        // Populate the rest of the select element with other countries
+        data.forEach(country => {
+            // Skip "India" to avoid duplication
+            if (country.name.common.toLowerCase() === "india") return;
+
+            const option = document.createElement('option');
+            option.value = country.cca2; // Use country code as value
+            option.innerHTML = `${country.name.common}`;
+            selectElement.appendChild(option);
+        });
+
+        // Ensure "India" is selected by default
+        selectElement.value = "IN";
+        console.log('Dropdown populated successfully!');
+    } catch (error) {
+        console.error('Error fetching countries:', error);
+    }
+};
+
+
+
 const populateFormFields = (data) => {
     // Standard fields
     document.querySelector("#region_name").value = data.region_name || "Not Found";
@@ -97,7 +143,12 @@ const populateFormFields = (data) => {
     document.querySelector("#two_year_fee").value = data.two_year_fee || "Not Found";
     document.querySelector("#five_year_fee").value = data.five_year_fee || "Not Found";
     document.querySelector("#late_fees").value = data.late_fees || "Not Found";
-    document.querySelector("#region_country").value = data.country || "Not Found";
+
+    // Set the country dropdown after the region details load
+    const regionCountry = data.country || "IN";  // Default to India if no country set
+    const countryDropdown = document.querySelector("#region_country");
+    countryDropdown.value = regionCountry;  // Ensure the correct country is selected
+
     document.querySelector("#state").value = data.state || "Not Found";
     document.querySelector("#city").value = data.city || "Not Found";
     document.querySelector("#street_address_line_1").value = data.street_address_line_1 || "Not Found";
@@ -152,6 +203,7 @@ const parseArrayString = (str) => {
 
 // Initialize the page
 document.addEventListener("DOMContentLoaded", async () => {
+    await fetchCountries(); // Ensure countries are loaded first
     await fetchAccolades(); // Fetch all accolades first
     await fetchRegionDetails(); // Then fetch and populate region details
 });
