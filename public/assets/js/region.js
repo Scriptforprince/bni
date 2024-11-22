@@ -84,12 +84,27 @@ function displayRegions(regions) {
       </td>
       <td style="border: 1px solid grey;">
         <div class="d-flex align-items-center">
-          <b>${region.region_headoffice_address || 'N/A'}</b>
+          <b>${region.chapter_type || 'N/A'}</b>
+        </div>
+      </td>
+      <td style="border: 1px solid grey;">
+        <div class="d-flex align-items-center">
+          <b>${region.chapter_status || 'N/A'}</b>
         </div>
       </td>
       <td style="border: 1px solid grey;">
         <div class="d-flex align-items-center">
           <b>${region.days_of_chapter || 'N/A'}</b>
+        </div>
+      </td>
+      <td style="border: 1px solid grey;">
+        <div class="d-flex align-items-center">
+          <b>${region.contact_person || 'N/A'}</b>
+        </div>
+      </td>
+      <td style="border: 1px solid grey;">
+        <div class="d-flex align-items-center">
+          <b>${region.contact_number || 'N/A'}</b>
         </div>
       </td>
       <td style="border: 1px solid grey;">
