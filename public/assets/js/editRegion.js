@@ -170,12 +170,16 @@ const populateFormFields = (data) => {
         if (checkbox) checkbox.checked = true;
     });
 
-    // Chapter Status
-    const chapterStatus = parseArrayString(data.chapter_status);
-    chapterStatus.forEach(status => {
-        const checkbox = document.querySelector(`input[name="chapterStatus[]"][value="${status}"]`);
-        if (checkbox) checkbox.checked = true;
-    });
+    console.log(data.chapter_status);
+
+// Chapter Status
+const chapterStatus = Array.isArray(data.chapter_status) ? data.chapter_status : parseArrayString(data.chapter_status);
+chapterStatus.forEach(status => {
+    const checkbox = document.querySelector(`input[name="chapterStatus[]"][value="${status}"]`);
+    if (checkbox) checkbox.checked = true;
+});
+
+
 
     // Chapter Type
     const chapterType = data.chapter_type || [];
@@ -195,11 +199,15 @@ const populateFormFields = (data) => {
     });
 };
 
-// Helper Function to Parse Chapter Status
+// Helper Function to Parse Chapter Status (Fixing malformed string formats)
 const parseArrayString = (str) => {
     if (!str) return [];
-    return str.replace(/[{}]/g, "").split(",").map(item => item.trim());
+    // Strip the curly braces, then split by commas and clean up the items
+    const cleanedStr = str.replace(/[{}]/g, "").split(",").map(item => item.trim().replace(/^"|"$/g, ''));
+    return cleanedStr;
 };
+
+
 
 // Initialize the page
 document.addEventListener("DOMContentLoaded", async () => {
@@ -207,3 +215,96 @@ document.addEventListener("DOMContentLoaded", async () => {
     await fetchAccolades(); // Fetch all accolades first
     await fetchRegionDetails(); // Then fetch and populate region details
 });
+
+
+
+// Function to collect form data and prepare it for the update
+const collectFormData = () => {
+    const regionData = {
+        region_name: document.querySelector("#region_name").value,
+        contact_person: document.querySelector("#contact_person").value,
+        contact_number: document.querySelector("#contact_number").value,
+        email_id: document.querySelector("#email_id").value,
+        mission: document.querySelector("#mission").value,
+        vision: document.querySelector("#vision").value,
+        region_logo: document.querySelector("#region_logo").src,  // Assuming the logo URL is in the src
+        region_status: document.querySelector("#region_status").value,
+        one_time_registration_fee: document.querySelector("#one_time_registration_fee").value,
+        one_year_fee: document.querySelector("#one_year_fee").value,
+        two_year_fee: document.querySelector("#two_year_fee").value,
+        five_year_fee: document.querySelector("#five_year_fee").value,
+        late_fees: document.querySelector("#late_fees").value,
+        country: document.querySelector("#region_country").value,
+        state: document.querySelector("#state").value,
+        city: document.querySelector("#city").value,
+        street_address_line_1: document.querySelector("#street_address_line_1").value,
+        street_address_line_2: document.querySelector("#street_address_line_2").value,
+        postal_code: document.querySelector("#postal_code").value,
+        social_facebook: document.querySelector("#social_facebook").value,
+        social_instagram: document.querySelector("#social_instagram").value,
+        social_linkedin: document.querySelector("#social_linkedin").value,
+        social_youtube: document.querySelector("#social_youtube").value,
+        website_link: document.querySelector("#website_link").value,
+        date_of_publishing: document.querySelector("#date_of_publishing").value,
+        region_launched_by: document.querySelector("#region_launched_by").value,
+        // Chapter days (from checkboxes)
+        chapter_days: Array.from(document.querySelectorAll('input[name="chapterDays[]"]:checked')).map(checkbox => checkbox.value),
+        chapter_status: Array.from(document.querySelectorAll('input[name="chapterStatus[]"]:checked')).map(checkbox => checkbox.value),
+        chapter_type: Array.from(document.querySelectorAll('input[name="chapterType[]"]:checked')).map(checkbox => checkbox.value),
+        accolades_config: Array.from(document.querySelectorAll('input[name="accolades[]"]:checked')).map(checkbox => checkbox.value),
+    };
+
+    return regionData;
+};
+
+
+// Function to send the updated data to the backend after confirmation
+const updateRegionData = async () => {
+    // Ask for confirmation using SweetAlert
+    const result = await Swal.fire({
+        title: 'Are you sure?',
+        text: "You are about to edit the region details!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, update it!',
+        cancelButtonText: 'No, cancel!',
+    });
+
+    if (result.isConfirmed) {
+        const regionData = collectFormData();
+        console.log(regionData); // Verify the data before sending it
+
+        try {
+            showLoader(); // Show the loader when sending data
+            const response = await fetch(`http://localhost:5000/api/updateRegion/${region_id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(regionData),
+            });
+
+            if (response.ok) {
+                const updatedRegion = await response.json();
+                console.log('Region updated successfully:', updatedRegion);
+                Swal.fire('Updated!', 'The region details have been updated.', 'success');
+            } else {
+                const errorResponse = await response.json();
+                console.error('Failed to update region:', errorResponse);
+                Swal.fire('Error!', `Failed to update region: ${errorResponse.message}`, 'error');
+            }
+        } catch (error) {
+            console.error('Error updating region:', error);
+            Swal.fire('Error!', 'Failed to update region. Please try again.', 'error');
+        } finally {
+            hideLoader(); // Hide the loader once the request is complete
+        }
+    } else {
+        console.log('Update canceled');
+    }
+};
+
+
+// Event listener to trigger the update
+document.getElementById("updateRegionBtn").addEventListener("click", updateRegionData);
+
