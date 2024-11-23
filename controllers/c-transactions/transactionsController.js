@@ -17,3 +17,7 @@ exports.viewInvoice = (req, res) => {
 exports.generateInvoice = (req, res) => {
     res.render('m-transactions/generate-invoice', { title: 'Generate Invoice' });
 };
+
+exports.settledTransactions = (req, res) => {
+    res.render('m-transactions/settled-transactions', { title: 'Settled Transactions' });
+};

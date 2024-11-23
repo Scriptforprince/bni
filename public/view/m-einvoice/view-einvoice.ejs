@@ -35,7 +35,7 @@
 		<header>
 			<div class="row align-items-center gy-3">
 				<div class="col-sm-4 text-center text-sm-start">
-
+					<img src="https://bnipayments.nidmm.org/assets/logo-B426YGcQ.jpeg" alt="" width="190px">
 				</div>
 				<div class="col-sm-4 text-center text-sm-start">
 					<h2 style="font-family: Arial, Helvetica, sans-serif; font-weight: 500;">Tax Invoice</h2>
@@ -50,7 +50,7 @@
 					<span><b>IRN :</b></span> <span class="irn_number">a8165431fa267d6da3ca0fc55
 						ea82a9e831d91dabb8533c56d6421affc5b564f</span> <br>
 					<span><b>Ack No. :</b></span> <span class="ack_no">172416019112450</span> <br>
-					<span><b>Ack Date :</b></span> <span class="ack_date">11-Nov-2024</span>
+					<span><b>Ack Date :</b></span> <span class="ack_date">11-Nov-2024</span> <br>
 				</div>
 			</div>
 			<hr>
@@ -59,13 +59,34 @@
 		<!-- Main Content -->
 		<main>
 			<div class="row">
-				<div class="col-sm-6"><strong>Dated:</strong> <span class="invoice_date"></span></div>
-				<div class="col-sm-6 text-sm-end"> <strong>Invoice No:</strong> IDW-<span
+				<div class="col-sm-5"><strong>Dated:</strong> <span class="invoice_date"></span></div>
+				<div class="col-sm-3"><strong>Mode:</strong> <span class="payment_mode"></span></div>
+				<div class="col-sm-4 text-sm-end"> <strong>Invoice No:</strong> IDW-<span
 						class="">16835</span> </div>
 
 			</div>
 			<hr>
 			<div class="row">
+				<div class="col-sm-4 text-sm-end order-sm-1"> <i>Buyer (Bill to):</i>
+					<address>
+						<span class="bill_to_name"><strong></strong></span> <br>
+						<span class="bill_to_company"><strong></strong></span> <br>
+						<span class="bill_to_address"><br>
+							</span> <br>
+						<span><b>GSTIN/UIN:</b> <span class="bill_to_gst"></span></span>
+						<span><b>State Name :</b> <span class="bill_to_state"></span> </span>
+					</address>
+				</div>
+				
+				<div class="col-sm-4 order-sm-0"> <strong>ADI CORPORATE TRAINING</strong>
+					<address>
+						Pocket 1, Flat No. 09, Sector 19
+						Dwarka, New Delhi Delhi, 110075. <br>
+						<span><b>GSTIN/UIN:</b></span> 07AHIPK0486D1ZH <br>
+						<span><b>State Name :</b></span> Delhi, Code : 07
+					</address>
+				</div>
+
 				<div class="col-sm-4 text-sm-end order-sm-1"> <i>Consignee (Ship to):</i>
 					<address>
 						<span class="ship_to_company"><strong></strong></span> <br>
@@ -75,23 +96,8 @@
 						<span><b>State Name :</b> <span class="ship_to_state"></span> </span>
 					</address>
 				</div>
-				<div class="col-sm-4 order-sm-0"> <strong>ADI CORPORATE TRAINING</strong>
-					<address>
-						Pocket 1, Flat No. 09, Sector 19
-						Dwarka, New Delhi Delhi, 110075. <br>
-						<span><b>GSTIN/UIN:</b></span> 07AHIPK0486D1ZH <br>
-						<span><b>State Name :</b></span> Delhi, Code : 07
-					</address>
-				</div>
-				<div class="col-sm-4 text-sm-end order-sm-1"> <i>Buyer (Bill to):</i>
-					<address>
-						<span class="bill_to_company"><strong></strong></span> <br>
-						<span class="bill_to_address"><br>
-							</span> <br>
-						<span><b>GSTIN/UIN:</b> <span class="bill_to_gst"></span></span>
-						<span><b>State Name :</b> <span class="bill_to_state"></span> </span>
-					</address>
-				</div>
+
+				
 			</div>
 			<div class="table-responsive">
 				<table class="table border mb-0" style="border: 1px solid black;">
@@ -100,7 +106,6 @@
 							<td class="col-2 text-center lin"><strong>SI No.</strong></td>
 							<td class="col-3 lin"><strong>Particulars</strong></td>
 							<td class="col-2 text-center lin"><strong>HSN/SAC</strong></td>
-							<td class="col-2 text-center lin"><strong>Quantity</strong></td>
 							<td class="col-2 text-center lin"><strong>Rate</strong></td>
 							<td class="col-2 text-end lin"><strong>Amount</strong></td>
 						</tr>
@@ -110,7 +115,6 @@
 							<td class="col-1 text-center lin">1</td>
 							<td class="col-3 lin payment_type"></td>
 							<td class="col-2 text-center lin">999511</td>
-							<td class="col-2 text-center lin">-</td>
 							<td class="col-2 text-end lin base_amount"></td>
 							<td class="col-2 text-end lin base_amountt"></td>
 						</tr>
@@ -145,6 +149,15 @@
 				<span>Amount Chargeable (in words):</span>
 				<p class="text-1 amount_in_words"><strong><em></strong></em></p>
 				
+			</div>
+			<div class="row align-items-center gy-3"  style="border: 1px dashed grey;">
+				<div class="col-sm-4 text-center text-sm-start">
+					<span><b>Transaction ID :</b></span> <span class="transaction_id">11-Nov-2024</span> <br>
+					<span><b>Order ID :</b></span> <span class="order_id">11-Nov-2024</span> <br>
+					<span><b>Payment Time :</b></span> <span class="">16:30:27sss</span> <br>
+					<span><b>Buyer Email :</b></span> <span class="buyer_email">16:30:27sss</span> <br>
+					<span><b>Buyer Phone :</b></span> <span class="buyer_phone">16:30:27sss</span> <br>
+				</div>
 			</div>
 		</main>
 		<!-- Footer -->
