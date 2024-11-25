@@ -452,66 +452,41 @@
                             <div class="card-body p-5">
                                 <p class="h5 mb-2 text-center">Sign In</p>
                                 <p class="mb-4 text-muted op-7 fw-normal text-center">Welcome back!</p>
-                                <!-- <div class="d-flex mb-3 justify-content-between gap-2 flex-wrap flex-lg-nowrap">
-                                    <button class="btn btn-lg btn-light-ghost border d-flex align-items-center justify-content-center flex-fill bg-light">
-                                        <span class="avatar avatar-xs flex-shrink-0">
-                                            <img src=" assets/images/media/apps/google-1.png" alt="">
-                                        </span>
-                                        <span class="lh-1 ms-2 fs-13 text-default">Signup with Google</span>
-                                    </button>
-                                </div> -->
-                                <!-- <div class="text-center my-3 authentication-barrier">
-                                    <span>OR</span>
-                                </div> -->
-                                <div class="row gy-3">
-                                    <div class="col-xl-12">
-                                        <label for="signin-username" class="form-label text-default">User Name</label>
-                                        <input type="text" class="form-control" id="signin-username" placeholder="user name">
-                                    </div>
-                                    <div class="col-xl-12 mb-2">
-                                        <label for="signin-password" class="form-label text-default d-block">Password<a href="reset-password-basic.html" class="float-end fw-normal text-muted">Forget password ?</a></label>
-                                        <div class="position-relative">
-                                            <input type="password" class="form-control create-password-input" id="signin-password" placeholder="password">
-                                            <a href="javascript:void(0);" class="show-password-button text-muted" onclick="createpassword('signin-password',this)" id="button-addon2"><i class="ri-eye-off-line align-middle"></i></a>
+                                <form id="signInForm">
+                                    <div class="row gy-3">
+                                        <div class="col-xl-12">
+                                            <label for="signin-username" class="form-label text-default">User Name</label>
+                                            <input type="text" class="form-control" id="signin-username" name="username" placeholder="user name" required>
                                         </div>
-                                        <div class="mt-2">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                                <label class="form-check-label text-muted fw-normal" for="defaultCheck1">
-                                                    Remember password ?
-                                                </label>
+                                        <div class="col-xl-12 mb-2">
+                                            <label for="signin-password" class="form-label text-default d-block">
+                                                Password
+                                                <a href="reset-password-basic.html" class="float-end fw-normal text-muted">Forget password?</a>
+                                            </label>
+                                            <div class="position-relative">
+                                                <input type="password" class="form-control create-password-input" id="signin-password" name="password" placeholder="password" required>
+                                                <a href="javascript:void(0);" class="show-password-button text-muted" id="showPasswordButton">
+                                                    <i class="ri-eye-off-line align-middle"></i> <!-- Eye Icon -->
+                                                </a>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="d-grid mt-4">
-                                    <a href="index-1.html" class="btn btn-primary">Sign In</a>
-                                </div>
-                                <!-- <div class="text-center">
-                                    <p class="text-muted mt-3 mb-0">Dont have an account? <a href="sign-up-basic.html" class="text-primary">Sign Up</a></p>
-                                </div> -->
-                                <!-- <div class="btn-list text-center mt-3">
-                                    <button class="btn btn-icon btn-wave btn-primary-light">
-                                        <i class="ri-facebook-line lh-1 align-center fs-17"></i>
-                                    </button>
-                                    <button class="btn btn-icon btn-wave btn-primary1-light">
-                                        <i class="ri-twitter-x-line lh-1 align-center fs-17"></i>
-                                    </button>
-                                    <button class="btn btn-icon btn-wave btn-primary2-light">
-                                        <i class="ri-instagram-line lh-1 align-center fs-17"></i>
-                                    </button>
-                                </div> -->
+                                    <div class="d-grid mt-4">
+                                        <button type="submit" id="signInButton" class="btn btn-primary">Sign In</button>
+                                    </div>
+                                </form>
+                                
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="col-xxl-6 col-xl-5 col-lg-12 d-xl-block d-none px-0">
-                <div class="authentication-cover overflow-hidden">
-                    <div class="authentication-cover-logo"> 
-                        <a href="sign-in-cover.html"> 
-                            <img src="https://lh3.googleusercontent.com/proxy/Jeixm6Fw7cgEGxGDsaLmzFQpDVAudLCLJfTLQvG5aO8SyaEnoQZeRISUpdGEeaafODcjVKwO8ik3JyL9uq9UZIGeXv-11U78O4TBnw" alt="" class="authentication-brand desktop-white"> 
-                        </a> 
+                <div class="authentication-cover overflow-hidden">  
+                    <div class="authentication-cover-logo">
+                        <a href="/">
+                            <img src="../assets/images/company-logos/BNIlogo.jpeg" alt="" class="authentication-brand desktop-white">
+                        </a>
                     </div>
                     <div class="aunthentication-cover-content d-flex align-items-center justify-content-center">
                         <div>
@@ -523,16 +498,16 @@
                 </div>
             </div>
         </div>
-
-
+        
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
         <!-- Bootstrap JS -->
         <script src=" assets/libs/bootstrap/js/bootstrap.bundle.min-6.js"></script>
 
         	
         <!-- Show Password JS -->
-        <script src=" assets/show-password-1.js"></script>
+        <script src="../assets/js/showPassword.js"></script>
 
 
     </body>
     
-</html>    
+</html>
