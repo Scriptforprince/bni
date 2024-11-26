@@ -90,7 +90,12 @@ function displayChapters(chapters) {
         const row = document.createElement('tr');
         row.innerHTML = `
             <td>${index + 1}</td>
-            <td><b>${chapter.chapter_name}</b></td>
+            <td>
+            <a href="/c/view-chapter/?chapter_id=${chapter.chapter_id}">
+            <b>${chapter.chapter_name}</b>
+            </a>
+           
+            </td>
             
             <td>${regionName}</td> 
             <td><b>${membersCount}</b></td> 

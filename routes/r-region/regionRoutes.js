@@ -6,5 +6,6 @@ const regionController = require('../../controllers/c-region/regionController');
 router.get('/manage-region', regionController.manageRegion);
 router.get('/add-region', regionController.addRegion);
 router.get('/edit-region', regionController.editRegion);
+router.get('/view-region',regionController.viewRegion)
 
 module.exports = router;

@@ -109,7 +109,7 @@ function displayRegions(regions) {
       <td>${(currentPage - 1) * entriesPerPage + index + 1}</td>
       <td style="border: 1px solid grey;">
         <div class="d-flex align-items-center">
-          <b>${region.region_name}</b>
+         <a href="/r/view-region/?region_id=${region.region_id}"> <b>${region.region_name}</b></a>
         </div>
       </td>
       <td style="border: 1px solid grey;"><b>${chaptersCount}</b></td>

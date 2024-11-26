@@ -9,3 +9,7 @@ exports.addRegion = (req, res) => {
 exports.editRegion = (req, res) => {
     res.render('m-region/edit-region', { title: 'editRegion' });
 };
+
+exports.viewRegion = (req, res) => {
+    res.render('m-region/view-region', { title: 'View Region' });
+};

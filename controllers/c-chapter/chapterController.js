@@ -10,3 +10,7 @@ exports.editChapter = (req, res) => {
     res.render('m-chapter/edit-chapter', { title: 'editChapter' });
 };
 
+exports.viewChapter = (req, res) => {
+    res.render('m-chapter/view-chapter', { title: 'ViewChapter' });
+};
+
