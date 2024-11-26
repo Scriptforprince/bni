@@ -1,5 +1,7 @@
 let apiUrl = 'https://bni-data-backend.onrender.com/api/regions'; // Default value
 let allRegions = []; // To store fetched regions globally
+let allChapters = []; // To store all chapters
+let allMembers = []; // To store all members
 let filteredRegions = []; // To store filtered regions based on search
 let entriesPerPage = 10; // Number of entries to display per page
 let currentPage = 1; // For pagination
@@ -25,6 +27,33 @@ async function fetchApiUrl() {
     console.error('Error fetching the API URL:', error);
   }
 }
+
+// Fetch chapters and members
+const fetchChaptersAndMembers = async () => {
+  try {
+    // Fetch chapters
+    const chaptersResponse = await fetch('https://bni-data-backend.onrender.com/api/chapters');
+    if (!chaptersResponse.ok) throw new Error('Error fetching chapters data');
+    allChapters = await chaptersResponse.json();
+
+    // Fetch members
+    const membersResponse = await fetch('https://bni-data-backend.onrender.com/api/members');
+    if (!membersResponse.ok) throw new Error('Error fetching members data');
+    allMembers = await membersResponse.json();
+
+    console.log('Chapters and Members data fetched successfully');
+  } catch (error) {
+    console.error('Error fetching chapters and members:', error);
+  }
+};
+
+// Calculate the total number of chapters and members for a region
+const getCountsForRegion = (regionId) => {
+  const chaptersCount = allChapters.filter(chapter => chapter.region_id === regionId).length;
+  const membersCount = allMembers.filter(member => member.region_id === regionId).length;
+  return { chaptersCount, membersCount };
+};
+
 
 // Fetch regions with the applied filter
 const fetchRegions = async (filter = '') => {
@@ -71,6 +100,7 @@ function displayRegions(regions) {
 
   // Loop through the regions and create table rows
   regions.forEach((region, index) => {
+    const { chaptersCount, membersCount } = getCountsForRegion(region.region_id);
     const row = document.createElement('tr');
     row.classList.add('order-list');
 
@@ -82,21 +112,8 @@ function displayRegions(regions) {
           <b>${region.region_name}</b>
         </div>
       </td>
-      <td style="border: 1px solid grey;">
-        <div class="d-flex align-items-center">
-          <b>${region.chapter_type || 'N/A'}</b>
-        </div>
-      </td>
-      <td style="border: 1px solid grey;">
-        <div class="d-flex align-items-center">
-          <b>${region.chapter_status || 'N/A'}</b>
-        </div>
-      </td>
-      <td style="border: 1px solid grey;">
-        <div class="d-flex align-items-center">
-          <b>${region.days_of_chapter || 'N/A'}</b>
-        </div>
-      </td>
+      <td style="border: 1px solid grey;"><b>${chaptersCount}</b></td>
+      <td style="border: 1px solid grey;"><b>${membersCount}</b></td>
       <td style="border: 1px solid grey;">
         <div class="d-flex align-items-center">
           <b>${region.contact_person || 'N/A'}</b>
@@ -148,8 +165,9 @@ document.getElementById('searchChapterInput').addEventListener('input', filterRe
 
 window.addEventListener('DOMContentLoaded', async () => {
   showLoader(); // Show loader immediately on page load
-  await fetchApiUrl(); // Fetch API URL first
-  await fetchRegions(); // Then fetch regions after apiUrl is fetched
+  await fetchApiUrl();
+  await fetchChaptersAndMembers(); // Fetch chapters and members
+  await fetchRegions(); // Fetch regions with updated data
 });
 
 
@@ -196,5 +214,7 @@ document.getElementById('chaptersTableBody').addEventListener('click', (event) =
     deleteRegion(region_id);
   }
 });
+
+
 
 
