@@ -79,7 +79,7 @@ function displayMembers(members) {
       <td style="border: 1px solid grey;">
         <div class="d-flex align-items-center">
           <span class="avatar avatar-sm me-2 avatar-rounded">
-            <img src="https://bniconnectglobal.com/web/open/networkViewProfileImage/667047103355150001b6ca93.jpg" alt="" />
+            <img src="https://cdn-icons-png.flaticon.com/512/194/194828.png" alt="" />
           </span>
           <a href="/m/view-member/?member_id=${member.member_id}">${fullName}</a>
         </div>

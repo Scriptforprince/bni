@@ -1465,7 +1465,7 @@ async function displayMemberData(data, memberId) {
 console.log(selectedMember)
     if (selectedMember) {
         // Update profile image or use a default if none available
-        document.getElementById("profileImage").src = "https://bniconnectglobal.com/web/open/networkViewProfileImage/667047103355150001b6ca93.jpg";
+        document.getElementById("profileImage").src = "https://cdn-icons-png.flaticon.com/512/194/194828.png";
 
         // Update card with member details
         document.getElementById("memberName").textContent = `${selectedMember.member_first_name} ${selectedMember.member_last_name}`;
@@ -1497,12 +1497,6 @@ document.getElementById("youtubeLink").textContent =selectedMember.member_youtub
 document.getElementById("twitterLink").textContent =selectedMember.member_twitter|| "Not Available";
 document.getElementById("linkedinLink").textContent =selectedMember.member_instagram|| "Not Available";
 document.getElementById("portfolioLink").textContent =selectedMember.member_portfolio|| "Not Available";
-
-
-
-
-
-
 
 
         // Calculate and display age from date of birth, if available
