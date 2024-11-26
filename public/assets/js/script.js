@@ -90,11 +90,10 @@ function displayMembers(members) {
         </div>
       </td>
       <td style="border: 1px solid grey;">${member.member_phone_number}</td>
-      <td class="text-center" style="border: 1px solid grey;">
-        <b>${member.member_category || 'N/A'}</b>
-      </td>
       <td class="fw-semibold" style="color:#d01f2f;">${chapterName}</td>
       <td class="fw-semibold" style="border: 1px solid grey;">${formattedDate}</td>
+      <td class="fw-semibold" style="border: 1px solid grey; color:#d01f2f;">${formattedDate}</td>
+      <td class="fw-semibold" style="border: 1px solid grey;">2</td>
       <td style="border: 1px solid grey;">
         <span class="badge bg-${member.member_status === 'active' ? 'success' : 'danger'}">
           ${member.member_status}

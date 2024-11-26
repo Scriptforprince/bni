@@ -279,39 +279,114 @@
               <div class="card-title">All Members</div>
               <div class="d-flex gap-3 align-items-center flex-wrap">
                 <div class="btn-group">
-                  <button
-                    class="btn btn-outline-light border dropdown-toggle"
-                    type="button"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                    <i class="ti ti-sort-descending-2 me-1"></i> Region
-                  </button>
-
-                  <button
-                    class="btn btn-outline-light border dropdown-toggle"
-                    type="button"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                    <i class="ti ti-sort-descending-2 me-1"></i> Chapter
-                  </button>
-                  <button
-                    class="btn btn-outline-light border dropdown-toggle"
-                    type="button"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                    <i class="ti ti-sort-descending-2 me-1"></i> Filter
-                  </button>
-                  <button
-                    class="btn btn-outline-light border"
-                    type="button"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                    + Add New Member
-                  </button>
+                  <div class="dropdown">
+                    <a
+                      href="javascript:void(0);"
+                      class="btn btn-sm btn-light text-muted dropdown-toggle"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="true"
+                    >
+                      <i class="ti ti-sort-descending-2 me-1"></i>
+                      Region
+                    </a>
+                    <ul class="dropdown-menu" role="menu" data-popper-placement="bottom-end">
+                      <li>
+                        <a class="dropdown-item filter-option" href="javascript:void(0);" data-filter="active">Active</a>
+                      </li>
+                      <li>
+                        <a class="dropdown-item filter-option" href="javascript:void(0);" data-filter="inactive">Inactive</a>
+                      </li>
+                      <li>
+                        <a class="dropdown-item filter-option" href="javascript:void(0);" data-filter="deleted">Deleted</a>
+                      </li>
+                    </ul>
+                    <a
+                      href="javascript:void(0);"
+                      class="btn btn-sm btn-light text-muted dropdown-toggle"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="true"
+                    >
+                      <i class="ti ti-sort-descending-2 me-1"></i>
+                      Chapter
+                    </a>
+                    <ul class="dropdown-menu" role="menu" data-popper-placement="bottom-end">
+                      <li>
+                        <a class="dropdown-item filter-option" href="javascript:void(0);" data-filter="active">Active</a>
+                      </li>
+                      <li>
+                        <a class="dropdown-item filter-option" href="javascript:void(0);" data-filter="inactive">Inactive</a>
+                      </li>
+                      <li>
+                        <a class="dropdown-item filter-option" href="javascript:void(0);" data-filter="deleted">Deleted</a>
+                      </li>
+                    </ul>
+                    <a
+                      href="javascript:void(0);"
+                      class="btn btn-sm btn-light text-muted dropdown-toggle"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="true"
+                    >
+                      <i class="ti ti-sort-descending-2 me-1"></i>
+                      Membership
+                    </a>
+                    <ul class="dropdown-menu" role="menu" data-popper-placement="bottom-end">
+                      <li>
+                        <a class="dropdown-item filter-option" href="javascript:void(0);" data-filter="active">1 Year</a>
+                      </li>
+                      <li>
+                        <a class="dropdown-item filter-option" href="javascript:void(0);" data-filter="inactive">2 Year</a>
+                      </li>
+                      <li>
+                        <a class="dropdown-item filter-option" href="javascript:void(0);" data-filter="deleted">5 Year</a>
+                      </li>
+                    </ul>
+                    <a
+                      href="javascript:void(0);"
+                      class="btn btn-sm btn-light text-muted dropdown-toggle"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="true"
+                    >
+                      <i class="ti ti-sort-descending-2 me-1"></i>
+                      Category
+                    </a>
+                    <ul class="dropdown-menu" role="menu" data-popper-placement="bottom-end">
+                      <li>
+                        <a class="dropdown-item filter-option" href="javascript:void(0);" data-filter="active">1 Year</a>
+                      </li>
+                      <li>
+                        <a class="dropdown-item filter-option" href="javascript:void(0);" data-filter="inactive">2 Year</a>
+                      </li>
+                      <li>
+                        <a class="dropdown-item filter-option" href="javascript:void(0);" data-filter="deleted">5 Year</a>
+                      </li>
+                    </ul>
+                    <a
+                      href="javascript:void(0);"
+                      class="btn btn-sm btn-light text-muted dropdown-toggle"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="true"
+                    >
+                      <i class="ti ti-sort-descending-2 me-1"></i>
+                      Status
+                    </a>
+                    <ul class="dropdown-menu" role="menu" data-popper-placement="bottom-end">
+                      <li>
+                        <a class="dropdown-item filter-option" href="javascript:void(0);" data-filter="active">Active</a>
+                      </li>
+                      <li>
+                        <a class="dropdown-item filter-option" href="javascript:void(0);" data-filter="inactive">Inactive</a>
+                      </li>
+                      <li>
+                        <a class="dropdown-item filter-option" href="javascript:void(0);" data-filter="deleted">Deleted</a>
+                      </li>
+                    </ul>
+                  </div>
+               <a href="/m/add-member"><button
+                class="btn btn-outline-light border"
+                type="button"
+              >
+                + Add New Member
+              </button></a>   
                 </div>
                 <div class="custom-form-group flex-grow-1">
                   <input
@@ -341,9 +416,10 @@
                       <th scope="col" style="border: 1px solid grey;">Member Details</th>
                       <th scope="col" style="border: 1px solid grey;">Member Email I'd</th>
                       <th scope="col" style="border: 1px solid grey;">Phone Number</th>
-                      <th scope="col" style="border: 1px solid grey;">Member Category</th>
                       <th scope="col" style="border: 1px solid grey;">Member Chapter</th>
                       <th scope="col" style="border: 1px solid grey;">Induction Date</th>
+                      <th scope="col" style="border: 1px solid grey;">Renewal Date</th>
+                      <th scope="col" style="border: 1px solid grey;">Membership (in years)</th>
                       <th scope="col" style="border: 1px solid grey;">Status</th>
                       <th scope="col" style="border: 1px solid grey;">Actions</th>
                     </tr>

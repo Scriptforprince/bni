@@ -116,11 +116,6 @@ function displayRegions(regions) {
       <td style="border: 1px solid grey;"><b>${membersCount}</b></td>
       <td style="border: 1px solid grey;">
         <div class="d-flex align-items-center">
-          <b>${region.contact_person || 'N/A'}</b>
-        </div>
-      </td>
-      <td style="border: 1px solid grey;">
-        <div class="d-flex align-items-center">
           <b>${region.contact_number || 'N/A'}</b>
         </div>
       </td>
