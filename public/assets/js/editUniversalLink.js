@@ -43,8 +43,6 @@ document.addEventListener('DOMContentLoaded', async function () {
              <option value="inactive" ${universalLink.status === 'inactive' ? 'selected' : ''}>Inactive</option>
          `;
 
-         
-
         // Populate payment gateway dropdown
         const paymentGatewaySelect = document.getElementById('link_payment_gateway');
         paymentGateways.forEach(gateway => {
