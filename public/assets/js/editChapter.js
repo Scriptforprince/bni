@@ -16,6 +16,53 @@ if (!chapter_id) {
   alert("Invalid chapter ID. Please check the URL.");
 }
 
+// Function to populate Chapter Meeting Day
+const populateChapterMeetingDay = (currentDay) => {
+  const daysOfWeek = [
+    "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
+  ];
+  const selectElement = document.getElementById("chapter_meeting_day");
+
+  // Clear any existing options
+  selectElement.innerHTML = '<option value="">Select</option>';
+
+  // Add days of the week
+  daysOfWeek.forEach(day => {
+    const option = document.createElement("option");
+    option.value = day;
+    option.textContent = day;
+
+    // Auto-select the current day
+    if (day === currentDay) {
+      option.selected = true;
+    }
+
+    selectElement.appendChild(option);
+  });
+};
+
+// Function to populate Chapter Type
+const populateChapterType = (currentType) => {
+  const chapterTypes = ["online", "offline", "Hybrid"];
+  const selectElement = document.getElementById("chapter_type");
+
+  // Clear any existing options
+  selectElement.innerHTML = '<option value="">Select</option>';
+
+  // Add chapter types
+  chapterTypes.forEach(type => {
+    const option = document.createElement("option");
+    option.value = type;
+    option.textContent = type.charAt(0).toUpperCase() + type.slice(1); // Capitalize first letter
+
+    // Auto-select the current type
+    if (type === currentType) {
+      option.selected = true;
+    }
+
+    selectElement.appendChild(option);
+  });
+};
 // Fetch chapter details
 const fetchChapterDetails = async () => {
   showLoader();
@@ -27,6 +74,11 @@ const fetchChapterDetails = async () => {
     const data = await response.json();
     await populateRegions(data.region_id); // Fetch regions and select the current one
     populateChapterFields(data);
+    // Populate Chapter Meeting Day
+    populateChapterMeetingDay(data.chapter_meeting_day);
+
+    // Populate Chapter Type
+    populateChapterType(data.chapter_type);
   } catch (error) {
     console.error("Error fetching chapter details:", error);
     alert("Failed to load chapter details. Please try again.");
