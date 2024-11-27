@@ -257,7 +257,7 @@ const updateChapterData = async () => {
 
       try {
           showLoader(); // Show the loader when sending data
-          const response = await fetch(`http://localhost:5000/api/updateChapter/${chapter_id}`, {
+          const response = await fetch(`https://bni-data-backend.onrender.com/api/updateChapter/${chapter_id}`, {
               method: 'PUT',
               headers: {
                   'Content-Type': 'application/json',
@@ -272,7 +272,7 @@ const updateChapterData = async () => {
               // Redirect to the region page after successful update
               setTimeout(() => {
                 window.location.href = '/c/manage-chapter';  // Redirect to the region page
-            }, 1000);
+            }, 1200);
           } else {
               const errorResponse = await response.json();
               console.error('Failed to update chapter:', errorResponse);

@@ -180,7 +180,7 @@ const deleteRegion = async (region_id) => {
   if (result.isConfirmed) {
       try {
           showLoader();  // Show loading indicator
-          const response = await fetch(`http://localhost:5000/api/deleteRegion/${region_id}`, {
+          const response = await fetch(`https://bni-data-backend.onrender.com/api/deleteRegion/${region_id}`, {
               method: 'PUT',
           });
 

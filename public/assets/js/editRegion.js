@@ -274,7 +274,7 @@ const updateRegionData = async () => {
 
         try {
             showLoader(); // Show the loader when sending data
-            const response = await fetch(`http://localhost:5000/api/updateRegion/${region_id}`, {
+            const response = await fetch(`https://bni-data-backend.onrender.com/api/updateRegion/${region_id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -286,6 +286,9 @@ const updateRegionData = async () => {
                 const updatedRegion = await response.json();
                 console.log('Region updated successfully:', updatedRegion);
                 Swal.fire('Updated!', 'The region details have been updated.', 'success');
+                setTimeout(() => {
+                    window.location.href = '/r/manage-region';  // Redirect to the region page
+                }, 1200);
             } else {
                 const errorResponse = await response.json();
                 console.error('Failed to update region:', errorResponse);

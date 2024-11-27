@@ -112,9 +112,9 @@ function displayChapters(chapters) {
         <span class="badge bg-warning text-light" style="cursor:pointer; color:white;">
            <a href="/c/edit-chapter/?chapter_id=${chapter.chapter_id}" style="cursor:pointer; color:white;">Edit</a>
         </span>
-        <span class="badge bg-danger text-light "  style="cursor:pointer; color:white;">
-         <a href="/c/view-chapter/?chapter_id=${chapter.chapter_id}" style="cursor:pointer; color:white;">Delete</a>
-        </span>
+        <span class="badge bg-danger text-light delete-btn" style="cursor:pointer; color:white;" data-chapter-id="${chapter.chapter_id}">
+     Delete
+    </span>
       </td>
         `;
         tableBody.appendChild(row);
@@ -144,3 +144,49 @@ document.getElementById('searchChapterInput').addEventListener('input', function
 document.addEventListener("DOMContentLoaded", () => {
     fetchChapters();
 });
+
+
+const deleteChapter = async (chapter_id) => {
+    // Show confirmation using SweetAlert
+    const result = await Swal.fire({
+        title: 'Are you sure?',
+        text: "This action will mark the chapter as deleted.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'No, cancel'
+    });
+  
+    if (result.isConfirmed) {
+        try {
+            showLoader();  // Show loading indicator
+            const response = await fetch(`https://bni-data-backend.onrender.com/api/deleteChapter/${chapter_id}`, {
+                method: 'PUT',
+            });
+  
+            if (response.ok) {
+                const data = await response.json();
+                Swal.fire('Deleted!', data.message, 'success');
+                // After deletion, remove the region from the table
+                document.querySelector(`[data-chapter-id="${chapter_id}"]`).closest('tr').remove();
+            } else {
+                const errorResponse = await response.json();
+                Swal.fire('Failed!', errorResponse.message, 'error');
+            }
+        } catch (error) {
+            console.error('Error deleting chapter:', error);
+            Swal.fire('Error!', 'Failed to delete chapter. Please try again.', 'error');
+        } finally {
+            hideLoader();  // Hide loading indicator
+        }
+    }
+  };
+  
+  // Add event listener for delete buttons dynamically
+  document.getElementById('chaptersTableBody').addEventListener('click', (event) => {
+    if (event.target.classList.contains('delete-btn')) {
+      const chapter_id = event.target.getAttribute('data-chapter-id');
+      deleteChapter(chapter_id);
+    }
+  });
+  
