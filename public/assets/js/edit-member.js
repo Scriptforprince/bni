@@ -185,3 +185,99 @@ document.addEventListener('DOMContentLoaded', async function () {
     hideLoader();
   }
 });
+const urlParams = new URLSearchParams(window.location.search);
+const memberId = urlParams.get('member_id');
+
+
+// Function to collect form data and prepare it for the update
+const collectMemberFormData = () => {
+  const memberData = {
+    member_first_name: document.querySelector("#member_first_name").value,
+    member_last_name: document.querySelector("#member_last_name").value,
+    member_date_of_birth: document.querySelector("#member_date_of_birth").value,
+    member_phone_number: document.querySelector("#member_phone_number").value,
+    member_alternate_mobile_number: document.querySelector("#member_alternate_mobile_numberr").value,
+    member_email_address: document.querySelector("#member_email_address").value,
+    street_address_line_1: document.querySelector("#street_address_line_1").value,
+    street_address_line_2: document.querySelector("#street_address_line_2").value,
+    address_pincode: document.querySelector("#address_pincode").value,
+    address_city: document.querySelector("#address_city").value,
+    address_state: document.querySelector("#address_state").value,
+    region_id: document.querySelector("#region_id").value,
+    chapter_id: document.querySelector("#chapter_id").value,
+    accolades_id: Array.from(document.querySelectorAll('input[name="accolades"]:checked')).map(checkbox => checkbox.value), // Collecting accolades as an array
+    category_id: document.querySelector("#category").value || null,
+    member_current_membership: document.querySelector("#member_current_membership").value,
+    member_renewal_date: document.querySelector("#member_renewal_date").value,
+    member_gst_number: document.querySelector("#member_gst_number").value,
+    member_company_name: document.querySelector("#member_company_name").value,
+    member_company_address: document.querySelector("#member_company_address").value,
+    member_company_state: document.querySelector("#member_company_state").value,
+    member_company_city: document.querySelector("#member_company_city").value,
+    member_company_pincode: document.querySelector("#member_company_pincode").value,
+    member_photo: document.querySelector("#member_photo").src, // Assuming logo is stored in the image src
+    member_website: document.querySelector("#member_website").value,
+    member_facebook: document.querySelector("#member_facebook").value,
+    member_instagram: document.querySelector("#member_instagram").value,
+    member_linkedin: document.querySelector("#member_linkedin").value,
+    member_youtube: document.querySelector("#member_youtube").value,
+    member_sponsored_by: document.querySelector("#member_sponsored_by").value,
+    date_of_publishing: document.querySelector("#date_of_publishing").value,
+    member_status: document.querySelector("#member_status").value,
+  };
+
+  return memberData;
+};
+
+
+// Function to send the updated data to the backend after confirmation
+const updateMemberData = async () => {
+  // Ask for confirmation using SweetAlert
+  const result = await Swal.fire({
+      title: 'Are you sure?',
+      text: "You are about to edit the member details!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, update it!',
+      cancelButtonText: 'No, cancel!',
+  });
+
+  if (result.isConfirmed) {
+      const collectFormData = collectMemberFormData();
+      console.log("Collected member data:", collectFormData); // Log the collected form data
+
+      try {
+          showLoader(); // Show the loader when sending data
+          const response = await fetch(`http://localhost:5000/api/updateMember/${memberId}`, {
+              method: 'PUT',
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(collectFormData),
+          });
+
+          const responseData = await response.json();
+          if (response.ok) {
+              console.log('Member updated successfully:', responseData);
+              Swal.fire('Updated!', 'The Member details have been updated.', 'success');
+              setTimeout(() => {
+                  window.location.href = '/m/manage-members';  // Redirect to the region page
+              }, 1200);
+          } else {
+              console.error('Failed to update member:', responseData);
+              Swal.fire('Error!', `Failed to update member: ${responseData.message}`, 'error');
+          }
+      } catch (error) {
+          console.error('Error updating member:', error);
+          Swal.fire('Error!', 'Failed to update member. Please try again.', 'error');
+      } finally {
+          hideLoader(); // Hide the loader once the request is complete
+      }
+  } else {
+      console.log('Update canceled');
+  }
+};
+
+
+document.getElementById("updateChapterBtn").addEventListener("click", updateMemberData);
+
