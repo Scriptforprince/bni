@@ -103,9 +103,9 @@ function displayMembers(members) {
         <span class="badge bg-warning text-light" style="cursor:pointer; color:white;">
            <a href="/m/edit-member/?member_id=${member.member_id} "style="cursor:pointer; color:white;">Edit</a>
         </span>
-        <span class="badge bg-danger text-light"  style="cursor:pointer; color:white;">
-         <a href="/m/view-member/?member_id=${member.member_id}" style="cursor:pointer; color:white;">Delete</a>
-        </span>
+        <span class="badge bg-danger text-light delete-btn" style="cursor:pointer; color:white;" data-member-id="${member.member_id}">
+     Delete
+    </span>
       </td>
     `;
     
@@ -253,3 +253,48 @@ window.addEventListener('DOMContentLoaded', async () => {
 });
 
 window.onload = fetchMembers;
+
+
+const deleteMember = async (member_id) => {
+  // Show confirmation using SweetAlert
+  const result = await Swal.fire({
+      title: 'Are you sure?',
+      text: "This action will mark the member as deleted.",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'No, cancel'
+  });
+
+  if (result.isConfirmed) {
+      try {
+          showLoader();  // Show loading indicator
+          const response = await fetch(`https://bni-data-backend.onrender.com/api/deleteMember/${member_id}`, {
+              method: 'PUT',
+          });
+
+          if (response.ok) {
+              const data = await response.json();
+              Swal.fire('Deleted!', data.message, 'success');
+              // After deletion, remove the region from the table
+              document.querySelector(`[data-member-id="${member_id}"]`).closest('tr').remove();
+          } else {
+              const errorResponse = await response.json();
+              Swal.fire('Failed!', errorResponse.message, 'error');
+          }
+      } catch (error) {
+          console.error('Error deleting member:', error);
+          Swal.fire('Error!', 'Failed to delete member. Please try again.', 'error');
+      } finally {
+          hideLoader();  // Hide loading indicator
+      }
+  }
+};
+
+// Add event listener for delete buttons dynamically
+document.getElementById('chaptersTableBody').addEventListener('click', (event) => {
+  if (event.target.classList.contains('delete-btn')) {
+    const member_id = event.target.getAttribute('data-member-id');
+    deleteMember(member_id);
+  }
+});
