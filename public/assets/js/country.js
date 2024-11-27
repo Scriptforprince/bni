@@ -18,10 +18,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Append option to select
                 selectElement.appendChild(option);
             });
+
+            // Set India as the default selected option
+            selectElement.value = 'IN'; // 'IN' is the country code for India
         })
         .catch(error => console.error('Error fetching data:', error));
 });
-
-
-
-

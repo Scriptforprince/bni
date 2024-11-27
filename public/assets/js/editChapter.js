@@ -63,6 +63,56 @@ const populateChapterType = (currentType) => {
     selectElement.appendChild(option);
   });
 };
+
+// Possible chapter statuses
+const chapterStatusOptions = ["running", "pre-launch", "re-launch"];
+
+// Populate Chapter Status dropdown
+const populateChapterStatus = (currentStatus) => {
+  const chapterStatusDropdown = document.getElementById("chapter_status");
+
+  // Clear existing options
+  chapterStatusDropdown.innerHTML = '<option value="">Select</option>';
+
+  // Add each status as an option
+  chapterStatusOptions.forEach((status) => {
+    const option = document.createElement("option");
+    option.value = status;
+    option.textContent = status.charAt(0).toUpperCase() + status.slice(1); // Capitalize first letter
+    if (status === currentStatus) {
+      option.selected = true; // Auto-select the current status
+    }
+    chapterStatusDropdown.appendChild(option);
+  });
+};
+
+// Function to populate Country dropdown
+const populateCountryDropdown = async () => {
+  try {
+    const response = await fetch('https://restcountries.com/v3.1/all');
+    if (!response.ok) throw new Error('Failed to fetch countries.');
+
+    const countries = await response.json();
+    const countryDropdown = document.getElementById("country");
+
+    countryDropdown.innerHTML = '<option value="">Select Country</option>'; // Clear options
+
+    countries.forEach(country => {
+      const option = document.createElement("option");
+      option.value = country.cca2; // Use country code as value
+      option.textContent = country.name.common; // Display country name
+      countryDropdown.appendChild(option);
+    });
+
+    // Auto-select India by default
+    countryDropdown.value = 'IN'; // 'IN' is the country code for India
+  } catch (error) {
+    console.error('Error populating country dropdown:', error);
+    alert('Failed to load country data. Please try again.');
+  }
+};
+
+
 // Fetch chapter details
 const fetchChapterDetails = async () => {
   showLoader();
@@ -74,11 +124,9 @@ const fetchChapterDetails = async () => {
     const data = await response.json();
     await populateRegions(data.region_id); // Fetch regions and select the current one
     populateChapterFields(data);
-    // Populate Chapter Meeting Day
     populateChapterMeetingDay(data.chapter_meeting_day);
-
-    // Populate Chapter Type
     populateChapterType(data.chapter_type);
+    populateChapterStatus(data.chapter_status);
   } catch (error) {
     console.error("Error fetching chapter details:", error);
     alert("Failed to load chapter details. Please try again.");
@@ -123,7 +171,6 @@ const populateChapterFields = (data) => {
   document.getElementById("chapter_kitty_fees").value = data.chapter_kitty_fees || "Not Found";
   document.getElementById("chapter_visitor_fees").value = data.chapter_visitor_fees || "Not Found";
   document.getElementById("chapter_logo").src = data.chapter_logo || "";
-  document.getElementById("country").value = data.country || "Not Found";
   document.getElementById("state").value = data.state || "Not Found";
   document.getElementById("city").value = data.city || "Not Found";
   document.getElementById("meeting_hotel_name").value = data.meeting_hotel_name || "Not Found";
@@ -146,5 +193,6 @@ const populateChapterFields = (data) => {
 
 // Initialize the page
 document.addEventListener("DOMContentLoaded", async () => {
+  await populateCountryDropdown();
   await fetchChapterDetails();
 });
