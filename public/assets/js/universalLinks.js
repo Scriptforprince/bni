@@ -90,6 +90,14 @@ function displayLinks(regions) {
           ${region.status}
         </span>
       </td>
+      <td style="border: 1px solid grey">
+        <span class="badge bg-primary text-light" style="cursor:pointer; color:white;">
+           <a href="/u/edit-universal-link/?id=${region.id}" style="color:white">Edit</a>
+        </span>
+        <span class="badge bg-danger text-light delete-btn" style="cursor:pointer; color:white;" data-id="${region.id}">
+     Delete
+    </span>
+      </td>
     `;
     tableBody.appendChild(row);
   });
@@ -117,5 +125,49 @@ window.addEventListener('DOMContentLoaded', async () => {
     console.error('Error loading data on page load:', error);
   } finally {
     hideLoader(); // Ensure loader hides if an error occurs
+  }
+});
+
+const deleteUniversalLink = async (id) => {
+  // Show confirmation using SweetAlert
+  const result = await Swal.fire({
+      title: 'Are you sure?',
+      text: "This action will mark the universal link as deleted.",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'No, cancel'
+  });
+
+  if (result.isConfirmed) {
+      try {
+          showLoader();  // Show loading indicator
+          const response = await fetch(`https://bni-data-backend.onrender.com/api/deleteUniversalLink/${id}`, {
+              method: 'PUT',
+          });
+
+          if (response.ok) {
+              const data = await response.json();
+              Swal.fire('Deleted!', data.message, 'success');
+              // After deletion, remove the region from the table
+              document.querySelector(`[data-id="${id}"]`).closest('tr').remove();
+          } else {
+              const errorResponse = await response.json();
+              Swal.fire('Failed!', errorResponse.message, 'error');
+          }
+      } catch (error) {
+          console.error('Error deleting universal link:', error);
+          Swal.fire('Error!', 'Failed to delete universal link. Please try again.', 'error');
+      } finally {
+          hideLoader();  // Hide loading indicator
+      }
+  }
+};
+
+// Add event listener for delete buttons dynamically
+document.getElementById('chaptersTableBody').addEventListener('click', (event) => {
+  if (event.target.classList.contains('delete-btn')) {
+    const id = event.target.getAttribute('data-id');
+    deleteUniversalLink(id);
   }
 });
