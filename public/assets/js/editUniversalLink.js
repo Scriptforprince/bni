@@ -59,3 +59,70 @@ document.addEventListener('DOMContentLoaded', async function () {
         alert('Failed to fetch universal link details. Please try again.');
     }
 });
+
+const urlParams = new URLSearchParams(window.location.search);
+const universalLinkId = urlParams.get('id');
+
+// Function to collect form data and prepare it for the update
+const collectFormData = () => {
+    const linkData = {
+        link_name: document.querySelector("#link_name").value,
+        link_ulid: document.querySelector("#link_ulid").value,
+        link_slug: document.querySelector("#link_slug").value,
+        link_status: document.querySelector("#link_status").value,
+        link_payment_gateway: document.querySelector("#link_payment_gateway").value,
+    };
+
+    return linkData;
+};
+
+// Function to send the updated data to the backend after confirmation
+const updateLinkData = async () => {
+    // Ask for confirmation using SweetAlert
+    const result = await Swal.fire({
+        title: 'Are you sure?',
+        text: "You are about to edit the universal link details!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, update it!',
+        cancelButtonText: 'No, cancel!',
+    });
+
+    if (result.isConfirmed) {
+        const linkData = collectFormData();
+        console.log(linkData); // Verify the data before sending it
+
+        try {
+            showLoader(); // Show the loader when sending data
+            const response = await fetch(`https://bni-data-backend.onrender.com/api/updateUniversalLink/${universalLinkId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(linkData),
+            });
+
+            if (response.ok) {
+                const updatedRegion = await response.json();
+                console.log('Universal Link updated successfully:', updatedRegion);
+                Swal.fire('Updated!', 'The Universal Link details have been updated.', 'success');
+                setTimeout(() => {
+                    window.location.href = '/u/manage-universal-links';  // Redirect to the region page
+                }, 1200);
+            } else {
+                const errorResponse = await response.json();
+                console.error('Failed to update universal link:', errorResponse);
+                Swal.fire('Error!', `Failed to update universal link: ${errorResponse.message}`, 'error');
+            }
+        } catch (error) {
+            console.error('Error updating universal link:', error);
+            Swal.fire('Error!', 'Failed to update universal link. Please try again.', 'error');
+        } finally {
+            hideLoader(); // Hide the loader once the request is complete
+        }
+    } else {
+        console.log('Update canceled');
+    }
+};
+
+document.getElementById("updateRegionBtn").addEventListener("click", updateLinkData);
