@@ -256,8 +256,6 @@ const collectFormData = () => {
 
     return regionData;
 };
-
-
 // Function to send the updated data to the backend after confirmation
 const updateRegionData = async () => {
     // Ask for confirmation using SweetAlert

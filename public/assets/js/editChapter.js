@@ -196,3 +196,99 @@ document.addEventListener("DOMContentLoaded", async () => {
   await populateCountryDropdown();
   await fetchChapterDetails();
 });
+
+
+// Function to collect form data and prepare it for the update
+const collectChapterFormData = () => {
+  const chapterData = {
+      chapter_name: document.querySelector("#chapter_name").value,
+      region_id: document.querySelector("#region_id").value,
+      chapter_meeting_day: document.querySelector("#chapter_meeting_day").value,
+      chapter_type: document.querySelector("#chapter_type").value,
+      chapter_status: document.querySelector("#chapter_status").value,
+      chapter_membership_fee: document.querySelector("#chapter_membership_fee").value,
+      chapter_kitty_fees: document.querySelector("#chapter_kitty_fees").value,
+      chapter_visitor_fees: document.querySelector("#chapter_visitor_fees").value,
+      one_time_registration_fee: document.querySelector("#one_time_registration_fee").value,
+      eoi_link: document.querySelector("#eoi_link").value,
+      member_app_link: document.querySelector("#member_app_link").value,
+      meeting_hotel_name: document.querySelector("#meeting_hotel_name").value,
+      chapter_mission: document.querySelector("#chapter_mission").value,
+      chapter_vision: document.querySelector("#chapter_vision").value,
+      contact_person: document.querySelector("#contact_person").value,
+      contact_number: document.querySelector("#contact_number").value,
+      email_id: document.querySelector("#email_id").value,
+      country: document.querySelector("#country").value,
+      state: document.querySelector("#state").value,
+      city: document.querySelector("#city").value,
+      street_address_line: document.querySelector("#street_address_line").value,
+      postal_code: document.querySelector("#postal_code").value,
+      chapter_facebook: document.querySelector("#chapter_facebook").value,
+      chapter_instagram: document.querySelector("#chapter_instagram").value,
+      chapter_linkedin: document.querySelector("#chapter_linkedin").value,
+      chapter_youtube: document.querySelector("#chapter_youtube").value,
+      chapter_website: document.querySelector("#chapter_website").value,
+      chapter_logo: document.querySelector("#chapter_logo").src, // Assuming logo is stored in the image src
+      date_of_publishing: document.querySelector("#date_of_publishing").value,
+      chapter_launched_by: document.querySelector("#chapter_launched_by").value,
+      chapter_late_fees: document.querySelector("#chapter_late_fees").value,
+      chapter_membership_fee_two_year: document.querySelector("#chapter_membership_fee_two_year").value,
+      chapter_membership_fee_five_year: document.querySelector("#chapter_membership_fee_five_year").value,
+  };
+
+  return chapterData;
+};
+
+// Function to send the updated data to the backend after confirmation
+const updateChapterData = async () => {
+  // Ask for confirmation using SweetAlert
+  const result = await Swal.fire({
+      title: 'Are you sure?',
+      text: "You are about to edit the chapter details!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, update it!',
+      cancelButtonText: 'No, cancel!',
+  });
+
+  if (result.isConfirmed) {
+      const chapterData = collectChapterFormData();
+      console.log(chapterData); // Verify the data before sending it
+
+      try {
+          showLoader(); // Show the loader when sending data
+          const response = await fetch(`http://localhost:5000/api/updateChapter/${chapter_id}`, {
+              method: 'PUT',
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(chapterData),
+          });
+
+          if (response.ok) {
+              const updatedChapter = await response.json();
+              console.log('Chapter updated successfully:', updatedChapter);
+              Swal.fire('Updated!', 'The chapter details have been updated.', 'success');
+              // Redirect to the region page after successful update
+              setTimeout(() => {
+                window.location.href = '/c/manage-chapter';  // Redirect to the region page
+            }, 1000);
+          } else {
+              const errorResponse = await response.json();
+              console.error('Failed to update chapter:', errorResponse);
+              Swal.fire('Error!', `Failed to update chapter: ${errorResponse.message}`, 'error');
+          }
+      } catch (error) {
+          console.error('Error updating chapter:', error);
+          Swal.fire('Error!', 'Failed to update chapter. Please try again.', 'error');
+      } finally {
+          hideLoader(); // Hide the loader once the request is complete
+      }
+  } else {
+      console.log('Update canceled');
+  }
+};
+
+// Event listener to trigger the update
+document.getElementById("updateChapterBtn").addEventListener("click", updateChapterData);
+
