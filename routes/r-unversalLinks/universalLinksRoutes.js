@@ -4,5 +4,6 @@ const universalController = require('../../controllers/c-universalLink/universal
 
 // Region routes
 router.get('/manage-universal-links', universalController.manageUniversal);
+router.get('/edit-universal-link', universalController.editUniversalLink);
 
 module.exports = router;
