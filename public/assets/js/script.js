@@ -1,11 +1,19 @@
 const apiUrl = 'https://bni-data-backend.onrender.com/api/members';
 const chaptersApiUrl = 'https://bni-data-backend.onrender.com/api/chapters'; 
-
+const regionsApiUrl = 'https://bni-data-backend.onrender.com/api/regions';
+const categoriesApiUrl = 'https://bni-data-backend.onrender.com/api/memberCategory';
+const accoladesApiUrl = 'https://bni-data-backend.onrender.com/api/accolades';
 let chaptersMap = {};
 let allMembers = []; 
 let filteredMembers = []; 
 let currentPage = 1; 
 const entriesPerPage = 30; 
+const regionsDropdown = document.getElementById("region-filter");
+const chapterDropdown = document.getElementById("chapter-filter");
+const membershipDropdown = document.getElementById("membership-filter");
+const categoryDropdown = document.getElementById("category-filter");
+const accoladesDropdown = document.getElementById("accolades-filter");
+const statusDropdown = document.getElementById("status-filter");
 
 function showLoader() { 
   document.getElementById('loader').style.display = 'flex';
@@ -15,12 +23,292 @@ function hideLoader() {
   document.getElementById('loader').style.display = 'none';
 }
 
+// Function to populate a dropdown
+const populateDropdown = (
+  dropdown,
+  data,
+  valueField,
+  textField,
+  defaultText
+) => {
+  // Clear the dropdown
+  dropdown.innerHTML = "";
+
+  // Add a default option
+  dropdown.innerHTML += `
+      <li>
+        <a class="dropdown-item" href="javascript:void(0);" data-value="">
+          ${defaultText}
+        </a>
+      </li>
+    `;
+
+  // Add options dynamically
+  data.forEach((item) => {
+    dropdown.innerHTML += `
+          <li>
+            <a class="dropdown-item" href="javascript:void(0);" data-value="${item[valueField]}">
+              ${item[textField]}
+            </a>
+          </li>
+        `;
+  });
+
+  // Attach event listeners
+  attachDropdownListeners(dropdown);
+};
+
+// Function to attach event listeners to dropdown items
+const attachDropdownListeners = (dropdown) => {
+  const dropdownToggle = dropdown
+    .closest(".dropdown")
+    .querySelector(".dropdown-toggle");
+
+  dropdown.querySelectorAll(".dropdown-item").forEach((item) => {
+    item.addEventListener("click", () => {
+      dropdown.querySelectorAll(".dropdown-item.active").forEach((activeItem) => {
+        activeItem.classList.remove("active");
+      });
+
+      item.classList.add("active");
+      const selectedValue = item.getAttribute("data-value");
+      const selectedText = item.textContent.trim();
+
+      if (dropdownToggle) {
+        dropdownToggle.textContent = selectedText;
+      }
+
+      console.log(`Selected Value from ${dropdown.id}:`, selectedValue);
+    });
+  });
+};
+
+const populateRegionDropdown = async () => {
+  try {
+    showLoader();
+    // Fetch chapters data
+    const response = await fetch(regionsApiUrl);
+    if (!response.ok) throw new Error("Error fetching regions");
+
+    const regions = await response.json(); // Assume the API returns an array of chapter objects
+
+    // Extract unique chapter types
+    const uniqueTypes = [
+      ...new Set(regions.map((region) => region.region_name)),
+    ];
+
+    // Clear existing options
+    regionsDropdown.innerHTML = "";
+
+    // Populate dropdown with unique chapter types
+    uniqueTypes.forEach((type) => {
+      regionsDropdown.innerHTML += `<li>
+                <a class="dropdown-item" href="javascript:void(0);" data-value="${type.toUpperCase()}">
+                    ${type}
+                </a>
+            </li>`;
+    });
+
+    // Attach listeners after populating
+    attachDropdownListeners(regionsDropdown);
+  } catch (error) {
+    console.error("Error populating regions dropdown:", error);
+  } finally {
+    hideLoader();
+  }
+};
+// Call the function to populate the regions dropdown
+populateRegionDropdown();
+
+const populateChapterDropdown = async () => {
+  try {
+    showLoader();
+    // Fetch chapters data
+    const response = await fetch(chaptersApiUrl);
+    if (!response.ok) throw new Error("Error fetching chapter");
+
+    const chapters = await response.json(); // Assume the API returns an array of chapter objects
+
+    // Extract unique chapter types
+    const uniqueTypes = [
+      ...new Set(chapters.map((chapter) => chapter.chapter_name)),
+    ];
+
+    // Clear existing options
+    chapterDropdown.innerHTML = "";
+
+    // Populate dropdown with unique chapter
+    uniqueTypes.forEach((type) => {
+      chapterDropdown.innerHTML += `<li>
+                <a class="dropdown-item" href="javascript:void(0);" data-value="${type.toUpperCase()}">
+                    ${type}
+                </a>
+            </li>`;
+    });
+
+    // Attach listeners after populating
+    attachDropdownListeners(chapterDropdown);
+  } catch (error) {
+    console.error("Error populating chapters dropdown:", error);
+  } finally {
+    hideLoader();
+  }
+};
+// Call the function to populate the chapter categories
+populateChapterDropdown();
+
+const populateCategoryDropdown = async () => {
+  try {
+    showLoader();
+    // Fetch chapters data
+    const response = await fetch(categoriesApiUrl);
+    if (!response.ok) throw new Error("Error fetching chapter");
+
+    const categories = await response.json(); // Assume the API returns an array of chapter objects
+
+    // Extract unique chapter types
+    const uniqueTypes = [
+      ...new Set(categories.map((category) => category.category_name)),
+    ];
+
+    // Clear existing options
+    categoryDropdown.innerHTML = "";
+
+    // Populate dropdown with unique categories
+    uniqueTypes.forEach((type) => {
+      categoryDropdown.innerHTML += `<li>
+                <a class="dropdown-item" href="javascript:void(0);" data-value="${type.toUpperCase()}">
+                    ${type}
+                </a>
+            </li>`;
+    });
+
+    // Attach listeners after populating all categories
+    attachDropdownListeners(categoryDropdown);
+  } catch (error) {
+    console.error("Error populating chapters dropdown:", error);
+  } finally {
+    hideLoader();
+  }
+};
+// Call the function to populate the chapter dropdown
+populateCategoryDropdown();
+
+const populateAccoladesDropdown = async () => {
+  try {
+    showLoader();
+    // Fetch chapters data
+    const response = await fetch(accoladesApiUrl);
+    if (!response.ok) throw new Error("Error fetching chapter");
+
+    const accolades = await response.json(); // Assume the API returns an array of chapter objects
+
+    // Extract unique chapter types
+    const uniqueTypes = [
+      ...new Set(accolades.map((accolade) => accolade.accolade_name)),
+    ];
+
+    // Clear existing options
+    accoladesDropdown.innerHTML = "";
+
+    // Populate dropdown with unique accolades
+    uniqueTypes.forEach((type) => {
+      accoladesDropdown.innerHTML += `<li>
+                <a class="dropdown-item" href="javascript:void(0);" data-value="${type.toUpperCase()}">
+                    ${type}
+                </a>
+            </li>`;
+    });
+
+    // Attach listeners after populating all accolades
+    attachDropdownListeners(accoladesDropdown);
+  } catch (error) {
+    console.error("Error populating chapters dropdown:", error);
+  } finally {
+    hideLoader();
+  }
+};
+// Call the function to populate the accolade dropdown
+populateAccoladesDropdown();
+
+const populateMembershipDropdown = async () => {
+  try {
+    showLoader();
+    // Fetch membership data
+    const response = await fetch(apiUrl);
+    if (!response.ok) throw new Error("Error fetching membershi[");
+
+    const memberships = await response.json(); // Assume the API returns an array of chapter objects
+
+    // Extract unique membership type
+    const uniqueTypes = [
+      ...new Set(memberships.map((membership) => membership.member_current_membership)),
+    ];
+
+    // Clear existing options
+    membershipDropdown.innerHTML = "";
+
+    // Populate dropdown with unique membership
+    uniqueTypes.forEach((type) => {
+      membershipDropdown.innerHTML += `<li>
+                <a class="dropdown-item" href="javascript:void(0);" data-value="${type.toUpperCase()}">
+                    ${type}
+                </a>
+            </li>`;
+    });
+
+    // Attach listeners after populating all membership
+    attachDropdownListeners(membershipDropdown);
+  } catch (error) {
+    console.error("Error populating chapters dropdown:", error);
+  } finally {
+    hideLoader();
+  }
+};
+// Call the function to populate the membership dropdown
+populateMembershipDropdown();
+
+const populateStatusDropdown = async () => {
+  try {
+    showLoader();
+    // Fetch member status data
+    const response = await fetch(apiUrl);
+    if (!response.ok) throw new Error("Error fetching member current membership");
+
+    const statuses = await response.json(); // Assume the API returns an array of members objects
+
+    // Extract unique current membership type
+    const uniqueTypes = [
+      ...new Set(statuses.map((status) => status.member_status)),
+    ];
+
+    // Clear existing options
+    statusDropdown.innerHTML = "";
+
+    // Populate dropdown with unique current membership
+    uniqueTypes.forEach((type) => {
+      statusDropdown.innerHTML += `<li>
+                <a class="dropdown-item" href="javascript:void(0);" data-value="${type.toUpperCase()}">
+                    ${type}
+                </a>
+            </li>`;
+    });
+
+    // Attach listeners after populating all current membership
+    attachDropdownListeners(statusDropdown);
+  } catch (error) {
+    console.error("Error populating chapters dropdown:", error);
+  } finally {
+    hideLoader();
+  }
+};
+// Call the function to populate the membership dropdown
+populateStatusDropdown();
 
 async function fetchChapters() {
   try {
     const response = await fetch(chaptersApiUrl);
     if (!response.ok) throw new Error('Network response was not ok');
-    
     const chapters = await response.json();
     chapters.forEach(chapter => {
       chaptersMap[chapter.chapter_id] = chapter.chapter_name;
@@ -30,19 +318,15 @@ async function fetchChapters() {
   }
 }
 
-
 async function fetchMembers() {
   showLoader();
   try {
-   
     await fetchChapters();
-
     const response = await fetch(apiUrl);
     if (!response.ok) throw new Error('Network response was not ok');
     
     allMembers = await response.json(); 
     filteredMembers = [...allMembers]; 
-
   
     displayMembers(filteredMembers.slice(0, entriesPerPage));
     setupPagination(filteredMembers.length); 
@@ -53,26 +337,15 @@ async function fetchMembers() {
   }
 }
 
-
 function displayMembers(members) {
   const tableBody = document.querySelector('.table tbody');
-  
-  
   tableBody.innerHTML = '';
-
- 
   members.forEach((member, index) => {
     const fullName = `${member.member_first_name} ${member.member_last_name || ''}`;
-    
-    
     const formattedDate = member.member_induction_date ? member.member_induction_date.substring(0, 10) : 'N/A';
-    
-    
     const chapterName = chaptersMap[member.chapter_id] || 'N/A';
-
     const row = document.createElement('tr');
     row.classList.add('order-list');
-    
     
     row.innerHTML = `
       <td>${(currentPage - 1) * entriesPerPage + index + 1}</td> <!-- Adjust for pagination -->
@@ -124,14 +397,12 @@ function filterMembers(searchTerm) {
       const fullName = `${member.member_first_name} ${member.member_last_name}`.toLowerCase();
       const email = member.member_email_address.toLowerCase();
       const phone = member.member_phone_number;
-      
       // Check if search term matches any of the fields (name, email, or phone)
       return fullName.includes(searchTerm.toLowerCase()) || 
              email.includes(searchTerm.toLowerCase()) || 
              phone.includes(searchTerm);
     });
   }
-
   displayMembers(filteredMembers.slice((currentPage - 1) * entriesPerPage, currentPage * entriesPerPage)); // Display current page members
   setupPagination(filteredMembers.length); // Update pagination based on filtered results
 }
@@ -146,9 +417,7 @@ document.getElementById('searchInput').addEventListener('input', function() {
 function setupPagination(totalMembers) {
   const paginationElement = document.querySelector('.pagination');
   paginationElement.innerHTML = ''; // Clear existing pagination
-  
   const totalPages = Math.ceil(totalMembers / entriesPerPage);
-
   // Previous button
   const prevPage = document.createElement('li');
   prevPage.className = `page-item ${currentPage === 1 ? 'disabled' : ''}`;
@@ -251,7 +520,6 @@ window.addEventListener('DOMContentLoaded', async () => {
     hideLoader(); // Hide loader after data is fetched, whether successful or not
   }
 });
-
 window.onload = fetchMembers;
 
 

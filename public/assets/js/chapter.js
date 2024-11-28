@@ -222,20 +222,20 @@ window.addEventListener("load", checkFiltersAndToggleResetButton);
 
 // Update the dropdown text and mark the item as active
 const updateDropdownText = (dropdown, selectedValue) => {
-  const selectedItem = dropdown.querySelector(`.dropdown-item[data-value="${selectedValue.toLowerCase()}"]`); // Convert to lower case for matching
+  const selectedItem = dropdown.querySelector(`.dropdown-item[data-value="${selectedValue}"]`);
   const dropdownToggle = dropdown.closest('.dropdown').querySelector('.dropdown-toggle');
 
   if (selectedItem && dropdownToggle) {
-    // Update the dropdown button text
+    console.log(`Updating dropdown: ${dropdown.id}, selectedValue: ${selectedValue}`);  // Debugging line
     dropdownToggle.textContent = selectedItem.textContent.trim();
 
-    // Remove the active class from all items and set it on the selected one
     dropdown.querySelectorAll('.dropdown-item').forEach((item) => {
       item.classList.remove('active');
     });
     selectedItem.classList.add('active');
   }
 };
+
 
 
 // Attach event listener to a "Filter" button or trigger
