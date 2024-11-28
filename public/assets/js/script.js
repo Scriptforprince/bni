@@ -373,10 +373,10 @@ window.addEventListener('load', () => {
   // Update the dropdowns with the selected filter values
   if (regionId) updateDropdownText(regionsDropdown, regionId);
   if (chapterId) updateDropdownText(chapterDropdown, chapterId);
-  if (membershipYear) updateDropdownText(membershipDropdown, membershipYear.toUpperCase()); // Ensure chapter type is uppercased
-  if (categoryId) updateDropdownText(categoryDropdown, categoryId.toUpperCase()); // Ensure chapter status is uppercased
-  if (accoladesId) updateDropdownText(accoladesDropdown, accoladesId.toUpperCase()); // Ensure chapter status is uppercased
-  if (status) updateDropdownText(statusDropdown, status.toUpperCase()); // Ensure chapter status is uppercased
+  if (membershipYear) updateDropdownText(membershipDropdown, membershipYear); // Ensure chapter type is uppercased
+  if (categoryId) updateDropdownText(categoryDropdown, categoryId); // Ensure chapter status is uppercased
+  if (accoladesId) updateDropdownText(accoladesDropdown, accoladesId); // Ensure chapter status is uppercased
+  if (status) updateDropdownText(statusDropdown, status); // Ensure chapter status is uppercased
 
   checkFiltersAndToggleResetButton();
 });
@@ -416,7 +416,30 @@ async function fetchMembers() {
     if (!response.ok) throw new Error('Network response was not ok');
     
     allMembers = await response.json(); 
-    filteredMembers = [...allMembers]; 
+    // Apply filters from URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const filters = {
+      // Get the filter values from URL params
+        regionId : urlParams.get("region_id"),
+        chapterId : urlParams.get("chapter_id"),
+        membershipYear : urlParams.get("membership_year"),
+        categoryId : urlParams.get("category_id"),
+        accoladesId : urlParams.get("accolades_id"),
+        status : urlParams.get("status"),
+    };
+    console.log("Filters from URL params:", filters);
+    // Filter chapters based on the filters
+    filteredMembers = allMembers.filter((member) => {
+      return (
+        (!filters.regionId || member.region_id === parseInt(filters.regionId)) &&
+        (!filters.chapterId || member.chapter_id === parseInt(filters.chapterId)) &&
+        (!filters.membershipYear || member.member_current_membership === filters.membershipYear) &&
+        (!filters.categoryId || member.category_id === parseInt(filters.categoryId)) && 
+        (!filters.accoladesId || (Array.isArray(member.accolades_id) && member.accolades_id.includes(parseInt(filters.accoladesId)))) &&
+        (!filters.status || member.member_status.toUpperCase() === filters.status)
+      );
+    });
+    console.log("Filtered chapters:", filteredMembers);
   
     displayMembers(filteredMembers.slice(0, entriesPerPage));
     setupPagination(filteredMembers.length); 

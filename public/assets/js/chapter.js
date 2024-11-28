@@ -276,8 +276,6 @@ window.addEventListener('load', () => {
   checkFiltersAndToggleResetButton();
 });
 
-
-
 // Attach event listener to "Reset Filter" button to clear query params
 document.getElementById("reset-filters-btn").addEventListener("click", () => {
   // Clear all query parameters from the URL
