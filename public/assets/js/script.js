@@ -86,27 +86,32 @@ const attachDropdownListeners = (dropdown) => {
 const populateRegionDropdown = async () => {
   try {
     showLoader();
-    // Fetch chapters data
     const response = await fetch(regionsApiUrl);
     if (!response.ok) throw new Error("Error fetching regions");
 
-    const regions = await response.json(); // Assume the API returns an array of chapter objects
-
-    // Extract unique chapter types
-    const uniqueTypes = [
-      ...new Set(regions.map((region) => region.region_name)),
-    ];
+    const regions = await response.json();
 
     // Clear existing options
     regionsDropdown.innerHTML = "";
 
-    // Populate dropdown with unique chapter types
-    uniqueTypes.forEach((type) => {
-      regionsDropdown.innerHTML += `<li>
-                <a class="dropdown-item" href="javascript:void(0);" data-value="${type.toUpperCase()}">
-                    ${type}
-                </a>
-            </li>`;
+    // Add a default option
+    regionsDropdown.innerHTML += `
+      <li>
+        <a class="dropdown-item" href="javascript:void(0);" data-value="">
+          Select Region
+        </a>
+      </li>
+    `;
+
+    // Populate dropdown with region IDs and names
+    regions.forEach((region) => {
+      regionsDropdown.innerHTML += `
+        <li>
+          <a class="dropdown-item" href="javascript:void(0);" data-value="${region.region_id}">
+            ${region.region_name}
+          </a>
+        </li>
+      `;
     });
 
     // Attach listeners after populating
@@ -117,6 +122,7 @@ const populateRegionDropdown = async () => {
     hideLoader();
   }
 };
+
 // Call the function to populate the regions dropdown
 populateRegionDropdown();
 
@@ -129,22 +135,20 @@ const populateChapterDropdown = async () => {
 
     const chapters = await response.json(); // Assume the API returns an array of chapter objects
 
-    // Extract unique chapter types
-    const uniqueTypes = [
-      ...new Set(chapters.map((chapter) => chapter.chapter_name)),
-    ];
-
     // Clear existing options
     chapterDropdown.innerHTML = "";
 
     // Populate dropdown with unique chapter
-    uniqueTypes.forEach((type) => {
-      chapterDropdown.innerHTML += `<li>
-                <a class="dropdown-item" href="javascript:void(0);" data-value="${type.toUpperCase()}">
-                    ${type}
-                </a>
-            </li>`;
+    chapters.forEach((chapter) => {
+      chapterDropdown.innerHTML += `
+        <li>
+          <a class="dropdown-item" href="javascript:void(0);" data-value="${chapter.chapter_id}">
+            ${chapter.chapter_name}
+          </a>
+        </li>
+      `;
     });
+    
 
     // Attach listeners after populating
     attachDropdownListeners(chapterDropdown);
@@ -166,22 +170,19 @@ const populateCategoryDropdown = async () => {
 
     const categories = await response.json(); // Assume the API returns an array of chapter objects
 
-    // Extract unique chapter types
-    const uniqueTypes = [
-      ...new Set(categories.map((category) => category.category_name)),
-    ];
-
     // Clear existing options
     categoryDropdown.innerHTML = "";
 
-    // Populate dropdown with unique categories
-    uniqueTypes.forEach((type) => {
-      categoryDropdown.innerHTML += `<li>
-                <a class="dropdown-item" href="javascript:void(0);" data-value="${type.toUpperCase()}">
-                    ${type}
-                </a>
-            </li>`;
+    categories.forEach((category) => {
+      categoryDropdown.innerHTML += `
+        <li>
+          <a class="dropdown-item" href="javascript:void(0);" data-value="${category.category_id}">
+            ${category.category_name}
+          </a>
+        </li>
+      `;
     });
+    
 
     // Attach listeners after populating all categories
     attachDropdownListeners(categoryDropdown);
@@ -203,22 +204,18 @@ const populateAccoladesDropdown = async () => {
 
     const accolades = await response.json(); // Assume the API returns an array of chapter objects
 
-    // Extract unique chapter types
-    const uniqueTypes = [
-      ...new Set(accolades.map((accolade) => accolade.accolade_name)),
-    ];
-
     // Clear existing options
     accoladesDropdown.innerHTML = "";
 
-    // Populate dropdown with unique accolades
-    uniqueTypes.forEach((type) => {
-      accoladesDropdown.innerHTML += `<li>
-                <a class="dropdown-item" href="javascript:void(0);" data-value="${type.toUpperCase()}">
-                    ${type}
-                </a>
-            </li>`;
-    });
+    accolades.forEach((accolade) => {
+      accoladesDropdown.innerHTML += `
+        <li>
+          <a class="dropdown-item" href="javascript:void(0);" data-value="${accolade.accolade_id}">
+            ${accolade.accolade_name}
+          </a>
+        </li>
+      `;
+    })
 
     // Attach listeners after populating all accolades
     attachDropdownListeners(accoladesDropdown);
@@ -304,6 +301,99 @@ const populateStatusDropdown = async () => {
 };
 // Call the function to populate the membership dropdown
 populateStatusDropdown();
+
+// Function to check if there are any filters in the query parameters
+function checkFiltersAndToggleResetButton() {
+  const urlParams = new URLSearchParams(window.location.search);
+
+  // Check if any query parameters exist (indicating filters are applied)
+  if (urlParams.toString()) {
+    // Show the Reset Filter button if filters are applied
+    document.getElementById("reset-filters-btn").style.display = "inline-block";
+  } else {
+    // Hide the Reset Filter button if no filters are applied
+    document.getElementById("reset-filters-btn").style.display = "none";
+  }
+}
+
+// Call this function on page load to check the filters
+window.addEventListener("load", checkFiltersAndToggleResetButton);
+
+// Update the dropdown text and mark the item as active
+const updateDropdownText = (dropdown, selectedValue) => {
+  const selectedItem = dropdown.querySelector(`.dropdown-item[data-value="${selectedValue}"]`);
+  const dropdownToggle = dropdown.closest('.dropdown').querySelector('.dropdown-toggle');
+
+  if (selectedItem && dropdownToggle) {
+    console.log(`Updating dropdown: ${dropdown.id}, selectedValue: ${selectedValue}`);  // Debugging line
+    dropdownToggle.textContent = selectedItem.textContent.trim();
+
+    dropdown.querySelectorAll('.dropdown-item').forEach((item) => {
+      item.classList.remove('active');
+    });
+    selectedItem.classList.add('active');
+  }
+};
+
+// Attach event listener to a "Filter" button or trigger
+document.getElementById("apply-filters-btn").addEventListener("click", () => {
+  const regionId = regionsDropdown.querySelector('.dropdown-item.active')?.getAttribute('data-value') || '';
+  const chapterId = chapterDropdown.querySelector('.dropdown-item.active')?.getAttribute('data-value') || '';
+  const membershipYear = membershipDropdown.querySelector('.dropdown-item.active')?.getAttribute('data-value') || '';
+  const categoryId = categoryDropdown.querySelector('.dropdown-item.active')?.getAttribute('data-value') || '';
+  const accoladesId = accoladesDropdown.querySelector('.dropdown-item.active')?.getAttribute('data-value') || '';
+  const status = statusDropdown.querySelector('.dropdown-item.active')?.getAttribute('data-value') || '';
+
+  const queryParams = new URLSearchParams();
+
+  if (regionId) queryParams.append('region_id', regionId);
+  if (chapterId) queryParams.append('chapter_id', chapterId);
+  if (membershipYear) queryParams.append('membership_year', membershipYear);
+  if (categoryId) queryParams.append('category_id', categoryId);
+  if (accoladesId) queryParams.append('accolades_id', accoladesId);
+  if (status) queryParams.append('status', status);
+
+  const filterUrl = `/m/manage-members?${queryParams.toString()}`;
+  window.location.href = filterUrl;
+});
+
+
+// On page load, check for any applied filters in the URL params
+window.addEventListener('load', () => {
+  const urlParams = new URLSearchParams(window.location.search);
+
+  // Get the filter values from URL params
+  const regionId = urlParams.get("region_id");
+  const chapterId = urlParams.get("chapter_id");
+  const membershipYear = urlParams.get("membership_year");
+  const categoryId = urlParams.get("category_id");
+  const accoladesId = urlParams.get("accolades_id");
+  const status = urlParams.get("status");
+
+  // Update the dropdowns with the selected filter values
+  if (regionId) updateDropdownText(regionsDropdown, regionId);
+  if (chapterId) updateDropdownText(chapterDropdown, chapterId);
+  if (membershipYear) updateDropdownText(membershipDropdown, membershipYear.toUpperCase()); // Ensure chapter type is uppercased
+  if (categoryId) updateDropdownText(categoryDropdown, categoryId.toUpperCase()); // Ensure chapter status is uppercased
+  if (accoladesId) updateDropdownText(accoladesDropdown, accoladesId.toUpperCase()); // Ensure chapter status is uppercased
+  if (status) updateDropdownText(statusDropdown, status.toUpperCase()); // Ensure chapter status is uppercased
+
+  checkFiltersAndToggleResetButton();
+});
+
+// Attach event listener to "Reset Filter" button to clear query params
+document.getElementById("reset-filters-btn").addEventListener("click", () => {
+  // Clear all query parameters from the URL
+  const url = new URL(window.location);
+  url.search = ''; // Remove query parameters
+
+  // Reload the page without filters (cleared query string)
+  window.location.href = url.toString();
+});
+
+// Check for filters on page load
+checkFiltersAndToggleResetButton();
+
 
 async function fetchChapters() {
   try {
