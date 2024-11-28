@@ -383,7 +383,7 @@ const getMemberCountForChapter = (chapterId) => {
 const updateTotalChaptersCount = () => {
   const totalChaptersElement = document.getElementById("total-chapters-count"); // Ensure you have an element with this ID
   const totalFilteredChapters = filteredChapters.length; // Use the filtered chapters array
-  totalChaptersElement.textContent = `${totalFilteredChapters}`;
+  totalChaptersElement.innerHTML = `<strong>${totalFilteredChapters}</strong>`;
 };
 
 

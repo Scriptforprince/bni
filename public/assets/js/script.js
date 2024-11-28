@@ -439,6 +439,7 @@ async function fetchMembers() {
         (!filters.status || member.member_status.toUpperCase() === filters.status)
       );
     });
+    updateTotalMembersCount();
     console.log("Filtered chapters:", filteredMembers);
   
     displayMembers(filteredMembers.slice(0, entriesPerPage));
@@ -450,9 +451,27 @@ async function fetchMembers() {
   }
 }
 
+// Function to update the total chapters count
+const updateTotalMembersCount = () => {
+  const totalMembersElement = document.getElementById("total-members-count"); // Ensure you have an element with this ID
+  const totalFilteredMembers = filteredMembers.length; // Use the filtered chapters array
+  totalMembersElement.innerHTML = `<strong>${totalFilteredMembers}</strong>`;
+};
+
 function displayMembers(members) {
   const tableBody = document.querySelector('.table tbody');
   tableBody.innerHTML = '';
+
+  if (members.length === 0) {
+    // Show "No data" message if no chapters are available
+    const noDataRow = document.createElement("tr");
+    noDataRow.innerHTML = `
+      <td colspan="10" style="text-align: center; font-weight: bold;">No data available</td>
+    `;
+    tableBody.appendChild(noDataRow);
+    return;
+  }
+
   members.forEach((member, index) => {
     const fullName = `${member.member_first_name} ${member.member_last_name || ''}`;
     const formattedDate = member.member_induction_date ? member.member_induction_date.substring(0, 10) : 'N/A';
