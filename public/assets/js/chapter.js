@@ -234,7 +234,7 @@ document.getElementById("apply-filters-btn").addEventListener("click", () => {
   // Capture selected values
   const regionId = regionsDropdown.querySelector('.dropdown-item.active')?.getAttribute('data-value') || '';
   const meetingDay = meetingDayDropdown.querySelector('.dropdown-item.active')?.getAttribute('data-value') || '';
-  const chapterType = chapterTypeDropdown.querySelector('.dropdown-item.active')?.getAttribute('data-value') || '';
+  const chapterType = chapterTypeDropdown.querySelector('.dropdown-item.active')?.getAttribute('data-value') || ''.toLowerCase();
   const chapterStatus = chapterStatusDropdown.querySelector('.dropdown-item.active')?.getAttribute('data-value') || '';
   // Construct the query string
   const queryParams = new URLSearchParams();
@@ -261,17 +261,6 @@ document.getElementById("reset-filters-btn").addEventListener("click", () => {
 
 // Check for filters on page load
 checkFiltersAndToggleResetButton();
-
-const urlParams = new URLSearchParams(window.location.search);
-const filters = {
-  region_id: urlParams.get("region_id"),
-  meeting_day: urlParams.get("meeting_day"),
-  chapter_type: urlParams.get("chapter_type"),
-  chapter_status: urlParams.get("chapter_status"),
-};
-
-// Show filters in the console for debugging
-console.log(filters);
 
 // Fetch members data
 const fetchMembers = async () => {
@@ -305,7 +294,6 @@ const fetchRegions = async () => {
   }
 };
 
-// Function to fetch chapters
 async function fetchChapters() {
   showLoader();
   try {
@@ -321,8 +309,33 @@ async function fetchChapters() {
     allChapters = await response.json();
     console.log("Fetched chapters:", allChapters);
 
-    filteredChapters = [...allChapters];
+    // Apply filters from URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const filters = {
+      region_id: urlParams.get("region_id"),
+      meeting_day: urlParams.get("meeting_day"),
+      chapter_type: urlParams.get("chapter_type"),
+      chapter_status: urlParams.get("chapter_status"),
+    };
+
+    console.log("Filters from URL params:", filters);
+
+    // Filter chapters based on the filters
+    filteredChapters = allChapters.filter((chapter) => {
+      // Apply each filter if the corresponding parameter is set
+      return (
+        (!filters.region_id || chapter.region_id === parseInt(filters.region_id)) &&
+        (!filters.meeting_day || chapter.chapter_meeting_day === filters.meeting_day) &&
+        (!filters.chapter_type || chapter.chapter_type.toUpperCase() === filters.chapter_type.toUpperCase()) &&
+        (!filters.chapter_status || chapter.chapter_status.toUpperCase() === filters.chapter_status.toUpperCase())
+      );
+    });
+
+    console.log("Filtered chapters:", filteredChapters);
+
     await Promise.all([fetchMembers(), fetchRegions()]);
+
+    // Display filtered chapters
     displayChapters(filteredChapters);
   } catch (error) {
     console.error("Error fetching chapters:", error);
@@ -330,6 +343,7 @@ async function fetchChapters() {
     hideLoader();
   }
 }
+
 
 // Function to get the total number of members for a chapter
 const getMemberCountForChapter = (chapterId) => {
