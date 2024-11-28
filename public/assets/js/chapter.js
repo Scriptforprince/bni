@@ -212,6 +212,67 @@ const populateChapterStatusDropdown = async () => {
 // Call the function to populate the chapter type dropdown
 populateChapterStatusDropdown();
 
+// Function to check if there are any filters in the query parameters
+function checkFiltersAndToggleResetButton() {
+  const urlParams = new URLSearchParams(window.location.search);
+
+  // Check if any query parameters exist (indicating filters are applied)
+  if (urlParams.toString()) {
+    // Show the Reset Filter button if filters are applied
+    document.getElementById("reset-filters-btn").style.display = "inline-block";
+  } else {
+    // Hide the Reset Filter button if no filters are applied
+    document.getElementById("reset-filters-btn").style.display = "none";
+  }
+}
+
+// Call this function on page load to check the filters
+window.addEventListener("load", checkFiltersAndToggleResetButton);
+
+// Attach event listener to a "Filter" button or trigger
+document.getElementById("apply-filters-btn").addEventListener("click", () => {
+  // Capture selected values
+  const regionId = regionsDropdown.querySelector('.dropdown-item.active')?.getAttribute('data-value') || '';
+  const meetingDay = meetingDayDropdown.querySelector('.dropdown-item.active')?.getAttribute('data-value') || '';
+  const chapterType = chapterTypeDropdown.querySelector('.dropdown-item.active')?.getAttribute('data-value') || '';
+  const chapterStatus = chapterStatusDropdown.querySelector('.dropdown-item.active')?.getAttribute('data-value') || '';
+  // Construct the query string
+  const queryParams = new URLSearchParams();
+
+  if (regionId) queryParams.append('region_id', regionId);
+  if (meetingDay) queryParams.append('meeting_day', meetingDay);
+  if (chapterType) queryParams.append('chapter_type', chapterType);
+  if (chapterStatus) queryParams.append('chapter_status', chapterStatus);
+
+  // Redirect to the filtered URL
+  const filterUrl = `/c/manage-chapter?${queryParams.toString()}`;
+  window.location.href = filterUrl;
+});
+
+// Attach event listener to "Reset Filter" button to clear query params
+document.getElementById("reset-filters-btn").addEventListener("click", () => {
+  // Clear all query parameters from the URL
+  const url = new URL(window.location);
+  url.search = ''; // Remove query parameters
+
+  // Reload the page without filters (cleared query string)
+  window.location.href = url.toString();
+});
+
+// Check for filters on page load
+checkFiltersAndToggleResetButton();
+
+const urlParams = new URLSearchParams(window.location.search);
+const filters = {
+  region_id: urlParams.get("region_id"),
+  meeting_day: urlParams.get("meeting_day"),
+  chapter_type: urlParams.get("chapter_type"),
+  chapter_status: urlParams.get("chapter_status"),
+};
+
+// Show filters in the console for debugging
+console.log(filters);
+
 // Fetch members data
 const fetchMembers = async () => {
   try {
