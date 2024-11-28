@@ -55,6 +55,7 @@ const populateDropdown = (
   attachDropdownListeners(dropdown);
 };
 
+
 // Function to attach event listeners to dropdown items
 const attachDropdownListeners = (dropdown) => {
   const dropdownToggle = dropdown
@@ -63,11 +64,9 @@ const attachDropdownListeners = (dropdown) => {
 
   dropdown.querySelectorAll(".dropdown-item").forEach((item) => {
     item.addEventListener("click", () => {
-      dropdown
-        .querySelectorAll(".dropdown-item.active")
-        .forEach((activeItem) => {
-          activeItem.classList.remove("active");
-        });
+      dropdown.querySelectorAll(".dropdown-item.active").forEach((activeItem) => {
+        activeItem.classList.remove("active");
+      });
 
       item.classList.add("active");
       const selectedValue = item.getAttribute("data-value");
@@ -111,28 +110,20 @@ const loadRegions = async () => {
 
 // Populate chapter day dropdown
 const populateChapterDayDropdown = () => {
-  const days = [
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-    "Sunday",
-  ];
+  const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+  
   meetingDayDropdown.innerHTML = ""; // Clear existing options
-  days.forEach((day, index) => {
+  days.forEach((day) => {
     meetingDayDropdown.innerHTML += `<li>
-            <a class="dropdown-item" href="javascript:void(0);" data-value="${
-              index + 1
-            }">
-              ${day}
-            </a>
-          </li>`;
+      <a class="dropdown-item" href="javascript:void(0);" data-value="${day.toLowerCase()}">
+        ${day}
+      </a>
+    </li>`;
   });
   // Attach listeners after populating
   attachDropdownListeners(meetingDayDropdown);
 };
+
 // Call the function to populate months
 populateChapterDayDropdown();
 
@@ -229,14 +220,31 @@ function checkFiltersAndToggleResetButton() {
 // Call this function on page load to check the filters
 window.addEventListener("load", checkFiltersAndToggleResetButton);
 
+// Update the dropdown text and mark the item as active
+const updateDropdownText = (dropdown, selectedValue) => {
+  const selectedItem = dropdown.querySelector(`.dropdown-item[data-value="${selectedValue.toLowerCase()}"]`); // Convert to lower case for matching
+  const dropdownToggle = dropdown.closest('.dropdown').querySelector('.dropdown-toggle');
+
+  if (selectedItem && dropdownToggle) {
+    // Update the dropdown button text
+    dropdownToggle.textContent = selectedItem.textContent.trim();
+
+    // Remove the active class from all items and set it on the selected one
+    dropdown.querySelectorAll('.dropdown-item').forEach((item) => {
+      item.classList.remove('active');
+    });
+    selectedItem.classList.add('active');
+  }
+};
+
+
 // Attach event listener to a "Filter" button or trigger
 document.getElementById("apply-filters-btn").addEventListener("click", () => {
-  // Capture selected values
   const regionId = regionsDropdown.querySelector('.dropdown-item.active')?.getAttribute('data-value') || '';
   const meetingDay = meetingDayDropdown.querySelector('.dropdown-item.active')?.getAttribute('data-value') || '';
   const chapterType = chapterTypeDropdown.querySelector('.dropdown-item.active')?.getAttribute('data-value') || ''.toLowerCase();
   const chapterStatus = chapterStatusDropdown.querySelector('.dropdown-item.active')?.getAttribute('data-value') || '';
-  // Construct the query string
+
   const queryParams = new URLSearchParams();
 
   if (regionId) queryParams.append('region_id', regionId);
@@ -244,10 +252,31 @@ document.getElementById("apply-filters-btn").addEventListener("click", () => {
   if (chapterType) queryParams.append('chapter_type', chapterType);
   if (chapterStatus) queryParams.append('chapter_status', chapterStatus);
 
-  // Redirect to the filtered URL
   const filterUrl = `/c/manage-chapter?${queryParams.toString()}`;
   window.location.href = filterUrl;
 });
+
+
+// On page load, check for any applied filters in the URL params
+window.addEventListener('load', () => {
+  const urlParams = new URLSearchParams(window.location.search);
+
+  // Get the filter values from URL params
+  const regionId = urlParams.get("region_id");
+  const meetingDay = urlParams.get("meeting_day");
+  const chapterType = urlParams.get("chapter_type");
+  const chapterStatus = urlParams.get("chapter_status");
+
+  // Update the dropdowns with the selected filter values
+  if (regionId) updateDropdownText(regionsDropdown, regionId);
+  if (meetingDay) updateDropdownText(meetingDayDropdown, meetingDay);
+  if (chapterType) updateDropdownText(chapterTypeDropdown, chapterType.toUpperCase()); // Ensure chapter type is uppercased
+  if (chapterStatus) updateDropdownText(chapterStatusDropdown, chapterStatus.toUpperCase()); // Ensure chapter status is uppercased
+
+  checkFiltersAndToggleResetButton();
+});
+
+
 
 // Attach event listener to "Reset Filter" button to clear query params
 document.getElementById("reset-filters-btn").addEventListener("click", () => {
@@ -322,14 +351,16 @@ async function fetchChapters() {
 
     // Filter chapters based on the filters
     filteredChapters = allChapters.filter((chapter) => {
-      // Apply each filter if the corresponding parameter is set
       return (
         (!filters.region_id || chapter.region_id === parseInt(filters.region_id)) &&
-        (!filters.meeting_day || chapter.chapter_meeting_day === filters.meeting_day) &&
+        (!filters.meeting_day || chapter.chapter_meeting_day.toLowerCase() === filters.meeting_day.toLowerCase()) &&
         (!filters.chapter_type || chapter.chapter_type.toUpperCase() === filters.chapter_type.toUpperCase()) &&
         (!filters.chapter_status || chapter.chapter_status.toUpperCase() === filters.chapter_status.toUpperCase())
       );
     });
+
+    updateTotalChaptersCount();
+    
 
     console.log("Filtered chapters:", filteredChapters);
 
@@ -350,6 +381,14 @@ const getMemberCountForChapter = (chapterId) => {
   return allMembers.filter((member) => member.chapter_id === chapterId).length;
 };
 
+// Function to update the total chapters count
+const updateTotalChaptersCount = () => {
+  const totalChaptersElement = document.getElementById("total-chapters-count"); // Ensure you have an element with this ID
+  const totalFilteredChapters = filteredChapters.length; // Use the filtered chapters array
+  totalChaptersElement.textContent = `${totalFilteredChapters}`;
+};
+
+
 // Function to get the region name for a region_id
 const getRegionNameById = (regionId) => {
   const region = allRegions.find((r) => r.region_id === regionId);
@@ -359,8 +398,19 @@ const getRegionNameById = (regionId) => {
 // Function to display chapters in the table
 function displayChapters(chapters) {
   const tableBody = document.querySelector("table tbody");
-  tableBody.innerHTML = "";
+  tableBody.innerHTML = ""; // Clear the table body
 
+  if (chapters.length === 0) {
+    // Show "No data" message if no chapters are available
+    const noDataRow = document.createElement("tr");
+    noDataRow.innerHTML = `
+      <td colspan="9" style="text-align: center; font-weight: bold;">No data available</td>
+    `;
+    tableBody.appendChild(noDataRow);
+    return;
+  }
+
+  // Populate the table with chapters data
   chapters.forEach((chapter, index) => {
     const membersCount = getMemberCountForChapter(chapter.chapter_id);
     const regionName = getRegionNameById(chapter.region_id);
@@ -368,41 +418,35 @@ function displayChapters(chapters) {
     row.innerHTML = `
             <td>${index + 1}</td>
             <td>
-            <a href="/c/view-chapter/?chapter_id=${chapter.chapter_id}">
-            <b>${chapter.chapter_name}</b>
-            </a>
-           
+              <a href="/c/view-chapter/?chapter_id=${chapter.chapter_id}">
+                <b>${chapter.chapter_name}</b>
+              </a>
             </td>
-            
             <td>${regionName}</td> 
             <td><b>${membersCount}</b></td> 
             <td>${chapter.chapter_meeting_day}</td>
             <td><b>${chapter.chapter_kitty_fees}</b></td>
             <td><b>${chapter.chapter_visitor_fees}</b></td>
-        
             <td>
-                <span class="badge bg-${
-                  chapter.chapter_status === "running" ? "success" : "danger"
-                }">
-                    ${chapter.chapter_status}
-                </span>
+              <span class="badge bg-${
+                chapter.chapter_status === "running" ? "success" : "danger"
+              }">${chapter.chapter_status}</span>
             </td>
-                     <td>
-        <span class="badge bg-warning text-light" style="cursor:pointer; color:white;">
-           <a href="/c/edit-chapter/?chapter_id=${
-             chapter.chapter_id
-           }" style="cursor:pointer; color:white;">Edit</a>
-        </span>
-        <span class="badge bg-danger text-light delete-btn" style="cursor:pointer; color:white;" data-chapter-id="${
-          chapter.chapter_id
-        }">
-     Delete
-    </span>
-      </td>
+            <td>
+              <span class="badge bg-warning text-light" style="cursor:pointer; color:white;">
+                <a href="/c/edit-chapter/?chapter_id=${
+                  chapter.chapter_id
+                }" style="cursor:pointer; color:white;">Edit</a>
+              </span>
+              <span class="badge bg-danger text-light delete-btn" style="cursor:pointer; color:white;" data-chapter-id="${
+                chapter.chapter_id
+              }">Delete</span>
+            </td>
         `;
     tableBody.appendChild(row);
   });
 }
+
 
 // Function to filter chapters based on search input
 function filterChapters(searchTerm) {
