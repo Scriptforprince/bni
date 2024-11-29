@@ -5,6 +5,9 @@
     <!-- sidebar -->
 
     <%- include('../partials/sidebar') %>
+    <div id="loader">
+      <img src="../../assets/images/media/loader.svg" alt="" />
+    </div>
 
       <!-- Start::app-content -->
       <div class="main-content app-content">
@@ -32,10 +35,10 @@
             </div>
             <div class="btn-list">
               <button class="btn btn-white btn-wave" style="background-color: gainsboro !important; border-radius: 10px;">
-                </i> Total In Stock
-                Accolades <br />
-               <span> <b>50</b></span> 
+                Total In Stock Accolades <br />
+                <span> <b>5</b></span>
               </button>
+              
               <button class="btn btn-danger btn-wave me-0">
                 <i class="ri-share-forward-line me-1"></i> Export List
               </button>
@@ -48,55 +51,15 @@
             <div class="card-header justify-content-between">
               <div class="card-title">All Accolades List</div>
               <div class="d-flex gap-3 align-items-center flex-wrap">
-                <div class="btn-group">
-                  <button
-                    class="btn btn-outline-light border dropdown-toggle"
-                    type="button"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                    <i class="ti ti-sort-descending-2 me-1"></i> Region
-                  </button>
-
-                  <button
-                    class="btn btn-outline-light border dropdown-toggle"
-                    type="button"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                    <i class="ti ti-sort-descending-2 me-1"></i> Chapter
-                  </button>
-                  <button
-                    class="btn btn-outline-light border dropdown-toggle"
-                    type="button"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                    <i class="ti ti-sort-descending-2 me-1"></i> Member
-                  </button>
-                  <button
-                    class="btn btn-outline-light border dropdown-toggle"
-                    type="button"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                    <i class="ti ti-sort-descending-2 me-1"></i> Filter
-                  </button>
-                 <a href="/acc/add-accolades"><button
-                  class="btn btn-outline-light border"
-                  type="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  + Add Accolades
-                </button></a> 
+                <div class="btn-group"> 
                 </div>
                 <div class="custom-form-group flex-grow-1">
                   <input
                     type="text"
+                    id="searchAccolades"
                     class="form-control"
-                    placeholder="Search Supply.."
-                    aria-label="Recipient's username"
+                    placeholder="Search Accolades.."
+                    aria-label="Search Accolades"
                     aria-describedby="button-addon2"
                   />
                   <a
@@ -105,6 +68,7 @@
                     ><i class="ti ti-search"></i
                   ></a>
                 </div>
+                
               </div>
             </div>
             <div class="card-body p-0">
@@ -117,303 +81,16 @@
                     <tr>
                       <th scope="col">S.No.</th>
                       <th scope="col">Accolades Name</th>
-                      <th scope="col">Added by</th>
+                      <th scope="col">Published by</th>
                     
                       <th scope="col">Stock Available</th>
                       <th scope="col">Stock In Date</th>
+                      <th scope="col">Availability</th>
                       <th scope="col">Status</th>
                     </tr>
                   </thead>
                   
                   <tbody>
-                    <tr class="order-list">
-                      <td>1</td>
-                      <td>
-                        <div class="d-flex align-items-center">
-                          <div class="ms-2">
-                            <p
-                              class="fw-semibold mb-0 d-flex align-items-center"
-                            >
-                              <a href="">Induction Kit</a>
-                            </p>
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        <div class="d-flex align-items-center">
-                          <div class="ms-2">
-                            <p
-                              class="fw-semibold mb-0 d-flex align-items-center"
-                            >
-                              <a href="">Raja Shukla</a>
-                            </p>
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        <div class="d-flex align-items-center text-center">
-                          50
-                        </div>
-                      </td>
-                      
-                      <td class="fw-semibold">11 Jan 2024</td>
-                      <td>
-                        <span class="badge bg-danger-transparent"
-                          >Out Of Stock</span
-                        >
-                        <a
-                          href="
-                          class="btn btn-icon btn-sm btn-primary-light btn-wave waves-effect waves-light"
-                        >
-                          <i class="ri-eye-line"></i>
-                        </a>
-                      </td>
-                    </tr>
-                    <tr class="order-list">
-                      <td>2</td>
-                      <td>
-                        <div class="d-flex align-items-center text-center">
-                          <div class="ms-2">
-                            <p
-                              class="fw-semibold mb-0 d-flex align-items-center text-center"
-                            >
-                              <a href="">Black Badge</a>
-                            </p>
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        <div class="d-flex align-items-center">
-                          <div class="ms-2">
-                            <p
-                              class="fw-semibold mb-0 d-flex align-items-center"
-                            >
-                              <a href="">Raja Shukla</a>
-                            </p>
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        <div class="d-flex align-items-center text-center">
-                          70
-                        </div>
-                      </td>
-                      <td class="fw-semibold">11 Jan 2024</td>
-                      <td>
-                        <span class="badge bg-success-transparent">In Stock</span>
-                        <a
-                          href=""
-                          class="btn btn-icon btn-sm btn-primary-light btn-wave waves-effect waves-light"
-                        >
-                          <i class="ri-eye-line"></i>
-                        </a>
-                      </td>
-                    </tr>
-                    <tr class="order-list">
-                      <td>3</td>
-                      <td>
-                        <div class="d-flex align-items-center text-center">
-                          <div class="ms-2">
-                            <p
-                              class="fw-semibold mb-0 d-flex align-items-center text-center"
-                            >
-                              <a href="">BNI Diary</a>
-                            </p>
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        <div class="d-flex align-items-center">
-                          <div class="ms-2">
-                            <p
-                              class="fw-semibold mb-0 d-flex align-items-center"
-                            >
-                              <a href="">Raja Shukla</a>
-                            </p>
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        <div class="d-flex align-items-center text-center">
-                         100
-                        </div>
-                      </td>
-
-                      <td class="fw-semibold">11 Jan 2024</td>
-                      <td>
-                        <span class="badge bg-success-transparent">In Stock</span>
-                        <a
-                          href=""
-                          class="btn btn-icon btn-sm btn-primary-light btn-wave waves-effect waves-light"
-                        >
-                          <i class="ri-eye-line"></i>
-                        </a>
-                      </td>
-                    </tr>
-                    <tr class="order-list">
-                      <td>4</td>
-                      <td>
-                        <div class="d-flex align-items-center text-center">
-                          <div class="ms-2">
-                            <p
-                              class="fw-semibold mb-0 d-flex align-items-center text-center"
-                            >
-                              <a href="">Name Badge</a>
-                            </p>
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        <div class="d-flex align-items-center">
-                          <div class="ms-2">
-                            <p
-                              class="fw-semibold mb-0 d-flex align-items-center"
-                            >
-                              <a href="">Raja Shukla</a>
-                            </p>
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        <div class="d-flex align-items-center text-center">
-                         20
-                        </div>
-                      </td>
-                      <td class="fw-semibold">11 Jan 2024</td>
-                      <td>
-                        <span class="badge bg-danger-transparent"
-                          >Out Of Stock</span
-                        >
-                        <a
-                          href=""
-                          class="btn btn-icon btn-sm btn-primary-light btn-wave waves-effect waves-light"
-                        >
-                          <i class="ri-eye-line"></i>
-                        </a>
-                      </td>
-                    </tr>
-                    <tr class="order-list">
-                      <td>6</td>
-                      <td>
-                        <div class="d-flex align-items-center">
-                          <div class="ms-2">
-                            <p
-                              class="fw-semibold mb-0 d-flex align-items-center"
-                            >
-                              <a href=""> Signage</a>
-                            </p>
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        <div class="d-flex align-items-center">
-                          <div class="ms-2">
-                            <p
-                              class="fw-semibold mb-0 d-flex align-items-center"
-                            >
-                              <a href="">Raja Shukla</a>
-                            </p>
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        <div class="d-flex align-items-center">
-                        40
-                        </div>
-                      </td>
-                      <td class="fw-semibold">11 Jan 2024</td>
-                      <td>
-                        <span class="badge bg-success-transparent">In Stock</span>
-                        <a
-                          href=""
-                          class="btn btn-icon btn-sm btn-primary-light btn-wave waves-effect waves-light"
-                        >
-                          <i class="ri-eye-line"></i>
-                        </a>
-                      </td>
-                    </tr>
-                    <tr class="order-list">
-                      <td>7</td>
-                      <td>
-                        <div class="d-flex align-items-center">
-                          <div class="ms-2">
-                            <p
-                              class="fw-semibold mb-0 d-flex align-items-center"
-                            >
-                              <a href="">Goal Board</a>
-                            </p>
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        <div class="d-flex align-items-center">
-                          <div class="ms-2">
-                            <p
-                              class="fw-semibold mb-0 d-flex align-items-center"
-                            >
-                              <a href="">Raja Shukla</a>
-                            </p>
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        <div class="d-flex align-items-center">
-                        25
-                        </div>
-                      </td>
-                      <td class="fw-semibold">11 Jan 2024</td>
-                      <td>
-                        <span class="badge bg-danger-transparent"
-                          >Out Of Stock</span
-                        >
-                        <a
-                          href=""
-                          class="btn btn-icon btn-sm btn-primary-light btn-wave waves-effect waves-light"
-                        >
-                          <i class="ri-eye-line"></i>
-                        </a>
-                      </td>
-                    </tr>
-                    <tr class="order-list">
-                      <td>8</td>
-                      <td>
-                        <div class="d-flex align-items-center">
-                          <div class="ms-2">
-                            <p
-                              class="fw-semibold mb-0 d-flex align-items-center"
-                            >
-                              <a href="">Invition Card</a>
-                            </p>
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        <div class="d-flex align-items-center">
-                          <div class="ms-2">
-                            <p
-                              class="fw-semibold mb-0 d-flex align-items-center"
-                            >
-                              <a href="">Raja Shukla</a>
-                            </p>
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        <div class="d-flex align-items-center">
-                        45
-                        </div>
-                      </td>
-                      <td class="fw-semibold">11 Jan 2024</td>
-                      <td>
-                        <span class="badge bg-warning-transparent">In Transit</span>
-                        <a
-                          href=""
-                          class="btn btn-icon btn-sm btn-primary-light btn-wave waves-effect waves-light"
-                        >
-                          <i class="ri-eye-line"></i>
-                        </a>
-                      </td>
-                    </tr>
                   </tbody>
                 </table>
               </div>
@@ -433,18 +110,6 @@
                       <a class="page-link" href="javascript:void(0)">1</a>
                     </li>
                     <li class="page-item">
-                      <a class="page-link" href="javascript:void(0)">2</a>
-                    </li>
-                    <li class="page-item">
-                      <a class="page-link" href="javascript:void(0)">3</a>
-                    </li>
-                    <li class="page-item">
-                      <a class="page-link" href="javascript:void(0)">4</a>
-                    </li>
-                    <li class="page-item">
-                      <a class="page-link" href="javascript:void(0)">5</a>
-                    </li>
-                    <li class="page-item">
                       <a class="page-link" href="javascript:void(0)">Next</a>
                     </li>
                   </ul>
@@ -456,5 +121,6 @@
         </div>
       </div>
       <!-- End::content  -->
+      <script src="../../assets/js/accolades.js"></script>
 
       <%- include('../partials/footer') %> 
