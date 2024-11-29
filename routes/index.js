@@ -13,6 +13,7 @@ const apiRoutes = require('./r-api/apiRoutes');
 const eInvoiceRoutes = require('./r-eInvoice/eInvoiceRoutes');
 const authRoutes = require('./r-authentication/authenticationRoutes')
 const accoladesRoutes = require('./r-accolades/accoladesRoutes')
+const settingRoutes = require('./r-settings/settingsRoutes')
 
 // Use all the imported routes
 router.use('/', indexRoutes);
@@ -26,5 +27,6 @@ router.use('/a', apiRoutes);
 router.use('/v', eInvoiceRoutes);
 router.use('/auth', authRoutes);
 router.use('/acc', accoladesRoutes);
+router.use('/s', settingRoutes);
 
 module.exports = router;
