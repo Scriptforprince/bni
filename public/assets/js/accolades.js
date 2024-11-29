@@ -69,6 +69,14 @@ async function fetchAndDisplayAccolades() {
           <td>
             <span class="badge ${activeClass}">${activeStatus}</span>
           </td>
+          <td >
+          <span class="badge bg-primary text-light" style="cursor:pointer; color:white;">
+             <a href="/acc/edit-accolades/?accolade_id=${accolade.accolade_id}" style="color:white">Edit</a>
+          </span>
+          <span class="badge bg-danger text-light delete-btn" style="cursor:pointer; color:white;" data-accolade-id="${accolade.accolade_id}">
+       Delete
+      </span>
+        </td>
         </tr>
       `;
     });
@@ -107,3 +115,48 @@ function filterAccolades() {
 
 // Call the function on page load
 window.addEventListener('load', fetchAndDisplayAccolades);
+
+
+const deleteAccolade = async (accolade_id) => {
+  // Show confirmation using SweetAlert
+  const result = await Swal.fire({
+      title: 'Are you sure?',
+      text: "This action will mark the accolade as deleted.",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'No, cancel'
+  });
+
+  if (result.isConfirmed) {
+      try {
+          showLoader();  // Show loading indicator
+          const response = await fetch(`http://localhost:5000/api/deleteAccolade/${accolade_id}`, {
+              method: 'PUT',
+          });
+
+          if (response.ok) {
+              const data = await response.json();
+              Swal.fire('Deleted!', data.message, 'success');
+              // After deletion, remove the accolade from the table
+              document.querySelector(`[data-accolade-id="${accolade_id}"]`).closest('tr').remove();
+          } else {
+              const errorResponse = await response.json();
+              Swal.fire('Failed!', errorResponse.message, 'error');
+          }
+      } catch (error) {
+          console.error('Error deleting accolade:', error);
+          Swal.fire('Error!', 'Failed to delete accolade. Please try again.', 'error');
+      } finally {
+          hideLoader();  // Hide loading indicator
+      }
+  }
+};
+
+// Add event listener for delete buttons dynamically
+document.getElementById('chaptersTableBody').addEventListener('click', (event) => {
+  if (event.target.classList.contains('delete-btn')) {
+    const accolade_id = event.target.getAttribute('data-accolade-id');
+    deleteAccolade(accolade_id);
+  }
+});

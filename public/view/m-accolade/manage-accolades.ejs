@@ -74,7 +74,7 @@
             <div class="card-body p-0">
               <div class="table-responsive">
                 <table
-                  class="table table-hover text-nowrap"
+                  class="table table-hover text-nowrap chaptersTableBody"
                   style="border: 1px solid grey"
                 >
                   <thead>
@@ -87,10 +87,11 @@
                       <th scope="col">Stock In Date</th>
                       <th scope="col">Availability</th>
                       <th scope="col">Status</th>
+                      <th scope="col">Actions</th>
                     </tr>
                   </thead>
                   
-                  <tbody>
+                  <tbody id="chaptersTableBody">
                   </tbody>
                 </table>
               </div>
@@ -121,6 +122,8 @@
         </div>
       </div>
       <!-- End::content  -->
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
       <script src="../../assets/js/accolades.js"></script>
+      
 
       <%- include('../partials/footer') %> 
