@@ -131,7 +131,7 @@ const deleteAccolade = async (accolade_id) => {
   if (result.isConfirmed) {
       try {
           showLoader();  // Show loading indicator
-          const response = await fetch(`http://localhost:5000/api/deleteAccolade/${accolade_id}`, {
+          const response = await fetch(`https://bni-data-backend.onrender.com/api/deleteAccolade/${accolade_id}`, {
               method: 'PUT',
           });
 

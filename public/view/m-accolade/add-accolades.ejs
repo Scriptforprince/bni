@@ -21,29 +21,6 @@
               </h1>
               <!-- <p>Manage kitty payments with just one click</p> -->
             </div>
-            <!-- <div class="d-flex align-items-center gap-2 flex-wrap">
-              <div class="form-group">
-                <div class="input-group">
-                  <div class="input-group-text bg-white border">
-                    <i class="ri-calendar-line"></i>
-                  </div>
-                  <input
-                    type="text"
-                    class="form-control breadcrumb-input"
-                    id="daterange"
-                    placeholder="Search By Date Range"
-                  />
-                </div>
-              </div>
-              <div class="btn-list">
-                <button class="btn btn-white btn-wave">
-                  <i class="ri-filter-3-line align-middle me-1 lh-1"></i> Filter
-                </button>
-                <button class="btn btn-primary btn-wave me-0">
-                  <i class="ri-share-forward-line me-1"></i> Share
-                </button>
-              </div>
-            </div> -->
           </div>
           <!-- End::page-header -->
           <style>
@@ -83,13 +60,13 @@
                               >
                             </div>
                             <div class="col-xl-6">
-                              <label for="product-cost-add" class="form-label"
+                              <label for="accolade_name" class="form-label"
                                 >Enter Accolade Name</label
                               >
                               <input
                                 type="text"
                                 class="form-control"
-                                id="product-cost-add"
+                                id="accolade_name"
                                 placeholder="New accolade name.."
                               />
                               <label
@@ -97,92 +74,73 @@
                                 class="form-label mt-1 fs-12 fw-normal text-muted mb-0"
                                 ><span style="color: red"
                                   >*Mention the acknowledged name of the
-                                  chapter</span
+                                  accolade</span
                                 ></label
                               >
                             </div>
-                            <div class="col-xl-6">
-                              <label for="product-brand-add" class="form-label"
-                                >Choose Region</label
-                              >
-                              <select
-                                class="form-control"
-                                data-trigger=""
-                                name="product-brand-add"
-                                id="product-brand-add"
-                              >
-                                <option value="">Select</option>
-                                <option value="Armani">East</option>
-                                <option value="Lacoste">West</option>
-                                <option value="Lacoste">North</option>
-                              </select>
-                            </div>
 
                             <div class="col-xl-6">
-                              <label for="product-brand-add" class="form-label"
-                                >Choose Chapter</label
-                              >
-                              <select
-                                class="form-control"
-                                data-trigger=""
-                                name="product-brand-add"
-                                id="product-brand-add"
-                              >
-                                <option value="">Select</option>
-                                <option value="Armani">East</option>
-                                <option value="Lacoste">West</option>
-                                <option value="Lacoste">North</option>
-                              </select>
-                            </div>
-
-
-                            <div class="col-xl-6">
-                              <label for="product-cost-add" class="form-label"
+                              <label for="accolade_price" class="form-label"
                                 >Accolade Price<b>(if any)</b></label
                               >
                               <input
                                 type="text"
                                 class="form-control"
-                                id="product-cost-add"
+                                id="accolade_price"
                                 placeholder="₹49,500/-"
                               />
                             </div>
-                            <!-- <div class="col-xl-6">
-                              <label for="product-cost-add" class="form-label"
-                                >Meeting Fees <b>(Quartely)</b> </label
+                            <div class="col-xl-6">
+                              <label for="accolade_published" class="form-label"
+                                >Accolade Published by</b></label
                               >
                               <input
                                 type="text"
                                 class="form-control"
-                                id="product-cost-add"
-                                placeholder="₹1,200/-"
+                                id="accolade_published"
+                                placeholder="₹49,500/-"
                               />
                             </div>
                             <div class="col-xl-6">
-                              <label for="product-cost-add" class="form-label"
-                                >Visitor Fee</label
+                              <label for="accolade_published_date" class="form-label"
+                                >Accolade Published Date</b></label
+                              >
+                              <input
+                                type="date"
+                                class="form-control"
+                                id="accolade_published_date"
+                                placeholder="₹49,500/-"
+                              />
+                            </div>
+                            <div class="col-xl-6">
+                              <label for="stock_available" class="form-label"
+                                >Stock Available</label
                               >
                               <input
                                 type="text"
                                 class="form-control"
-                                id="product-cost-add"
-                                placeholder="₹1,000....."
+                                id="stock_available"
+                                placeholder="₹49,500/-"
                               />
-                            </div> -->
-                            <!-- <div class="col-xl-6">
-                              <label for="product-cost-add" class="form-label"
-                                >Chapter Location & Venue</label
+                            </div>
+                            <div class="col-xl-6">
+                              <label for="accolade_availability" class="form-label"
+                                >Accolade Availability</label
                               >
-                              <input
-                                type="text"
+                              <select
                                 class="form-control"
-                                id="product-cost-add"
-                                placeholder="Vivanta by Taj....."
-                              />
-                            </div> -->
+                                data-trigger=""
+                                name="accolade_availability"
+                                id="accolade_availability"
+                              >
+                                <option value="">Select</option>
+                                <option value="active">Available</option>
+                                <option value="inactive">Not Available</option>
+                              </select>
+                            </div>
                             <div class="col-xl-6">
                               <label for="product-brand-add" class="form-label"
-                                >Status</label
+                                > Accolade Status</label
                               >
                               <select
                                 class="form-control"
@@ -195,21 +153,7 @@
                                 <option value="inactive">Inactive</option>
                               </select>
                             </div>
-                            <div class="col-xl-6">
-                              <label for="product-brand-add" class="form-label"
-                                >Availability</label
-                              >
-                              <select
-                                class="form-control"
-                                data-trigger=""
-                                name="product-brand-add"
-                                id="product-brand-add"
-                              >
-                                <option value="">Select</option>
-                                <option value="active">Available</option>
-                                <option value="inactive">Not Available</option>
-                              </select>
-                            </div>
+                            
                           </div>
                         </div>
                       </div>
@@ -231,4 +175,5 @@
       </div>
       <!-- End::content  -->
 
+      <script src="../../assets/js/addAccolades.js"></script>
       <%- include('../partials/footer') %> 
