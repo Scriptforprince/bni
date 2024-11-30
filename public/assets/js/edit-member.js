@@ -188,6 +188,71 @@ document.addEventListener('DOMContentLoaded', async function () {
 const urlParams = new URLSearchParams(window.location.search);
 const memberId = urlParams.get('member_id');
 
+// Function to validate the form inputs
+const validateMemberForm = () => {
+
+  const contactNumber = document.querySelector("#member_phone_number").value.trim();
+  const email = document.querySelector("#member_email_address").value.trim();
+  const gst_number = document.querySelector("#member_gst_number").value.trim();
+  // const alternateContactNumber = document.querySelector("#member_alternate_mobile_number").value.trim();
+  const member_company_logo = document.querySelector("#member_company_logo").files[0]; // Assuming file input for the logo
+  const logo = document.querySelector("#member_photo").files[0]; // Assuming file input for the logo
+
+  // Validation messages
+  const errors = [];
+
+  // Contact number validation
+  if (!/^\d{10}$/.test(contactNumber)) {
+    toastr.error("Contact number must be exactly 10 digits.");
+    return;
+  }
+
+  // Contact number validation
+  // if (!/^\d{10}$/.test(alternateContactNumber)) {
+  //   toastr.error("Alternate Contact number must be exactly 10 digits.");
+  //   return;
+  // }
+
+  // Contact number validation
+  if (!/^\d{15}$/.test(gst_number)) {
+    toastr.error("GSTIN Number must be exactly 15 digits.");
+    return;
+  }
+
+  // Email validation
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    toastr.error("Please enter a valid email address.");
+    return;
+  }
+
+  // Logo file validation
+  if (logo) {
+    const validExtensions = ['image/jpeg', 'image/png', 'image/jpg'];
+    if (!validExtensions.includes(logo.type)) {
+      toastr.error("Member Image must be in JPG, JPEG, or PNG format.");
+      return;
+    }
+  } else {
+    toastr.error("Please upload a region logo.");
+    return;
+  }
+
+  // Logo file validation
+  if (member_company_logo) {
+    const validExtensions = ['image/jpeg', 'image/png', 'image/jpg'];
+    if (!validExtensions.includes(logo.type)) {
+      toastr.error("Company Logo must be in JPG, JPEG, or PNG format.");
+      return;
+    }
+  } else {
+    toastr.error("Please upload a region logo.");
+    return;
+  }
+
+  return errors;
+};
+
+
 
 // Function to collect form data and prepare it for the update
 const collectMemberFormData = () => {
@@ -232,6 +297,13 @@ const collectMemberFormData = () => {
 
 // Function to send the updated data to the backend after confirmation
 const updateMemberData = async () => {
+
+  // Validate the form inputs
+  const errors = validateMemberForm();
+  if (errors.length > 0) {
+      Swal.fire("Validation Errors", errors.join("<br>"), "error");
+      return;
+  }
   // Ask for confirmation using SweetAlert
   const result = await Swal.fire({
       title: 'Are you sure?',

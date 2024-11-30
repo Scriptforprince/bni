@@ -218,6 +218,37 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
 
+// Function to validate the form inputs
+const validateRegionForm = () => {
+    const contactNumber = document.querySelector("#contact_number").value.trim();
+    const emailId = document.querySelector("#email_id").value.trim();
+    const regionLogo = document.querySelector("#region_logo").files[0]; // Assuming file input for the logo
+
+    // Validation messages
+    const errors = [];
+
+    // Validate contact number
+    if (!/^\d{10}$/.test(contactNumber)) {
+        errors.push("Contact number must be exactly 10 digits.");
+    }
+
+    // Validate email ID
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailId)) {
+        errors.push("Invalid email address format.");
+    }
+
+    // Validate region logo file type
+    if (regionLogo) {
+        const validExtensions = ["jpg", "jpeg", "png"];
+        const fileExtension = regionLogo.name.split(".").pop().toLowerCase();
+        if (!validExtensions.includes(fileExtension)) {
+            errors.push("Region logo must be a JPG, JPEG, or PNG file.");
+        }
+    }
+
+    return errors;
+};
+
 // Function to collect form data and prepare it for the update
 const collectFormData = () => {
     const regionData = {
@@ -258,6 +289,15 @@ const collectFormData = () => {
 };
 // Function to send the updated data to the backend after confirmation
 const updateRegionData = async () => {
+
+    // Validate the form inputs
+    const errors = validateRegionForm();
+    if (errors.length > 0) {
+        Swal.fire("Validation Errors", errors.join("<br>"), "error");
+        return;
+    }
+
+    
     // Ask for confirmation using SweetAlert
     const result = await Swal.fire({
         title: 'Are you sure?',
