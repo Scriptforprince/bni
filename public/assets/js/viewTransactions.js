@@ -78,6 +78,8 @@ async function fetchTransactionsForOrder(orderId) {
     } catch (error) {
         console.error('Error fetching transaction details:', error);
         return [];
+    } finally {
+        hideLoader();
     }
 }
 
@@ -101,6 +103,8 @@ async function fetchUniversalLinkName(universalLinkId) {
     } catch (error) {
         console.error('Error fetching universal link name:', error);
         return 'Unknown';
+    } finally {
+        hideLoader();
     }
 }
 

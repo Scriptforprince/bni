@@ -57,6 +57,8 @@ document.addEventListener('DOMContentLoaded', async function () {
     } catch (error) {
         console.error('Error fetching universal link:', error);
         alert('Failed to fetch universal link details. Please try again.');
+    } finally {
+        hideLoader();
     }
 });
 

@@ -98,7 +98,7 @@
                                 type="text"
                                 class="form-control"
                                 id="accolade_published"
-                                placeholder="₹49,500/-"
+                                placeholder="Raja Shukla/-"
                               />
                             </div>
                             <div class="col-xl-6">
@@ -109,7 +109,6 @@
                                 type="date"
                                 class="form-control"
                                 id="accolade_published_date"
-                                placeholder="₹49,500/-"
                               />
                             </div>
                             <div class="col-xl-6">
@@ -120,7 +119,7 @@
                                 type="text"
                                 class="form-control"
                                 id="stock_available"
-                                placeholder="₹49,500/-"
+                                placeholder="50"
                               />
                             </div>
                             <div class="col-xl-6">
@@ -134,19 +133,19 @@
                                 id="accolade_availability"
                               >
                                 <option value="">Select</option>
-                                <option value="active">Available</option>
-                                <option value="inactive">Not Available</option>
+                                <option value="available">Available</option>
+                                <option value="not-available">Not Available</option>
                               </select>
                             </div>
                             <div class="col-xl-6">
-                              <label for="product-brand-add" class="form-label"
+                              <label for="accolade_status" class="form-label"
                                 > Accolade Status</label
                               >
                               <select
                                 class="form-control"
                                 data-trigger=""
-                                name="product-brand-add"
-                                id="product-brand-add"
+                                name="accolade_status"
+                                id="accolade_status"
                               >
                                 <option value="">Select</option>
                                 <option value="active">Active</option>
@@ -163,7 +162,7 @@
                 <div
                   class="card-footer border-top border-block-start-dashed d-sm-flex justify-content-end"
                 >
-                  <button class="btn btn-success me-2 mb-2 mb-sm-0">
+                  <button class="btn btn-success me-2 mb-2 mb-sm-0" id="submit-accolade">
                     Add Accolade<i class="bi bi-plus-lg ms-2"></i>
                   </button>
                 </div>
@@ -176,4 +175,5 @@
       <!-- End::content  -->
 
       <script src="../../assets/js/addAccolades.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
       <%- include('../partials/footer') %> 
