@@ -32,9 +32,14 @@ async function fetchAndDisplayAccolades() {
     // Loop through accolades and populate the table
     accolades.forEach((accolade, index) => {
       const stockStatus = accolade.stock_available > 0 ? 'In Stock' : 'Out Of Stock';
-      const statusClass = accolade.stock_available > 0 ? 'bg-success-transparent' : 'bg-danger-transparent';
-      const activeStatus = accolade.is_active ? 'Active' : 'Inactive';
-      const activeClass = accolade.is_active ? 'bg-success-transparent' : 'bg-danger-transparent';
+      const stockStatusClass = accolade.stock_available > 0 ? 'bg-success-transparent' : 'bg-danger-transparent';
+      
+      // Check availability and status
+      const availabilityStatus = accolade.accolade_availability === 'available' ? 'Available' : 'Not Available';
+      const availabilityClass = accolade.accolade_availability === 'available' ? 'bg-success-transparent' : 'bg-danger-transparent';
+      
+      const activeStatus = accolade.accolade_status === 'active' ? 'Active' : 'Inactive';
+      const activeClass = accolade.accolade_status === 'active' ? 'bg-success-transparent' : 'bg-danger-transparent';
 
       accoladesTableBody.innerHTML += `
         <tr class="order-list">
@@ -64,19 +69,19 @@ async function fetchAndDisplayAccolades() {
             year: 'numeric',
           }) || 'N/A'}</td>
           <td>
-            <span class="badge ${statusClass}">${stockStatus}</span>
+            <span class="badge ${availabilityClass}">${availabilityStatus}</span>
           </td>
           <td>
             <span class="badge ${activeClass}">${activeStatus}</span>
           </td>
-          <td >
-          <span class="badge bg-primary text-light" style="cursor:pointer; color:white;">
-             <a href="/acc/edit-accolades/?accolade_id=${accolade.accolade_id}" style="color:white">Edit</a>
-          </span>
-          <span class="badge bg-danger text-light delete-btn" style="cursor:pointer; color:white;" data-accolade-id="${accolade.accolade_id}">
-       Delete
-      </span>
-        </td>
+          <td>
+            <span class="badge bg-primary text-light" style="cursor:pointer; color:white;">
+              <a href="/acc/edit-accolades/?accolade_id=${accolade.accolade_id}" style="color:white">Edit</a>
+            </span>
+            <span class="badge bg-danger text-light delete-btn" style="cursor:pointer; color:white;" data-accolade-id="${accolade.accolade_id}">
+              Delete
+            </span>
+          </td>
         </tr>
       `;
     });
@@ -91,6 +96,7 @@ async function fetchAndDisplayAccolades() {
     hideLoader();
   }
 }
+
 
 
 // Function to filter accolades based on search query
