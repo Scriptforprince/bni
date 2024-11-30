@@ -15,6 +15,7 @@ const authRoutes = require('./r-authentication/authenticationRoutes')
 const accoladesRoutes = require('./r-accolades/accoladesRoutes')
 const settingRoutes = require('./r-settings/settingsRoutes')
 const classificationRoutes = require('./r-classifications/classificationRoutes')
+const eventsRoutes = require('./r-events/eventsRoutes')
 
 // Use all the imported routes
 router.use('/', indexRoutes);
@@ -30,5 +31,6 @@ router.use('/auth', authRoutes);
 router.use('/acc', accoladesRoutes);
 router.use('/s', settingRoutes);
 router.use('/cl', classificationRoutes);
+router.use('/e', eventsRoutes);
 
 module.exports = router;
