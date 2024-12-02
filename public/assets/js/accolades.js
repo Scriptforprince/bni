@@ -69,6 +69,24 @@ async function fetchAndDisplayAccolades() {
             year: 'numeric',
           }) || 'N/A'}</td>
           <td>
+            <div class="d-flex align-items-center">
+              <div class="ms-2">
+                <p class="fw-semibold mb-0 d-flex align-items-center">
+                  <a href="#">${accolade.item_type || 'N/A'}</a>
+                </p>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div class="d-flex align-items-center">
+              <div class="ms-2">
+                <p class="fw-semibold mb-0 d-flex align-items-center">
+                  <a href="#">${accolade.accolade_type || 'N/A'}</a>
+                </p>
+              </div>
+            </div>
+          </td>
+          <td>
             <span class="badge ${availabilityClass}">${availabilityStatus}</span>
           </td>
           <td>

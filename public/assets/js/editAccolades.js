@@ -20,6 +20,10 @@ const stockInDateInput = document.getElementById('stock_in_date');
 const stockAvailabilitySelect = document.getElementById('stock_availability');
 const stockStatusSelect = document.getElementById('stock_status');
 
+const itemType = document.getElementById('item_type');
+const accoladeType = document.getElementById('accolade_type');
+const termCondition = document.getElementById('ec');
+
 // Function to format date to YYYY-MM-DD for input[type="date"]
 function formatDateForInput(dateString) {
     const date = new Date(dateString);
@@ -48,6 +52,12 @@ async function fetchAccoladeDetails() {
     // Set the "status" dropdown
     stockStatusSelect.value = accoladeData.accolade_status || '';
 
+    itemType.value = accoladeData.item_type || '';
+
+    accoladeType.value = accoladeData.accolade_type || '';
+
+    termCondition.value = accoladeData.eligibility_and_condition || '';
+
   } catch (error) {
     console.error('Error fetching accolade details:', error);
   } finally {
@@ -69,6 +79,10 @@ const collectFormData = () => {
         stock_in_date: document.querySelector("#stock_in_date").value,
         stock_availability: document.querySelector("#stock_availability").value,
         stock_status: document.querySelector("#stock_status").value,
+
+        item_type: document.querySelector("#item_type").value,
+        accolade_type: document.querySelector("#accolade_type").value,
+        eligibility_and_condition: document.querySelector("#ec").value,
     };
 
     return accoladeData;
@@ -92,7 +106,7 @@ const updateAccoladeData = async () => {
 
         try {
             showLoader(); // Show the loader when sending data
-            const response = await fetch(`https://bni-data-backend.onrender.com/api/updateAccolade/${accoladeId}`, {
+            const response = await fetch(`http://localhost:5000/api/updateAccolade/${accoladeId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

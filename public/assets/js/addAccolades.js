@@ -6,6 +6,10 @@ document.getElementById("submit-accolade").addEventListener("click", async () =>
     const stockAvailable = document.getElementById("stock_available").value.trim();
     const accoladeAvailability = document.getElementById("accolade_availability").value;
     const accoladeStatus = document.getElementById("accolade_status").value;
+
+    const itemType = document.getElementById('item_type');
+    const accoladeType = document.getElementById('accolade_type');
+    const termCondition = document.getElementById('ec');
   
     // Validate required fields
     if (!accoladeName) {
@@ -21,6 +25,10 @@ document.getElementById("submit-accolade").addEventListener("click", async () =>
       accolade_price: accoladePrice || null,
       accolade_status: accoladeStatus || null,
       stock_available: stockAvailable || null,
+
+      item_type: itemType || null,
+      accolade_type: accoladeType || null,
+      eligibilty_and_condition: termCondition || null,
     };
   
     try {
