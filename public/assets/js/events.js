@@ -43,10 +43,10 @@ function renderPage(page) {
             <tr class="order-list">
                 <td>${startIndex + index + 1}</td>
                 <td>
-                    <a href="#"><b>${accolade.event_name}</b></a>
+                    <b>${accolade.event_name}</b>
                 </td>
                 <td>${accolade.event_venue || 'N/A'}</td>
-                <td class="text-center">${accolade.event_price}</td>
+                <td class="text-center"><b>${accolade.event_price}</b></td>
                 <td>${new Date(accolade.event_date).toLocaleDateString('en-US', {
                     day: '2-digit',
                     month: 'short',
@@ -59,7 +59,7 @@ function renderPage(page) {
                     <span class="badge bg-primary text-light">
                         <a href="/acc/edit-accolades/?accolade_id=${accolade.accolade_id}" style="color:white">Edit</a>
                     </span>
-                    <span class="badge bg-danger text-light delete-btn" data-accolade-id="${accolade.accolade_id}">
+                    <span class="badge bg-danger text-light delete-btn" data-event-id="${accolade.event_id}">
                         Delete
                     </span>
                 </td>
@@ -128,3 +128,50 @@ async function fetchAndDisplayAccolades() {
 
 // Load accolades data on page load
 window.addEventListener('load', fetchAndDisplayAccolades);
+
+const deleteEvent = async (event_id) => {
+    // Show confirmation using SweetAlert
+    const result = await Swal.fire({
+        title: 'Are you sure?',
+        text: "This action will mark the event as deleted.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'No, cancel'
+    });
+  
+    if (result.isConfirmed) {
+        try {
+            showLoader();  // Show loading indicator
+            const response = await fetch(`http://localhost:5000/api/deleteEvent/${event_id}`, {
+                method: 'PUT',
+            });
+  
+            if (response.ok) {
+                const data = await response.json();
+                Swal.fire('Deleted!', data.message, 'success');
+                // After deletion, remove the accolade from the table
+                document.querySelector(`[data-event-id="${event_id}"]`).closest('tr').remove();
+            } else {
+                const errorResponse = await response.json();
+                Swal.fire('Failed!', errorResponse.message, 'error');
+            }
+        } catch (error) {
+            console.error('Error deleting accolade:', error);
+            Swal.fire('Error!', 'Failed to delete accolade. Please try again.', 'error');
+        } finally {
+            hideLoader();  // Hide loading indicator
+        }
+    }
+  };
+  
+  // Add event listener for delete buttons dynamically
+  document.getElementById('chaptersTableBody').addEventListener('click', (event) => {
+    if (event.target.classList.contains('delete-btn')) {
+      const event_id = event.target.getAttribute('data-event-id');
+      deleteEvent(event_id);
+    }
+  });
+
+
+
