@@ -52,6 +52,31 @@
               <div class="card-title">All Events List</div>
               <div class="d-flex gap-3 align-items-center flex-wrap">
                 <div class="btn-group"> 
+                  <div class="dropdown me-2">
+                    <a href="javascript:void(0);"
+                       class="btn btn-sm btn-light text-muted dropdown-toggle"
+                       data-bs-toggle="dropdown"
+                       aria-expanded="true">
+                      <i class="ti ti-sort-descending-2 me-1"></i> Event Status
+                    </a>
+                    <ul class="dropdown-menu" id="events-status-filter" role="menu">
+                      <!-- Items will be dynamically inserted here -->
+                    </ul>
+                  </div>
+                  <button href=""
+                  id="apply-filters-btn"
+                  class="btn btn-sm btn-primary btn-wave waves-light">
+            Apply Filter
+          </button>
+          <div style="margin-left: 3px;"><button id="reset-filters-btn" class="btn btn-sm btn-danger btn-wave waves-light">
+            Reset Filter
+          </button></div>
+                  <a href="/e/add-event"><button
+                    class="btn btn-outline-light border"
+                    type="button"
+                  >
+                    + Add New Event
+                  </button></a> 
                 </div>
                 <div class="custom-form-group flex-grow-1">
                   <input
