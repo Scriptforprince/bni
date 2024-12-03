@@ -143,7 +143,7 @@ const deleteEvent = async (event_id) => {
     if (result.isConfirmed) {
         try {
             showLoader();  // Show loading indicator
-            const response = await fetch(`http://localhost:5000/api/deleteEvent/${event_id}`, {
+            const response = await fetch(`https://bni-data-backend.onrender.com/api/deleteEvent/${event_id}`, {
                 method: 'PUT',
             });
   
