@@ -26,7 +26,7 @@ document.getElementById("submit-event").addEventListener("click", async () => {
     };
   
     try {
-      const response = await fetch("http://localhost:5000/api/training", {
+      const response = await fetch("https://bni-data-backend.onrender.com/api/training", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
