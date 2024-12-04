@@ -237,6 +237,7 @@ function renderPage(page) {
                     <b>${training.training_name}</b>
                 </td>
                 <td>${training.training_venue || 'N/A'}</td>
+                <td><b>${training.training_published_by || 'N/A'}</b></td>
                 <td class="text-center"><b>${training.training_price}</b></td>
                 <td>${new Date(training.training_date).toLocaleDateString('en-US', {
                     day: '2-digit',
@@ -341,7 +342,7 @@ const deleteTraining = async (training_id) => {
     // Show confirmation using SweetAlert
     const result = await Swal.fire({
         title: 'Are you sure?',
-        text: "This action will mark the event as deleted.",
+        text: "This action will mark the training as deleted.",
         icon: 'warning',
         showCancelButton: true,
         confirmButtonText: 'Yes, delete it!',
@@ -351,7 +352,7 @@ const deleteTraining = async (training_id) => {
     if (result.isConfirmed) {
         try {
             showLoader();  // Show loading indicator
-            const response = await fetch(`http://localhost:5000/api/deleteTraining/${training_id}`, {
+            const response = await fetch(`https://bni-data-backend.onrender.com/api/deleteTraining/${training_id}`, {
                 method: 'PUT',
             });
   
