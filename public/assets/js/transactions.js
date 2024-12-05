@@ -249,7 +249,7 @@ console.log(filters);
 const filteredTransactions = transactions.filter((transaction) => {
   let isValid = true;
 
-  console.log("Checking transaction for region:", transaction.order_id);
+  // console.log("Checking transaction for region:", transaction.order_id);
 
   if (filters.region_id && transaction.order_id) {
     const order = orders.find(order => order.order_id === transaction.order_id);
@@ -406,12 +406,11 @@ if (filters.month && transaction.order_id) {
     const tableBody = document.querySelector(".table tbody");
 
     filteredTransactions.forEach((transaction, index) => {
-      console.log("Transaction in filtered list:", transaction);
+      // console.log("Transaction in filtered list:", transaction);
       // Find the associated order
       const order = orders.find(
         (order) => order.order_id === transaction.order_id
       );
-
       // Get chapter name from chapterMap
       const chapterName = chapterMap.get(order?.chapter_id) || "N/A";
 
@@ -492,94 +491,154 @@ if (filters.month && transaction.order_id) {
                 }">${transaction.payment_status.toLowerCase()}</span></td>
                 <td><b><em>${gatewayName}</em></b></td>
                 <td><em>${universalLinkName}</em></td>
+                <td>
+                <a href="#" data-transaction-id="${transaction.order_id}" class="btn btn-sm btn-outline-danger btn-wave waves-light track-settlement">Track Settlement</a>
+                </td>
                 <td class="irn"><em>Not Applicable</em></td>
                 <td class="qrcode"><em>Not Applicable</em></td>
                 <td class="generate-invoice-btn">${invoiceButton}</td>
             `;
 
       tableBody.appendChild(row);
-
-      // Fetch IRN and QR code details for each order from the einvoice table
-      if (transaction.payment_status === 'SUCCESS') {
-        showLoader();
-        fetch(`https://bni-data-backend.onrender.com/api/einvoice/${order.order_id}`)
-            .then(response => response.json())
-            .then(einvoiceData => {
-                const irnCell = row.querySelector(".irn");
-                const qrcodeCell = row.querySelector(".qrcode");
-                const btnCell = row.querySelector(".generate-invoice-btn");
-                const qrCodeKey = `qrCode_${order.order_id}`; // Unique key for each order
-                const orderId = order.order_id;
-                const orderr = orders.find((o) => o.order_id === orderId);
-                const transaction = transactions.find((t) => t.order_id === orderId);
-                const chapterName = chapterMap.get(order?.chapter_id) || "N/A";
-                const gatewayName = paymentGatewayMap.get(order?.payment_gateway_id) || "Unknown";
-                const universalLinkName = universalLinkMap.get(order?.universal_link_id) || "Not Applicable";
-
-                const invoiceData = {
-                  orderId: orderr,
-                  transactionId: transaction,
-                  amount: transaction.payment_amount,
-                  chapterName: chapterName,
-                  gatewayName: gatewayName,
-                  universalLinkName: universalLinkName,
-                };
-    
-                // Display the IRN or a message if not available
-                irnCell.innerHTML = einvoiceData.irn || "<em>Not Applicable</em>";
-
-                // Check if both IRN and QR code are available
-                if (einvoiceData.irn && einvoiceData.qrcode) {
-                    // Update the Generate E-Invoice button to View E-Invoice with link
-                    const encodedInvoiceData = encodeURIComponent(JSON.stringify(invoiceData));
-                    const encodedEinvoiceData = encodeURIComponent(JSON.stringify(einvoiceData));
-                    btnCell.innerHTML = `<a href="/v/einvoice?invoiceData=${encodedInvoiceData}&einvoiceData=${encodedEinvoiceData}" class="btn btn-sm btn-link">View E-Invoice</a>`;
-                }
-    
-                // Check if QR code is already stored in localStorage for this order
-                if (localStorage.getItem(qrCodeKey)) {
-                    // If QR code is stored, show the QR code image
-                    qrcodeCell.innerHTML = `<img src="${localStorage.getItem(qrCodeKey)}" alt="QR Code" width="100" height="100">`;
-                } else if (einvoiceData.qrcode) {
-                    // If QR code is available but not yet stored, show the button
-                    qrcodeCell.innerHTML = `<span class="generate-qr-btn">Generate QR Code</span>`;
-    
-                    // Add event listener to the button to display loading and then the QR code
-                    row.querySelector(".generate-qr-btn").addEventListener("click", () => {
-                        // Show "Loading..." message or spinner
-                        qrcodeCell.innerHTML = "<em>Loading...</em>";
-    
-                        // Simulate loading for 3-4 seconds
-                        setTimeout(() => {
-                            // Generate the QR code using the qrcode.js library
-                            const qrCodeData = einvoiceData.qrcode;
-    
-                            // Generate the QR code and set it as an image
-                            QRCode.toDataURL(qrCodeData, { width: 100, height: 100 }, (err, url) => {
-                                if (err) {
-                                    console.error('Error generating QR Code:', err);
-                                    qrcodeCell.innerHTML = "<em>Error generating QR Code</em>";
-                                } else {
-                                    // Store the generated QR code URL in localStorage
-                                    localStorage.setItem(qrCodeKey, url);
-    
-                                    // Display the generated QR code
-                                    qrcodeCell.innerHTML = `<img src="${url}" alt="QR Code" width="100" height="100">`;
-                                }
-                            });
-                        }, 3000); // Delay for 3 seconds
-                    });
-                } else {
-                    qrcodeCell.innerHTML = "<em>Not Applicable</em>";
-                }
-            })
-            .catch(() => {
-                row.querySelector(".irn").innerHTML = "<em>Error Loading IRN</em>";
-                row.querySelector(".qrcode").innerHTML = "<em>Error Loading QR Code</em>";
-            });
-    }
     
     });
+
+      // Add event listener for "Track Settlement" buttons
+      document.addEventListener('click', async (event) => {
+        if (event.target.classList.contains('track-settlement')) {
+          event.preventDefault();
+    
+          const button = event.target;
+          const orderId = button.dataset.transactionId;
+    
+          try {
+            // Step 1: Send request to save settlement data
+            const saveResponse = await fetch(
+              `http://localhost:5000/api/orders/${orderId}/settlementStatus`,
+              { method: 'GET' }
+            );
+    
+            if (!saveResponse.ok) {
+              throw new Error('Failed to save settlement data.');
+            }
+    
+            // Step 2: Fetch settlement data using cf_payment_id
+            const row = button.closest('tr');
+            const cfPaymentId = row.querySelector('td:nth-child(8) em').innerText;
+    
+            const fetchResponse = await fetch(
+              `http://localhost:5000/api/settlement/${cfPaymentId}`
+            );
+    
+            if (!fetchResponse.ok) {
+              throw new Error('Failed to fetch settlement data.');
+            }
+    
+            const { settlement } = await fetchResponse.json();
+    
+            // Step 3: Update the table row based on settlement data
+            if (settlement.transfer_utr && settlement.transfer_time && settlement.transfer_id) {
+              // Change button text to "Settled"
+              fetch(`https://bni-data-backend.onrender.com/api/einvoice/${settlement.order_id}`)
+              .then(response => response.json())
+              .then(einvoiceData => {
+                  const irnCell = row.querySelector(".irn");
+                  const qrcodeCell = row.querySelector(".qrcode");
+                  const btnCell = row.querySelector(".generate-invoice-btn");
+                  const qrCodeKey = `qrCode_${settlement.order_id}`; // Unique key for each order
+                  const orderId = settlement.order_id;
+                  const orderr = orders.find((o) => o.order_id === orderId);
+                  const transaction = transactions.find((t) => t.order_id === orderId);
+                  const chapterName = chapterMap.get(settlement?.chapter_id) || "N/A";
+                  const gatewayName = paymentGatewayMap.get(settlement?.payment_gateway_id) || "Unknown";
+                  const universalLinkName = universalLinkMap.get(settlement?.universal_link_id) || "Not Applicable";
+        
+                  const invoiceData = {
+                    orderId: orderr,
+                    transactionId: transaction,
+                    amount: transaction.payment_amount,
+                    chapterName: chapterName,
+                    gatewayName: gatewayName,
+                    universalLinkName: universalLinkName,
+                  };
+        
+                  // Display the IRN or a message if not available
+                  irnCell.innerHTML = einvoiceData.irn || "<em>Not Applicable</em>";
+        
+                  // Check if both IRN and QR code are available
+                  if (einvoiceData.irn && einvoiceData.qrcode) {
+                      // Update the Generate E-Invoice button to View E-Invoice with link
+                      const encodedInvoiceData = encodeURIComponent(JSON.stringify(invoiceData));
+                      const encodedEinvoiceData = encodeURIComponent(JSON.stringify(einvoiceData));
+                      btnCell.innerHTML = `<a href="/v/einvoice?invoiceData=${encodedInvoiceData}&einvoiceData=${encodedEinvoiceData}" class="btn btn-sm btn-link">View E-Invoice</a>`;
+                  }
+        
+                  // Check if QR code is already stored in localStorage for this order
+                  if (localStorage.getItem(qrCodeKey)) {
+                      // If QR code is stored, show the QR code image
+                      qrcodeCell.innerHTML = `<img src="${localStorage.getItem(qrCodeKey)}" alt="QR Code" width="100" height="100">`;
+                  } else if (einvoiceData.qrcode) {
+                      // If QR code is available but not yet stored, show the button
+                      qrcodeCell.innerHTML = `<span class="generate-qr-btn">Generate QR Code</span>`;
+        
+                      // Add event listener to the button to display loading and then the QR code
+                      row.querySelector(".generate-qr-btn").addEventListener("click", () => {
+                          // Show "Loading..." message or spinner
+                          qrcodeCell.innerHTML = "<em>Loading...</em>";
+        
+                          // Simulate loading for 3-4 seconds
+                          setTimeout(() => {
+                              // Generate the QR code using the qrcode.js library
+                              const qrCodeData = einvoiceData.qrcode;
+        
+                              // Generate the QR code and set it as an image
+                              QRCode.toDataURL(qrCodeData, { width: 100, height: 100 }, (err, url) => {
+                                  if (err) {
+                                      console.error('Error generating QR Code:', err);
+                                      qrcodeCell.innerHTML = "<em>Error generating QR Code</em>";
+                                  } else {
+                                      // Store the generated QR code URL in localStorage
+                                      localStorage.setItem(qrCodeKey, url);
+        
+                                      // Display the generated QR code
+                                      qrcodeCell.innerHTML = `<img src="${url}" alt="QR Code" width="100" height="100">`;
+                                  }
+                              });
+                          }, 3000); // Delay for 3 seconds
+                      });
+                  } else {
+                      qrcodeCell.innerHTML = "<em>Not Applicable</em>";
+                  }
+              })
+              .catch(() => {
+                  row.querySelector(".irn").innerHTML = "<em>Error Loading IRN</em>";
+                  row.querySelector(".qrcode").innerHTML = "<em>Error Loading QR Code</em>";
+              });
+              button.textContent = 'Settled';
+              button.classList.remove('btn-success');
+              button.classList.add('btn-success');
+              button.setAttribute('disabled', 'true');
+    
+              // Add UTR ID cell dynamically if it doesn't exist
+              let utrCell = row.querySelector('.utr-cell');
+              if (!utrCell) {
+                utrCell = document.createElement('td');
+                utrCell.classList.add('utr-cell');
+                utrCell.innerHTML = `<b>${settlement.transfer_utr}</b>`;
+                row.appendChild(utrCell);
+              } else {
+                utrCell.innerHTML = `<b>${settlement.transfer_utr}</b>`;
+              }
+            } else {
+              alert('Settlement in process, please track after sometime.');
+            }
+          } catch (error) {
+            console.error('Error tracking settlement:', error.message);
+            alert('An error occurred while tracking the settlement.');
+          }
+        }
+      });
+    
 
     // Display the totals
     document.querySelector(
@@ -662,7 +721,7 @@ if (filters.month && transaction.order_id) {
 
                 try {
                   const backendResponse = await fetch(
-                    "https://bni-data-backend.onrender.com/einvoice/generate-irn",
+                    "http://localhost:5000/einvoice/generate-irn",
                     {
                       method: "POST",
                       headers: {
