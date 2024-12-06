@@ -494,6 +494,8 @@ if (filters.month && transaction.order_id) {
                 <td>
                 <a href="#" data-transaction-id="${transaction.order_id}" class="btn btn-sm btn-outline-danger btn-wave waves-light track-settlement">Track Settlement</a>
                 </td>
+                <td class="utr-cell"><em>Not Available</em></td>
+                <td class="settlement-time"><em>Not Available</em></td>
                 <td class="irn"><em>Not Applicable</em></td>
                 <td class="qrcode"><em>Not Applicable</em></td>
                 <td class="generate-invoice-btn">${invoiceButton}</td>
@@ -514,7 +516,7 @@ if (filters.month && transaction.order_id) {
           try {
             // Step 1: Send request to save settlement data
             const saveResponse = await fetch(
-              `https://bni-data-backend.onrender.com/api/orders/${orderId}/settlementStatus`,
+              `http://localhost:5000/api/orders/${orderId}/settlementStatus`,
               { method: 'GET' }
             );
     
@@ -527,7 +529,7 @@ if (filters.month && transaction.order_id) {
             const cfPaymentId = row.querySelector('td:nth-child(8) em').innerText;
     
             const fetchResponse = await fetch(
-              `https://bni-data-backend.onrender.com/api/settlement/${cfPaymentId}`
+              `http://localhost:5000/api/settlement/${cfPaymentId}`
             );
     
             if (!fetchResponse.ok) {
@@ -614,13 +616,14 @@ if (filters.month && transaction.order_id) {
                   row.querySelector(".irn").innerHTML = "<em>Error Loading IRN</em>";
                   row.querySelector(".qrcode").innerHTML = "<em>Error Loading QR Code</em>";
               });
-              button.textContent = 'Settled';
+              button.textContent = 'Payment Settled ✔';
               button.classList.remove('btn-success');
               button.classList.add('btn-success');
               button.setAttribute('disabled', 'true');
     
               // Add UTR ID cell dynamically if it doesn't exist
               let utrCell = row.querySelector('.utr-cell');
+              let settlementTime = row.querySelector('.settlement-time');
               if (!utrCell) {
                 utrCell = document.createElement('td');
                 utrCell.classList.add('utr-cell');
@@ -629,6 +632,28 @@ if (filters.month && transaction.order_id) {
               } else {
                 utrCell.innerHTML = `<b>${settlement.transfer_utr}</b>`;
               }
+              if (!settlementTime) {
+                settlementTime = document.createElement('td');
+                settlementTime.classList.add('utr-cell');
+              
+                // Format the transfer time
+                const formattedTime = new Date(settlement.transfer_time).toLocaleString('en-US', {
+                  dateStyle: 'medium', // Example: Jul 25, 2021
+                  timeStyle: 'short', // Example: 7:27 AM
+                });
+              
+                settlementTime.innerHTML = `<b>${formattedTime}</b>`;
+                row.appendChild(settlementTime);
+              } else {
+                // Format the transfer time
+                const formattedTime = new Date(settlement.transfer_time).toLocaleString('en-US', {
+                  dateStyle: 'medium', // Example: Jul 25, 2021
+                  timeStyle: 'short', // Example: 7:27 AM
+                });
+              
+                settlementTime.innerHTML = `<b>${formattedTime}</b>`;
+              }
+              
             } else {
               alert('Settlement in process, please track after sometime.');
             }
