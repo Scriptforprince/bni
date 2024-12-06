@@ -511,6 +511,9 @@ if (filters.month && transaction.order_id) {
           event.preventDefault();
     
           const button = event.target;
+          const originalText = button.textContent; // Store the original button text
+          button.textContent = 'Loading...'; // Display loading text
+          button.disabled = true; // Disable the button to prevent multiple clicks
           const orderId = button.dataset.transactionId;
     
           try {
@@ -620,6 +623,7 @@ if (filters.month && transaction.order_id) {
               button.classList.remove('btn-success');
               button.classList.add('btn-success');
               button.setAttribute('disabled', 'true');
+              toastr.success('Payment successfully settled!');
     
               // Add UTR ID cell dynamically if it doesn't exist
               let utrCell = row.querySelector('.utr-cell');
@@ -655,11 +659,15 @@ if (filters.month && transaction.order_id) {
               }
               
             } else {
-              alert('Settlement in process, please track after sometime.');
+              toastr.info('Settlement in process. Please track after some time.');
+              button.textContent = originalText; // Restore button text
+              button.disabled = false; // Re-enable the button
             }
           } catch (error) {
             console.error('Error tracking settlement:', error.message);
-            alert('An error occurred while tracking the settlement.');
+            toastr.error('An error occurred while tracking the settlement.');
+            button.textContent = originalText; // Restore button text
+            button.disabled = false; // Re-enable the button
           }
         }
       });
