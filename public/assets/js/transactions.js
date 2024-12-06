@@ -466,11 +466,6 @@ if (filters.month && transaction.order_id) {
       const row = document.createElement("tr");
       row.classList.add("invoice-list");
 
-      const invoiceButton =
-        transaction.payment_status === "SUCCESS"
-          ? `<a href="#" data-order-id="${order.order_id}" class="btn btn-sm btn-success btn-wave waves-light generate-invoice">Generate E-Invoice</a>`
-          : `<em>Not Applicable</em>`;
-
       row.innerHTML = `
                 <td>${index + 1}</td>
                 <td>${formattedDate}</td>
@@ -498,7 +493,7 @@ if (filters.month && transaction.order_id) {
                 <td class="settlement-time"><em>Not Available</em></td>
                 <td class="irn"><em>Not Applicable</em></td>
                 <td class="qrcode"><em>Not Applicable</em></td>
-                <td class="generate-invoice-btn">${invoiceButton}</td>
+                <td class="generate-invoice-btn">Not Applicable</td>
             `;
 
       tableBody.appendChild(row);
@@ -543,7 +538,7 @@ if (filters.month && transaction.order_id) {
     
             // Step 3: Update the table row based on settlement data
             if (settlement.transfer_utr && settlement.transfer_time && settlement.transfer_id) {
-              // Change button text to "Settled"
+
               fetch(`https://bni-data-backend.onrender.com/api/einvoice/${settlement.order_id}`)
               .then(response => response.json())
               .then(einvoiceData => {
@@ -624,6 +619,10 @@ if (filters.month && transaction.order_id) {
               button.classList.add('btn-success');
               button.setAttribute('disabled', 'true');
               toastr.success('Payment successfully settled!');
+
+              let e_invoice = row.querySelector('.generate-invoice-btn');
+              e_invoice.innerHTML = `<a href="#" data-order-id="${settlement.order_id}" class="btn btn-sm btn-success btn-wave waves-light generate-invoice">Generate E-Invoice</a>
+              `;
     
               // Add UTR ID cell dynamically if it doesn't exist
               let utrCell = row.querySelector('.utr-cell');
