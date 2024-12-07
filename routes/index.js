@@ -17,6 +17,7 @@ const settingRoutes = require('./r-settings/settingsRoutes')
 const classificationRoutes = require('./r-classifications/classificationRoutes')
 const eventsRoutes = require('./r-events/eventsRoutes')
 const trainingsRoutes = require('./r-trainings/trainingRoutes')
+const kittyDashboardRoutes = require('./r-kittyDashboard/kittyDashboardRoutes')
 
 // Use all the imported routes
 router.use('/', indexRoutes);
@@ -34,5 +35,6 @@ router.use('/s', settingRoutes);
 router.use('/cl', classificationRoutes);
 router.use('/e', eventsRoutes);
 router.use('/tr', trainingsRoutes);
+router.use('/k', kittyDashboardRoutes);
 
 module.exports = router;

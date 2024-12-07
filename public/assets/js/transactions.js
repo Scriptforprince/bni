@@ -514,7 +514,7 @@ if (filters.month && transaction.order_id) {
           try {
             // Step 1: Send request to save settlement data
             const saveResponse = await fetch(
-              `https://bni-data-backend.onrender.com/api/orders/${orderId}/settlementStatus`,
+              `http://localhost:5000/api/orders/${orderId}/settlementStatus`,
               { method: 'GET' }
             );
     
@@ -527,7 +527,7 @@ if (filters.month && transaction.order_id) {
             const cfPaymentId = row.querySelector('td:nth-child(8) em').innerText;
     
             const fetchResponse = await fetch(
-              `https://bni-data-backend.onrender.com/api/settlement/${cfPaymentId}`
+              `http://localhost:5000/api/settlement/${cfPaymentId}`
             );
     
             if (!fetchResponse.ok) {
