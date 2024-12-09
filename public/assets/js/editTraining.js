@@ -32,7 +32,7 @@ function formatDateForInput(dateString) {
 async function fetchTrainingDetails() {
   try {
     showLoader();
-    const response = await fetch(`http://localhost:5000/api/getTraining/${training_id}`);
+    const response = await fetch(`https://bni-data-backend.onrender.com/api/getTraining/${training_id}`);
     if (!response.ok) throw new Error('Failed to fetch event details');
     
     const trainingData = await response.json();
