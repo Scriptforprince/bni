@@ -234,25 +234,23 @@ function renderPage(page) {
             <tr class="order-list">
                 <td>${startIndex + index + 1}</td>
                 <td>
-                    <b>${training.training_name}</b>
+                  <a href="/tr/view-training?training_id=${training.training_id}"><b>${training.training_name}</b></a>  
                 </td>
                 <td>${training.training_venue || 'N/A'}</td>
-                <td><b>${training.training_published_by || 'N/A'}</b></td>
+                <td><b>${new Date(training.training_date).toLocaleDateString('en-US', {
+                  day: '2-digit',
+                  month: 'short',
+                  year: 'numeric',
+              }) || 'N/A'}</b></td>
+                <td><b>100</b></td>
                 <td class="text-center"><b>${training.training_price}</b></td>
-                <td>${new Date(training.training_date).toLocaleDateString('en-US', {
-                    day: '2-digit',
-                    month: 'short',
-                    year: 'numeric',
-                }) || 'N/A'}</td>
+                
                 <td>
                     <span class="badge bg-${badgeClass}">${availabilityStatus}</span>
                 </td>
                 <td>
                     <span class="badge bg-primary text-light">
                         <a href="/tr/edit-training/?training_id=${training.training_id}" style="color:white">Edit</a>
-                    </span>
-                    <span class="badge bg-danger text-light delete-btn" data-training-id="${training.training_id}">
-                        Delete
                     </span>
                 </td>
             </tr>`;
