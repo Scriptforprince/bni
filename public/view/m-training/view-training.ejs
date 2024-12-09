@@ -1,421 +1,10 @@
- <!-- header -->
- <%- include('../partials/header') %> 
- <!-- end header -->
-  <!-- Loader -->
-  <div id="loader" style="display: none; align-items: center; justify-content: center;opacity: 99999; background-color: red;">
-    <img src="../../assets/images/media/loader-5.svg" alt="Loading...">
-</div>
+    <!-- header -->
+    <%- include('../partials/header') %> 
+    <!-- end header -->
 
-<!-- Loader -->
-  <!-- Switcher -->
-  <div class="offcanvas offcanvas-end" tabindex="-1" id="switcher-canvas" aria-labelledby="offcanvasRightLabel">
-    <div class="offcanvas-header border-bottom d-block p-0">
-        <div class="d-flex align-items-center justify-content-between p-3">
-            <h5 class="offcanvas-title text-default" id="offcanvasRightLabel">Switcher</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
-        <nav class="border-top border-block-start-dashed">
-            <div class="nav nav-tabs nav-justified" id="switcher-main-tab" role="tablist">
-                <button class="nav-link active" id="switcher-home-tab" data-bs-toggle="tab" data-bs-target="#switcher-home" type="button" role="tab" aria-controls="switcher-home" aria-selected="true">Theme Styles</button>
-                <button class="nav-link" id="switcher-profile-tab" data-bs-toggle="tab" data-bs-target="#switcher-profile" type="button" role="tab" aria-controls="switcher-profile" aria-selected="false">Theme Colors</button>
-            </div>
-        </nav>
-    </div>
-    <div class="offcanvas-body">
-        <div class="tab-content" id="nav-tabContent">
-            <div class="tab-pane fade show active border-0" id="switcher-home" role="tabpanel" aria-labelledby="switcher-home-tab" tabindex="0">
-                <div class="">
-                    <p class="switcher-style-head">Theme Color Mode:</p>
-                    <div class="row switcher-style gx-0">
-                        <div class="col-4">
-                            <div class="form-check switch-select">
-                                <label class="form-check-label" for="switcher-light-theme">
-                                    Light
-                                </label>
-                                <input class="form-check-input" type="radio" name="theme-style" id="switcher-light-theme" checked="">
-                            </div>
-                        </div>
-                        <div class="col-4">
-                            <div class="form-check switch-select">
-                                <label class="form-check-label" for="switcher-dark-theme">
-                                    Dark
-                                </label>
-                                <input class="form-check-input" type="radio" name="theme-style" id="switcher-dark-theme">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="">
-                    <p class="switcher-style-head">Directions:</p>
-                    <div class="row switcher-style gx-0">
-                        <div class="col-4">
-                            <div class="form-check switch-select">
-                                <label class="form-check-label" for="switcher-ltr">
-                                    LTR
-                                </label>
-                                <input class="form-check-input" type="radio" name="direction" id="switcher-ltr" checked="">
-                            </div>
-                        </div>
-                        <div class="col-4">
-                            <div class="form-check switch-select">
-                                <label class="form-check-label" for="switcher-rtl">
-                                    RTL
-                                </label>
-                                <input class="form-check-input" type="radio" name="direction" id="switcher-rtl">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="">
-                    <p class="switcher-style-head">Navigation Styles:</p>
-                    <div class="row switcher-style gx-0">
-                        <div class="col-4">
-                            <div class="form-check switch-select">
-                                <label class="form-check-label" for="switcher-vertical">
-                                    Vertical
-                                </label>
-                                <input class="form-check-input" type="radio" name="navigation-style" id="switcher-vertical" checked="">
-                            </div>
-                        </div>
-                        <div class="col-4">
-                            <div class="form-check switch-select">
-                                <label class="form-check-label" for="switcher-horizontal">
-                                    Horizontal
-                                </label>
-                                <input class="form-check-input" type="radio" name="navigation-style" id="switcher-horizontal">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="navigation-menu-styles">
-                    <p class="switcher-style-head">Vertical & Horizontal Menu Styles:</p>
-                    <div class="row switcher-style gx-0 pb-2 gy-2">
-                        <div class="col-4">
-                            <div class="form-check switch-select">
-                                <label class="form-check-label" for="switcher-menu-click">
-                                    Menu Click
-                                </label>
-                                <input class="form-check-input" type="radio" name="navigation-menu-styles" id="switcher-menu-click">
-                            </div>
-                        </div>
-                        <div class="col-4">
-                            <div class="form-check switch-select">
-                                <label class="form-check-label" for="switcher-menu-hover">
-                                    Menu Hover
-                                </label>
-                                <input class="form-check-input" type="radio" name="navigation-menu-styles" id="switcher-menu-hover">
-                            </div>
-                        </div>
-                        <div class="col-4">
-                            <div class="form-check switch-select">
-                                <label class="form-check-label" for="switcher-icon-click">
-                                    Icon Click
-                                </label>
-                                <input class="form-check-input" type="radio" name="navigation-menu-styles" id="switcher-icon-click">
-                            </div>
-                        </div>
-                        <div class="col-4">
-                            <div class="form-check switch-select">
-                                <label class="form-check-label" for="switcher-icon-hover">
-                                    Icon Hover
-                                </label>
-                                <input class="form-check-input" type="radio" name="navigation-menu-styles" id="switcher-icon-hover">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="sidemenu-layout-styles">
-                    <p class="switcher-style-head">Sidemenu Layout Styles:</p>
-                    <div class="row switcher-style gx-0 pb-2 gy-2">
-                        <div class="col-sm-6">
-                            <div class="form-check switch-select">
-                                <label class="form-check-label" for="switcher-default-menu">
-                                    Default Menu
-                                </label>
-                                <input class="form-check-input" type="radio" name="sidemenu-layout-styles" id="switcher-default-menu" checked="">
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-check switch-select">
-                                <label class="form-check-label" for="switcher-closed-menu">
-                                    Closed Menu
-                                </label>
-                                <input class="form-check-input" type="radio" name="sidemenu-layout-styles" id="switcher-closed-menu">
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-check switch-select">
-                                <label class="form-check-label" for="switcher-icontext-menu">
-                                    Icon Text
-                                </label>
-                                <input class="form-check-input" type="radio" name="sidemenu-layout-styles" id="switcher-icontext-menu">
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-check switch-select">
-                                <label class="form-check-label" for="switcher-icon-overlay">
-                                    Icon Overlay
-                                </label>
-                                <input class="form-check-input" type="radio" name="sidemenu-layout-styles" id="switcher-icon-overlay">
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-check switch-select">
-                                <label class="form-check-label" for="switcher-detached">
-                                    Detached
-                                </label>
-                                <input class="form-check-input" type="radio" name="sidemenu-layout-styles" id="switcher-detached">
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-check switch-select">
-                                <label class="form-check-label" for="switcher-double-menu">
-                                    Double Menu
-                                </label>
-                                <input class="form-check-input" type="radio" name="sidemenu-layout-styles" id="switcher-double-menu">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="">
-                    <p class="switcher-style-head">Page Styles:</p>
-                    <div class="row switcher-style gx-0">
-                        <div class="col-4">
-                            <div class="form-check switch-select">
-                                <label class="form-check-label" for="switcher-regular">
-                                    Regular
-                                </label>
-                                <input class="form-check-input" type="radio" name="page-styles" id="switcher-regular" checked="">
-                            </div>
-                        </div>
-                        <div class="col-4">
-                            <div class="form-check switch-select">
-                                <label class="form-check-label" for="switcher-classic">
-                                    Classic
-                                </label>
-                                <input class="form-check-input" type="radio" name="page-styles" id="switcher-classic">
-                            </div>
-                        </div>
-                        <div class="col-4">
-                            <div class="form-check switch-select">
-                                <label class="form-check-label" for="switcher-modern">
-                                    Modern
-                                </label>
-                                <input class="form-check-input" type="radio" name="page-styles" id="switcher-modern">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="">
-                    <p class="switcher-style-head">Layout Width Styles:</p>
-                    <div class="row switcher-style gx-0">
-                        <div class="col-sm-4">
-                            <div class="form-check switch-select">
-                                <label class="form-check-label" for="switcher-full-width">
-                                    Full Width
-                                </label>
-                                <input class="form-check-input" type="radio" name="layout-width" id="switcher-full-width" checked="">
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="form-check switch-select">
-                                <label class="form-check-label" for="switcher-boxed">
-                                    Boxed
-                                </label>
-                                <input class="form-check-input" type="radio" name="layout-width" id="switcher-boxed">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="">
-                    <p class="switcher-style-head">Menu Positions:</p>
-                    <div class="row switcher-style gx-0">
-                        <div class="col-4">
-                            <div class="form-check switch-select">
-                                <label class="form-check-label" for="switcher-menu-fixed">
-                                    Fixed
-                                </label>
-                                <input class="form-check-input" type="radio" name="menu-positions" id="switcher-menu-fixed" checked="">
-                            </div>
-                        </div>
-                        <div class="col-4">
-                            <div class="form-check switch-select">
-                                <label class="form-check-label" for="switcher-menu-scroll">
-                                    Scrollable
-                                </label>
-                                <input class="form-check-input" type="radio" name="menu-positions" id="switcher-menu-scroll">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="">
-                    <p class="switcher-style-head">Header Positions:</p>
-                    <div class="row switcher-style gx-0">
-                        <div class="col-4">
-                            <div class="form-check switch-select">
-                                <label class="form-check-label" for="switcher-header-fixed">
-                                    Fixed
-                                </label>
-                                <input class="form-check-input" type="radio" name="header-positions" id="switcher-header-fixed" checked="">
-                            </div>
-                        </div>
-                        <div class="col-4">
-                            <div class="form-check switch-select">
-                                <label class="form-check-label" for="switcher-header-scroll">
-                                    Scrollable
-                                </label>
-                                <input class="form-check-input" type="radio" name="header-positions" id="switcher-header-scroll">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="">
-                    <p class="switcher-style-head">Loader:</p>
-                    <div class="row switcher-style gx-0">
-                        <div class="col-4">
-                            <div class="form-check switch-select">
-                                <label class="form-check-label" for="switcher-loader-enable">
-                                    Enable
-                                </label>
-                                <input class="form-check-input" type="radio" name="page-loader" id="switcher-loader-enable">
-                            </div>
-                        </div>
-                        <div class="col-4">
-                            <div class="form-check switch-select">
-                                <label class="form-check-label" for="switcher-loader-disable">
-                                    Disable
-                                </label>
-                                <input class="form-check-input" type="radio" name="page-loader" id="switcher-loader-disable" checked="">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="tab-pane fade border-0" id="switcher-profile" role="tabpanel" aria-labelledby="switcher-profile-tab" tabindex="0">
-                <div>
-                    <div class="theme-colors">
-                        <p class="switcher-style-head">Menu Colors:</p>
-                        <div class="d-flex switcher-style pb-2">
-                            <div class="form-check switch-select me-3">
-                                <input class="form-check-input color-input color-white" data-bs-toggle="tooltip" data-bs-placement="top" title="Light Menu" type="radio" name="menu-colors" id="switcher-menu-light">
-                            </div>
-                            <div class="form-check switch-select me-3">
-                                <input class="form-check-input color-input color-dark" data-bs-toggle="tooltip" data-bs-placement="top" title="Dark Menu" type="radio" name="menu-colors" id="switcher-menu-dark" checked="">
-                            </div>
-                            <div class="form-check switch-select me-3">
-                                <input class="form-check-input color-input color-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Color Menu" type="radio" name="menu-colors" id="switcher-menu-primary">
-                            </div>
-                            <div class="form-check switch-select me-3">
-                                <input class="form-check-input color-input color-gradient" data-bs-toggle="tooltip" data-bs-placement="top" title="Gradient Menu" type="radio" name="menu-colors" id="switcher-menu-gradient">
-                            </div>
-                            <div class="form-check switch-select me-3">
-                                <input class="form-check-input color-input color-transparent" data-bs-toggle="tooltip" data-bs-placement="top" title="Transparent Menu" type="radio" name="menu-colors" id="switcher-menu-transparent">
-                            </div>
-                        </div>
-                        <div class="px-4 pb-3 text-muted fs-11">Note:If you want to change color Menu dynamically change from below Theme Primary color picker</div>
-                    </div>
-                    <div class="theme-colors">
-                        <p class="switcher-style-head">Header Colors:</p>
-                        <div class="d-flex switcher-style pb-2">
-                            <div class="form-check switch-select me-3">
-                                <input class="form-check-input color-input color-white" data-bs-toggle="tooltip" data-bs-placement="top" title="Light Header" type="radio" name="header-colors" id="switcher-header-light" checked="">
-                            </div>
-                            <div class="form-check switch-select me-3">
-                                <input class="form-check-input color-input color-dark" data-bs-toggle="tooltip" data-bs-placement="top" title="Dark Header" type="radio" name="header-colors" id="switcher-header-dark">
-                            </div>
-                            <div class="form-check switch-select me-3">
-                                <input class="form-check-input color-input color-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Color Header" type="radio" name="header-colors" id="switcher-header-primary">
-                            </div>
-                            <div class="form-check switch-select me-3">
-                                <input class="form-check-input color-input color-gradient" data-bs-toggle="tooltip" data-bs-placement="top" title="Gradient Header" type="radio" name="header-colors" id="switcher-header-gradient">
-                            </div>
-                            <div class="form-check switch-select me-3">
-                                <input class="form-check-input color-input color-transparent" data-bs-toggle="tooltip" data-bs-placement="top" title="Transparent Header" type="radio" name="header-colors" id="switcher-header-transparent">
-                            </div>
-                        </div>
-                        <div class="px-4 pb-3 text-muted fs-11">Note:If you want to change color Header dynamically change from below Theme Primary color picker</div>
-                    </div>
-                    <div class="theme-colors">
-                        <p class="switcher-style-head">Theme Primary:</p>
-                        <div class="d-flex flex-wrap align-items-center switcher-style">
-                            <div class="form-check switch-select me-3">
-                                <input class="form-check-input color-input color-primary-1" type="radio" name="theme-primary" id="switcher-primary">
-                            </div>
-                            <div class="form-check switch-select me-3">
-                                <input class="form-check-input color-input color-primary-2" type="radio" name="theme-primary" id="switcher-primary1">
-                            </div>
-                            <div class="form-check switch-select me-3">
-                                <input class="form-check-input color-input color-primary-3" type="radio" name="theme-primary" id="switcher-primary2">
-                            </div>
-                            <div class="form-check switch-select me-3">
-                                <input class="form-check-input color-input color-primary-4" type="radio" name="theme-primary" id="switcher-primary3">
-                            </div>
-                            <div class="form-check switch-select me-3">
-                                <input class="form-check-input color-input color-primary-5" type="radio" name="theme-primary" id="switcher-primary4">
-                            </div>
-                            <div class="form-check switch-select ps-0 mt-1 color-primary-light">
-                                <div class="theme-container-primary"></div>
-                                <div class="pickr-container-primary" onchange="updateChartColor(this.value)"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="theme-colors">
-                        <p class="switcher-style-head">Theme Background:</p>
-                        <div class="d-flex flex-wrap align-items-center switcher-style">
-                            <div class="form-check switch-select me-3">
-                                <input class="form-check-input color-input color-bg-1" type="radio" name="theme-background" id="switcher-background">
-                            </div>
-                            <div class="form-check switch-select me-3">
-                                <input class="form-check-input color-input color-bg-2" type="radio" name="theme-background" id="switcher-background1">
-                            </div>
-                            <div class="form-check switch-select me-3">
-                                <input class="form-check-input color-input color-bg-3" type="radio" name="theme-background" id="switcher-background2">
-                            </div>
-                            <div class="form-check switch-select me-3">
-                                <input class="form-check-input color-input color-bg-4" type="radio" name="theme-background" id="switcher-background3">
-                            </div>
-                            <div class="form-check switch-select me-3">
-                                <input class="form-check-input color-input color-bg-5" type="radio" name="theme-background" id="switcher-background4">
-                            </div>
-                            <div class="form-check switch-select ps-0 mt-1 tooltip-static-demo color-bg-transparent">
-                                <div class="theme-container-background"></div>
-                                <div class="pickr-container-background"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="menu-image mb-3">
-                        <p class="switcher-style-head">Menu With Background Image:</p>
-                        <div class="d-flex flex-wrap align-items-center switcher-style">
-                            <div class="form-check switch-select m-2">
-                                <input class="form-check-input bgimage-input bg-img1" type="radio" name="menu-background" id="switcher-bg-img">
-                            </div>
-                            <div class="form-check switch-select m-2">
-                                <input class="form-check-input bgimage-input bg-img2" type="radio" name="menu-background" id="switcher-bg-img1">
-                            </div>
-                            <div class="form-check switch-select m-2">
-                                <input class="form-check-input bgimage-input bg-img3" type="radio" name="menu-background" id="switcher-bg-img2">
-                            </div>
-                            <div class="form-check switch-select m-2">
-                                <input class="form-check-input bgimage-input bg-img4" type="radio" name="menu-background" id="switcher-bg-img3">
-                            </div>
-                            <div class="form-check switch-select m-2">
-                                <input class="form-check-input bgimage-input bg-img5" type="radio" name="menu-background" id="switcher-bg-img4">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="d-flex justify-content-between canvas-footer flex-nowrap gap-2">
-                <a href="https://themeforest.net/item/xintra-laravel-bootstrap-admin-dashboard-template/54027623" target="_blank" class="btn btn-primary text-nowrap">Buy Now</a> 
-                <a href="https://themeforest.net/user/spruko/portfolio" target="_blank" class="btn btn-secondary text-nowrap">Our Portfolio</a> 
-                <a href="javascript:void(0);" id="reset-all" class="btn btn-danger text-nowrap">Reset</a> 
-            </div>
-        </div>
-    </div>
-</div>        <!-- End switcher -->
+    <!-- sidebar -->
 
-
-<div class="page">
+    <%- include('../partials/sidebar') %>
 
 
     <!-- Start::app-content -->
@@ -462,33 +51,57 @@
                                                             <div class="text-muted">
                                                                 <p class="mb-3">
                                                                     <span class="avatar avatar-sm avatar-rounded text-primary p-1 bg-primary-transparent me-2">
-                                                                        <i class="ri-community-line fs-15"></i>
+                                                                        <i class="ri fs-15"></i>
                                                                     </span>
-                                                                    <span class="fw-medium text-default">Company: </span> <span id="company">Loading...</span>
+                                                                    <span class="fw-medium text-default">Training Name:  </span> <span id="training_name"></span>
                                                                 </p>
                                                                 <p class="mb-3">
                                                                     <span class="avatar avatar-sm avatar-rounded text-primary p-1 bg-primary-transparent me-2">
-                                                                        <i class="ri-mail-line align-middle fs-15"></i>
+                                                                        <i class="ri align-middle fs-15"></i>
                                                                     </span>
-                                                                    <span class="fw-medium text-default">Email: </span> <span id="companyEmail">Loading...</span>
+                                                                    <span class="fw-medium text-default">Training Venue: </span> <span id="training_venue"></span>
+                                                                </p>
+                                                                <p class="mb-3">
+                                                                    <span class="avatar avatar-sm avatar-rounded text-primary3 p-1 bg-primary3-transparent me-2">
+                                                                        <i class="rialign-middle fs-15"></i>
+                                                                    </span>
+                                                                    <span class="fw-medium text-default">Training Published by: </span> <span id="training_published_by"></span>
                                                                 </p>
                                                                 <p class="mb-3">
                                                                     <span class="avatar avatar-sm avatar-rounded text-primary1 p-1 bg-primary1-transparent me-2">
-                                                                        <i class="ri-map-pin-line align-middle fs-15"></i>
+                                                                        <i class="ri align-middle fs-15"></i>
                                                                     </span>
-                                                                    <span class="fw-medium text-default">Website: </span> <span id="companyWebsite">Loading...</span>
+                                                                    <span class="fw-medium text-default">Training Date: </span> <span id="training_date"></span>
                                                                 </p>
                                                                 <p class="mb-3">
                                                                     <span class="avatar avatar-sm avatar-rounded text-primary2 p-1 bg-primary2-transparent me-2">
-                                                                        <i class="ri-building-line align-middle fs-15"></i>
+                                                                        <i class="ri align-middle fs-15"></i>
                                                                     </span>
-                                                                    <span class="fw-medium text-default">Location: </span> <span id="companyLocation">Loading...</span>
+                                                                    <span class="fw-medium text-default">No. of Registrations: </span> <span id="companyLocation">100</span>
                                                                 </p>
-                                                                <p class="mb-0">
+                                                                <p class="mb-3">
                                                                     <span class="avatar avatar-sm avatar-rounded text-primary3 p-1 bg-primary3-transparent me-2">
-                                                                        <i class="ri-phone-line align-middle fs-15"></i>
+                                                                        <i class="ri align-middle fs-15"></i>
                                                                     </span>
-                                                                    <span class="fw-medium text-default">Phone: </span> <span id="companyPhone">Loading...</span>
+                                                                    <span class="fw-medium text-default">Venue Fee: </span> <span id="training_ticket_price">₹ </span>
+                                                                </p>
+                                                                <p class="mb-3">
+                                                                    <span class="avatar avatar-sm avatar-rounded text-primary2 p-1 bg-primary2-transparent me-2">
+                                                                        <i class="ri align-middle fs-15"></i>
+                                                                    </span>
+                                                                    <span class="fw-medium text-default">Billing Company: </span> <span id="companyLocation">ADI Corporate Training</span>
+                                                                </p>
+                                                                <p class="mb-3">
+                                                                    <span class="avatar avatar-sm avatar-rounded text-primary2 p-1 bg-primary2-transparent me-2">
+                                                                        <i class="ri align-middle fs-15"></i>
+                                                                    </span>
+                                                                    <span class="fw-medium text-default">Training Note: </span> <span id="training_note"></span>
+                                                                </p>
+                                                                <p class="mb-3">
+                                                                    <span class="avatar avatar-sm avatar-rounded text-primary2 p-1 bg-primary2-transparent me-2">
+                                                                        <i class="rialign-middle fs-15"></i>
+                                                                    </span>
+                                                                    <span class="fw-medium text-default">Training Status: </span> <span id="training_status"></span>
                                                                 </p>
                                                             </div>
                                                         </li>
@@ -1245,175 +858,389 @@
                                                                 <th>
                                                                     <input class="form-check-input check-all" type="checkbox" id="all-tasks" value="" aria-label="...">
                                                                 </th>
-                                                                <th class="todolist-handle-drag">
-        
-                                                                </th>
-                                                                <th scope="col">Task Title</th>
-                                                                <th scope="col">Status</th>
-                                                                <th scope="col">End Date</th>
-                                                                <th scope="col">Action</th>
+                                                                <th scope="col">S.No.</th>
+                          <th scope="col">Date</th>
+                          <th scope="col">Member Name</th>
+                          <th scope="col">Chapter</th>
+                          <th scope="col">Amount</th>
+                          <th scope="col">Payment Method</th>
+                          <th scope="col">Order ID</th>
+                          <th scope="col">Transaction ID</th>
+                          <th scope="col">PG Status</th>
+                          <th scope="col">Gateway</th>
+                          <th scope="col">Invoice</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody id="todo-drag">
                                                             <tr class="todo-box">
                                                                 <td class="task-checkbox"><input class="form-check-input" type="checkbox" value="" aria-label="..." checked=""></td>
                                                                 <td>
-                                                                    <span class="fw-medium">Implement responsive design</span>
+                                                                    <span class="fw-medium">1</span>
                                                                 </td>
                                                                 <td>
-                                                                    <span class="fw-medium text-primary2"><i class="ri-circle-line fw-semibold fs-7 me-2 lh-1 align-middle"></i>Not Started</span>
+                                                                    12/09/24
                                                                 </td>
                                                                 <td>
-                                                                    17-Jan-2024
+                                                                   <b>Raja Shukla</b> 
                                                                 </td>
-                                                                <td class="text-end">
-                                                                    <div class="d-flex gap-2">
-                                                                        <!-- <a href="javascript:void(0);" class="btn btn-icon btn-sm btn-info-light btn-wave waves-effect waves-light">
-                                                                            <i class="ri-edit-line"></i>
-                                                                        </a> -->
-                                                                        <a href="javascript:void(0);" class="btn btn-icon btn-sm btn-danger-light btn-wave waves-effect waves-light">
-                                                                            <i class="ri-delete-bin-line"></i>
-                                                                        </a>
-                                                                    </div>
+                                                                <td>
+                                                                    Prolific
                                                                 </td>
+                                                                <td>
+                                                                   <b><img src="https://economictimes.indiatimes.com/thumb/msid-74960608,width-1200,height-900,resizemode-4,imgsize-49172/upi-twitter.jpg?from=mdr" alt="UPI" width="30" height="30">₹ 50,000</b> 
+                                                                </td>
+                                                                <td>
+                                                                    UPI
+                                                                </td>
+                                                                <td>
+                                                                    order_103197982pyfrYia4ILpAtWm1e5NxKzsvaj
+                                                                </td>
+                                                                <td>
+                                                                  <b><em>5114915265772</em></b>  
+                                                                </td>
+                                                                <td>
+                                                                    success
+                                                                </td>
+                                                                <td>
+                                                                   <b><em>Cashfree</em></b> 
+                                                                </td>
+                                                                <td>
+                                                                  <a href="" style="color: blue;">View Invoice</a>  
+                                                                 </td>
+                                                                
                                                             </tr>
                                                             <tr class="todo-box">
                                                                 <td class="task-checkbox"><input class="form-check-input" type="checkbox" value="" aria-label="..."></td>
-                                                               
                                                                 <td>
-                                                                    <span class="fw-medium">Fix login authentication issue</span>
-                                                                </td>
-                                                                <td>
-                                                                    <span class="fw-medium text-success fs-12"><i class="ri-circle-line fw-semibold fs-7 me-2 lh-1 align-middle"></i>Completed</span>
+                                                                    <span class="fw-medium">2</span>
                                                                 </td>
                                                                 <td>
-                                                                    17-Jan-2024
+                                                                    12/09/24
                                                                 </td>
-                                                                <td class="text-end">
-                                                                    <div class="d-flex gap-2">
-                                                                        <!-- <a href="javascript:void(0);" class="btn btn-icon btn-sm btn-info-light btn-wave waves-effect waves-light">
-                                                                            <i class="ri-edit-line"></i>
-                                                                        </a> -->
-                                                                        <a href="javascript:void(0);" class="btn btn-icon btn-sm btn-danger-light btn-wave waves-effect waves-light">
-                                                                            <i class="ri-delete-bin-line"></i>
-                                                                        </a>
-                                                                    </div>
+                                                                <td>
+                                                                   <b>Prince Sachdeva</b> 
                                                                 </td>
+                                                                <td>
+                                                                    Prolific
+                                                                </td>
+                                                                <td>
+                                                                   <b><img src="https://economictimes.indiatimes.com/thumb/msid-74960608,width-1200,height-900,resizemode-4,imgsize-49172/upi-twitter.jpg?from=mdr" alt="UPI" width="30" height="30">₹ 50,000</b> 
+                                                                </td>
+                                                                <td>
+                                                                    UPI
+                                                                </td>
+                                                                <td>
+                                                                    order_103197982pyfrYia4ILpAtWm1e5NxKzsvaj
+                                                                </td>
+                                                                <td>
+                                                                  <b><em>5114915265772</em></b>  
+                                                                </td>
+                                                                <td>
+                                                                    success
+                                                                </td>
+                                                                <td>
+                                                                   <b><em>Cashfree</em></b> 
+                                                                </td>
+                                                                <td>
+                                                                  <a href="" style="color: blue;">View Invoice</a>  
+                                                                 </td>
+                                                                
                                                             </tr>
                                                             <tr class="todo-box">
                                                                 <td class="task-checkbox"><input class="form-check-input" type="checkbox" value="" aria-label="..."></td>
-                                                               
                                                                 <td>
-                                                                    <span class="fw-medium">Optimize database queries</span>
-                                                                </td>
-                                                                <td>
-                                                                    <span class="fw-medium text-primary2"><i class="ri-circle-line fw-semibold fs-7 me-2 lh-1 align-middle"></i>Not Started</span>
+                                                                    <span class="fw-medium">3</span>
                                                                 </td>
                                                                 <td>
-                                                                18-Feb-2024
+                                                                    12/09/24
                                                                 </td>
-                                                                <td class="text-end">
-                                                                    <div class="d-flex gap-2">
-                                                                        <!-- <a href="javascript:void(0);" class="btn btn-icon btn-sm btn-info-light btn-wave waves-effect waves-light">
-                                                                            <i class="ri-edit-line"></i>
-                                                                        </a> -->
-                                                                        <a href="javascript:void(0);" class="btn btn-icon btn-sm btn-danger-light btn-wave waves-effect waves-light">
-                                                                            <i class="ri-delete-bin-line"></i>
-                                                                        </a>
-                                                                    </div>
+                                                                <td>
+                                                                   <b>Rajat Arora</b> 
                                                                 </td>
+                                                                <td>
+                                                                    Prolific
+                                                                </td>
+                                                                <td>
+                                                                   <b><img src="https://economictimes.indiatimes.com/thumb/msid-74960608,width-1200,height-900,resizemode-4,imgsize-49172/upi-twitter.jpg?from=mdr" alt="UPI" width="30" height="30">₹ 50,000</b> 
+                                                                </td>
+                                                                <td>
+                                                                    UPI
+                                                                </td>
+                                                                <td>
+                                                                    order_103197982pyfrYia4ILpAtWm1e5NxKzsvaj
+                                                                </td>
+                                                                <td>
+                                                                  <b><em>5114915265772</em></b>  
+                                                                </td>
+                                                                <td>
+                                                                    success
+                                                                </td>
+                                                                <td>
+                                                                   <b><em>Cashfree</em></b> 
+                                                                </td>
+                                                                <td>
+                                                                  <a href="" style="color: blue;">View Invoice</a>  
+                                                                 </td>
+                                                                
                                                             </tr>
                                                             <tr class="todo-box">
                                                                 <td class="task-checkbox"><input class="form-check-input" type="checkbox" value="" aria-label="..." checked=""></td>
+                                                                <td>
+                                                                    <span class="fw-medium">4</span>
+                                                                </td>
+                                                                <td>
+                                                                    12/09/24
+                                                                </td>
+                                                                <td>
+                                                                   <b>Avinash Shukla</b> 
+                                                                </td>
+                                                                <td>
+                                                                    Prolific
+                                                                </td>
+                                                                <td>
+                                                                   <b><img src="https://economictimes.indiatimes.com/thumb/msid-74960608,width-1200,height-900,resizemode-4,imgsize-49172/upi-twitter.jpg?from=mdr" alt="UPI" width="30" height="30">₹ 50,000</b> 
+                                                                </td>
+                                                                <td>
+                                                                    UPI
+                                                                </td>
+                                                                <td>
+                                                                    order_103197982pyfrYia4ILpAtWm1e5NxKzsvaj
+                                                                </td>
+                                                                <td>
+                                                                  <b><em>5114915265772</em></b>  
+                                                                </td>
+                                                                <td>
+                                                                    success
+                                                                </td>
+                                                                <td>
+                                                                   <b><em>Cashfree</em></b> 
+                                                                </td>
+                                                                <td>
+                                                                  <a href="" style="color: blue;">View Invoice</a>  
+                                                                 </td>
                                                                 
-                                                                <td>
-                                                                    <span class="fw-medium">Integrate third-party API</span>
-                                                                </td>
-                                                                <td>
-                                                                    <span class="fw-medium text-warning"><i class="ri-circle-line fw-semibold fs-7 me-2 lh-1 align-middle"></i>Pending</span>
-                                                                </td>
-                                                                <td>
-                                                                    19-Feb-2024
-                                                                </td>
-                                                                <td class="text-end">
-                                                                    <div class="d-flex gap-2">
-                                                                        <!-- <a href="javascript:void(0);" class="btn btn-icon btn-sm btn-info-light btn-wave waves-effect waves-light">
-                                                                            <i class="ri-edit-line"></i>
-                                                                        </a> -->
-                                                                        <a href="javascript:void(0);" class="btn btn-icon btn-sm btn-danger-light btn-wave waves-effect waves-light">
-                                                                            <i class="ri-delete-bin-line"></i>
-                                                                        </a>
-                                                                    </div>
-                                                                </td>
                                                             </tr>
                                                             <tr class="todo-box">
                                                                 <td class="task-checkbox"><input class="form-check-input" type="checkbox" value="" aria-label="..." checked=""></td>
+                                                                <td>
+                                                                    <span class="fw-medium">5</span>
+                                                                </td>
+                                                                <td>
+                                                                    12/09/24
+                                                                </td>
+                                                                <td>
+                                                                   <b>Ashutosh Shukla</b> 
+                                                                </td>
+                                                                <td>
+                                                                    Prolific
+                                                                </td>
+                                                                <td>
+                                                                   <b><img src="https://economictimes.indiatimes.com/thumb/msid-74960608,width-1200,height-900,resizemode-4,imgsize-49172/upi-twitter.jpg?from=mdr" alt="UPI" width="30" height="30">₹ 50,000</b> 
+                                                                </td>
+                                                                <td>
+                                                                    UPI
+                                                                </td>
+                                                                <td>
+                                                                    order_103197982pyfrYia4ILpAtWm1e5NxKzsvaj
+                                                                </td>
+                                                                <td>
+                                                                  <b><em>5114915265772</em></b>  
+                                                                </td>
+                                                                <td>
+                                                                    success
+                                                                </td>
+                                                                <td>
+                                                                   <b><em>Cashfree</em></b> 
+                                                                </td>
+                                                                <td>
+                                                                  <a href="" style="color: blue;">View Invoice</a>  
+                                                                 </td>
                                                                 
+                                                            </tr>
+                                                            <tr class="todo-box">
+                                                                <td class="task-checkbox"><input class="form-check-input" type="checkbox" value="" aria-label="..." checked=""></td>
                                                                 <td>
-                                                                    <span class="fw-medium">Create user documentation</span>
+                                                                    <span class="fw-medium">6</span>
                                                                 </td>
                                                                 <td>
-                                                                    <span class="fw-medium text-primary2"><i class="ri-circle-line fw-semibold fs-7 me-2 lh-1 align-middle"></i>Not Started</span>
+                                                                    12/09/24
                                                                 </td>
                                                                 <td>
-                                                                    21-Feb-2024
+                                                                   <b>Ishan Monga</b> 
                                                                 </td>
-                                                                <td class="text-end">
-                                                                    <div class="d-flex gap-2">
-                                                                        <!-- <a href="javascript:void(0);" class="btn btn-icon btn-sm btn-info-light btn-wave waves-effect waves-light">
-                                                                            <i class="ri-edit-line"></i>
-                                                                        </a> -->
-                                                                        <a href="javascript:void(0);" class="btn btn-icon btn-sm btn-danger-light btn-wave waves-effect waves-light">
-                                                                            <i class="ri-delete-bin-line"></i>
-                                                                        </a>
-                                                                    </div>
+                                                                <td>
+                                                                    Prolific
                                                                 </td>
+                                                                <td>
+                                                                   <b><img src="https://economictimes.indiatimes.com/thumb/msid-74960608,width-1200,height-900,resizemode-4,imgsize-49172/upi-twitter.jpg?from=mdr" alt="UPI" width="30" height="30">₹ 50,000</b> 
+                                                                </td>
+                                                                <td>
+                                                                    UPI
+                                                                </td>
+                                                                <td>
+                                                                    order_103197982pyfrYia4ILpAtWm1e5NxKzsvaj
+                                                                </td>
+                                                                <td>
+                                                                  <b><em>5114915265772</em></b>  
+                                                                </td>
+                                                                <td>
+                                                                    success
+                                                                </td>
+                                                                <td>
+                                                                   <b><em>Cashfree</em></b> 
+                                                                </td>
+                                                                <td>
+                                                                  <a href="" style="color: blue;">View Invoice</a>  
+                                                                 </td>
+                                                                
                                                             </tr>
                                                             <tr class="todo-box">
                                                                 <td class="task-checkbox"><input class="form-check-input" type="checkbox" value="" aria-label="..."></td>
-                                                               
                                                                 <td>
-                                                                    <span class="fw-medium">Deploy to staging environment</span>
-                                                                </td>
-                                                                <td>
-                                                                    <span class="fw-medium text-primary"><i class="ri-circle-line fw-semibold fs-7 me-2 lh-1 align-middle"></i>In Progress</span>
+                                                                    <span class="fw-medium">7</span>
                                                                 </td>
                                                                 <td>
-                                                                24-Feb-2024
+                                                                    12/09/24
                                                                 </td>
-                                                                <td class="text-end">
-                                                                    <div class="d-flex gap-2">
-                                                                        <!-- <a href="javascript:void(0);" class="btn btn-icon btn-sm btn-info-light btn-wave waves-effect waves-light">
-                                                                            <i class="ri-edit-line"></i>
-                                                                        </a> -->
-                                                                        <a href="javascript:void(0);" class="btn btn-icon btn-sm btn-danger-light btn-wave waves-effect waves-light">
-                                                                            <i class="ri-delete-bin-line"></i>
-                                                                        </a>
-                                                                    </div>
+                                                                <td>
+                                                                   <b>Aman Aggarwal</b> 
                                                                 </td>
+                                                                <td>
+                                                                    Prolific
+                                                                </td>
+                                                                <td>
+                                                                   <b><img src="https://economictimes.indiatimes.com/thumb/msid-74960608,width-1200,height-900,resizemode-4,imgsize-49172/upi-twitter.jpg?from=mdr" alt="UPI" width="30" height="30">₹ 50,000</b> 
+                                                                </td>
+                                                                <td>
+                                                                    UPI
+                                                                </td>
+                                                                <td>
+                                                                    order_103197982pyfrYia4ILpAtWm1e5NxKzsvaj
+                                                                </td>
+                                                                <td>
+                                                                  <b><em>5114915265772</em></b>  
+                                                                </td>
+                                                                <td>
+                                                                    success
+                                                                </td>
+                                                                <td>
+                                                                   <b><em>Cashfree</em></b> 
+                                                                </td>
+                                                                <td>
+                                                                  <a href="" style="color: blue;">View Invoice</a>  
+                                                                 </td>
+                                                                
                                                             </tr>
                                                             <tr class="todo-box">
-                                                                <td class="task-checkbox border-bottom-0"><input class="form-check-input" type="checkbox" value="" aria-label="..." checked=""></td>
+                                                                <td class="task-checkbox"><input class="form-check-input" type="checkbox" value="" aria-label="..." checked=""></td>
+                                                                <td>
+                                                                    <span class="fw-medium">8</span>
+                                                                </td>
+                                                                <td>
+                                                                    12/09/24
+                                                                </td>
+                                                                <td>
+                                                                   <b>Kunal Wadhwa</b> 
+                                                                </td>
+                                                                <td>
+                                                                    Prolific
+                                                                </td>
+                                                                <td>
+                                                                   <b><img src="https://economictimes.indiatimes.com/thumb/msid-74960608,width-1200,height-900,resizemode-4,imgsize-49172/upi-twitter.jpg?from=mdr" alt="UPI" width="30" height="30">₹ 50,000</b> 
+                                                                </td>
+                                                                <td>
+                                                                    UPI
+                                                                </td>
+                                                                <td>
+                                                                    order_103197982pyfrYia4ILpAtWm1e5NxKzsvaj
+                                                                </td>
+                                                                <td>
+                                                                  <b><em>5114915265772</em></b>  
+                                                                </td>
+                                                                <td>
+                                                                    success
+                                                                </td>
+                                                                <td>
+                                                                   <b><em>Cashfree</em></b> 
+                                                                </td>
+                                                                <td>
+                                                                  <a href="" style="color: blue;">View Invoice</a>  
+                                                                 </td>
                                                                 
-                                                                <td class="border-bottom-0">
-                                                                    <span class="fw-medium">Conduct security audit</span>
+                                                            </tr>
+                                                            <tr class="todo-box">
+                                                                <td class="task-checkbox"><input class="form-check-input" type="checkbox" value="" aria-label="..."></td>
+                                                                <td>
+                                                                    <span class="fw-medium">9</span>
                                                                 </td>
-                                                                <td class="border-bottom-0">
-                                                                    <span class="fw-medium text-primary2"><i class="ri-circle-line fw-semibold fs-7 me-2 lh-1 align-middle"></i>Not Started</span>
+                                                                <td>
+                                                                    12/09/24
                                                                 </td>
-                                                                <td class="border-bottom-0">
-                                                                    27-Feb-2024
+                                                                <td>
+                                                                   <b>Raja Shukla</b> 
                                                                 </td>
-                                                                <td class="text-end border-bottom-0">
-                                                                    <div class="d-flex gap-2">
-                                                                        <!-- <a href="javascript:void(0);" class="btn btn-icon btn-sm btn-info-light btn-wave waves-effect waves-light">
-                                                                            <i class="ri-edit-line"></i>
-                                                                        </a> -->
-                                                                        <a href="javascript:void(0);" class="btn btn-icon btn-sm btn-danger-light btn-wave waves-effect waves-light">
-                                                                            <i class="ri-delete-bin-line"></i>
-                                                                        </a>
-                                                                    </div>
+                                                                <td>
+                                                                    Prolific
                                                                 </td>
+                                                                <td>
+                                                                   <b><img src="https://economictimes.indiatimes.com/thumb/msid-74960608,width-1200,height-900,resizemode-4,imgsize-49172/upi-twitter.jpg?from=mdr" alt="UPI" width="30" height="30">₹ 50,000</b> 
+                                                                </td>
+                                                                <td>
+                                                                    UPI
+                                                                </td>
+                                                                <td>
+                                                                    order_103197982pyfrYia4ILpAtWm1e5NxKzsvaj
+                                                                </td>
+                                                                <td>
+                                                                  <b><em>5114915265772</em></b>  
+                                                                </td>
+                                                                <td>
+                                                                    success
+                                                                </td>
+                                                                <td>
+                                                                   <b><em>Cashfree</em></b> 
+                                                                </td>
+                                                                <td>
+                                                                  <a href="" style="color: blue;">View Invoice</a>  
+                                                                 </td>
+                                                                
+                                                            </tr>
+                                                            <tr class="todo-box">
+                                                                <td class="task-checkbox"><input class="form-check-input" type="checkbox" value="" aria-label="..."></td>
+                                                                <td>
+                                                                    <span class="fw-medium">1</span>
+                                                                </td>
+                                                                <td>
+                                                                    12/09/24
+                                                                </td>
+                                                                <td>
+                                                                   <b>Raja Shukla</b> 
+                                                                </td>
+                                                                <td>
+                                                                    Prolific
+                                                                </td>
+                                                                <td>
+                                                                   <b><img src="https://economictimes.indiatimes.com/thumb/msid-74960608,width-1200,height-900,resizemode-4,imgsize-49172/upi-twitter.jpg?from=mdr" alt="UPI" width="30" height="30">₹ 50,000</b> 
+                                                                </td>
+                                                                <td>
+                                                                    UPI
+                                                                </td>
+                                                                <td>
+                                                                    order_103197982pyfrYia4ILpAtWm1e5NxKzsvaj
+                                                                </td>
+                                                                <td>
+                                                                  <b><em>5114915265772</em></b>  
+                                                                </td>
+                                                                <td>
+                                                                    success
+                                                                </td>
+                                                                <td>
+                                                                   <b><em>Cashfree</em></b> 
+                                                                </td>
+                                                                <td>
+                                                                  <a href="" style="color: blue;">View Invoice</a>  
+                                                                 </td>
+                                                                
                                                             </tr>
                                                         </tbody>
                                                     </table>
@@ -1433,84 +1260,6 @@
         </div>
     </div>
     <!-- End::content  -->
+    <script src="../../assets/js/viewTraining.js"></script>
 
-    <!-- Footer opened -->
-    <footer class="footer mt-auto py-3 bg-white text-center" style="background-color: #d01f2f !important">
-        <div class="container">
-          <span class="text-muted" style="color: white !important">
-            Copyright © <span id="year"></span>
-            <a href="javascript:void(0);" class="text-dark fw-medium" style="color: white !important">BNI</a>. Designed &amp; Managed by
-            <a href="javascript:void(0);">
-              <span class="fw-medium text-primary" style="color: white !important">National Marketing Projects INC</span>
-            </a>
-            All rights reserved
-          </span>
-        </div>
-      </footer>        <!-- End Footer -->
-
-    <!-- Country-selector modal -->
-    <div class="modal fade" id="header-responsive-search" tabindex="-1" aria-labelledby="header-responsive-search" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <div class="input-group">
-                        <input type="text" class="form-control border-end-0" placeholder="Search Anything ..." aria-label="Search Anything ..." aria-describedby="button-addon2">
-                        <button class="btn btn-primary" type="button" id="button-addon2"><i class="bi bi-search"></i></button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>            <!-- End Country-selector modal -->
-
-      
-
-</div>
-
-<!-- SCRIPTS -->
-<!-- Scroll To Top -->
-  <div class="scrollToTop">
-       <span class="arrow"><i class="ti ti-arrow-narrow-up fs-20"></i></span>
-  </div>
-  <div id="responsive-overlay"></div>
-  <!-- Scroll To Top -->
-
-<!-- Popper JS -->
-<script src="../../assets/libs/%40popperjs/core/umd/popper.min-5.js"></script>
-
-<!-- Bootstrap JS -->
-<script src=" ../../assets/libs/bootstrap/js/bootstrap.bundle.min-6.js"></script>
-
-<!-- Node Waves JS-->
-<script src=" ../../assets/libs/node-waves/waves.min-5.js"></script>
-
-<!-- Simplebar JS -->
-<script src=" ../../assets/libs/simplebar/simplebar.min-5.js"></script>
-<link rel="modulepreload" href=" ../../assets/simplebar-B35Aj-bA-5.js"><script type="module" src=" ../../assets/simplebar-B35Aj-bA-5.js"></script>
-<!-- Auto Complete JS -->
-<script src=" ../../assets/libs/%40tarekraafat/autocomplete.js/autoComplete.min-5.js"></script>
-
-<!-- Color Picker JS -->
-<script src=" ../../assets/libs/%40simonwep/pickr/pickr.es5.min-5.js"></script>
-
-<!-- Date & Time Picker JS -->
-<script src=" ../../assets/libs/flatpickr/flatpickr.min-5.js"></script>
-
-    
-<!-- Gallery JS -->
-<script src=" ../../assets/libs/glightbox/js/glightbox.min.js"></script>
-
-<!-- Internal Profile JS -->
-<link rel="modulepreload" href=" ../../assets/profile-zoCEKbTX.js"><script type="module" src=" ../../assets/profile-zoCEKbTX.js"></script>
-
- 
-<!-- Sticky JS -->
-<script src=" ../../assets/sticky-5.js"></script>
-
-<!-- Custom-Switcher JS -->
-<link rel="modulepreload" href=" ../../assets/custom-switcher-BayzdO2G-5.js"><script type="module" src=" ../../assets/custom-switcher-BayzdO2G-5.js"></script>
-<!-- APP JS-->
-<link rel="modulepreload" href=" ../../assets/app-C4M4tSMb-5.js"><script type="module" src=" ../../assets/app-C4M4tSMb-5.js"></script>       
-<!-- END SCRIPTS -->
- <!-- sidebar -->
-
- <%- include('../partials/sidebar') %>
+    <%- include('../partials/footer') %> 
