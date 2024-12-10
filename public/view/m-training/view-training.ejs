@@ -6,6 +6,30 @@
 
     <%- include('../partials/sidebar') %>
 
+    <style>
+        /* Style for dropdown menu to enable scrolling */
+.dropdown-menu {
+  max-height: 200px; /* Adjust the height as needed */
+  overflow-y: auto;  /* Enables vertical scrolling */
+  overflow-x: hidden; /* Prevents horizontal scrolling */
+}
+
+
+.dropdown-menu::-webkit-scrollbar {
+  width: 8px; /* Width of the scrollbar */
+}
+
+.dropdown-menu::-webkit-scrollbar-thumb {
+  background-color: #888; /* Color of the scrollbar thumb */
+  border-radius: 4px; /* Rounded edges for the thumb */
+}
+
+.dropdown-menu::-webkit-scrollbar-thumb:hover {
+  background-color: #555; /* Darker shade on hover */
+}
+
+      </style>
+
 
     <!-- Start::app-content -->
     <div class="main-content app-content">
@@ -29,1237 +53,302 @@
             <!-- Start:: row-1 -->
             <div class="row">
                 <div class="col-xl-12">
+                  <div class="card custom-card">
                     <div class="card custom-card profile-card">
-                        <div class="profile-banner-img">
-                            <img src="../../assets/images/bni-header-full.png" class="card-img-top" alt="...">
-                        </div>
-                        <div class="card-body pb-0 position-relative">
-                            <div class="row profile-content">
-                                
-                                <div class="col-xl-4">
-                                    <div class="card custom-card overflow-hidden border">
-                                        <div class="card-body">
-                                            <ul class="nav nav-tabs tab-style-6 mb-3 p-0" id="myTab" role="tablist">
-                                                <li class="nav-item" role="presentation">
-                                                </li>
-                                            </ul>
-                                            <div class="tab-content" id="profile-tabs">
-                                                <div class="tab-pane show active p-0 border-0" id="profile-about-tab-pane" role="tabpanel" aria-labelledby="profile-about-tab" tabindex="0">
-                                                    <ul class="list-group list-group-flush border rounded-3">
-                                                        <li class="list-group-item p-3">
-                                                            <span class="fw-medium fs-15 d-block mb-3">Training Info :</span>
-                                                            <div class="text-muted">
-                                                                <p class="mb-3">
-                                                                    <span class="avatar avatar-sm avatar-rounded text-primary p-1 bg-primary-transparent me-2">
-                                                                        <i class="ri fs-15"></i>
-                                                                    </span>
-                                                                    <span class="fw-medium text-default">Training Name:  </span> <span id="training_name"></span>
-                                                                </p>
-                                                                <p class="mb-3">
-                                                                    <span class="avatar avatar-sm avatar-rounded text-primary p-1 bg-primary-transparent me-2">
-                                                                        <i class="ri align-middle fs-15"></i>
-                                                                    </span>
-                                                                    <span class="fw-medium text-default">Training Venue: </span> <span id="training_venue"></span>
-                                                                </p>
-                                                                <p class="mb-3">
-                                                                    <span class="avatar avatar-sm avatar-rounded text-primary3 p-1 bg-primary3-transparent me-2">
-                                                                        <i class="rialign-middle fs-15"></i>
-                                                                    </span>
-                                                                    <span class="fw-medium text-default">Training Published by: </span> <span id="training_published_by"></span>
-                                                                </p>
-                                                                <p class="mb-3">
-                                                                    <span class="avatar avatar-sm avatar-rounded text-primary1 p-1 bg-primary1-transparent me-2">
-                                                                        <i class="ri align-middle fs-15"></i>
-                                                                    </span>
-                                                                    <span class="fw-medium text-default">Training Date: </span> <span id="training_date"></span>
-                                                                </p>
-                                                                <p class="mb-3">
-                                                                    <span class="avatar avatar-sm avatar-rounded text-primary2 p-1 bg-primary2-transparent me-2">
-                                                                        <i class="ri align-middle fs-15"></i>
-                                                                    </span>
-                                                                    <span class="fw-medium text-default">No. of Registrations: </span> <span id="companyLocation">100</span>
-                                                                </p>
-                                                                <p class="mb-3">
-                                                                    <span class="avatar avatar-sm avatar-rounded text-primary3 p-1 bg-primary3-transparent me-2">
-                                                                        <i class="ri align-middle fs-15"></i>
-                                                                    </span>
-                                                                    <span class="fw-medium text-default">Venue Fee: </span> <span id="training_ticket_price">₹ </span>
-                                                                </p>
-                                                                <p class="mb-3">
-                                                                    <span class="avatar avatar-sm avatar-rounded text-primary2 p-1 bg-primary2-transparent me-2">
-                                                                        <i class="ri align-middle fs-15"></i>
-                                                                    </span>
-                                                                    <span class="fw-medium text-default">Billing Company: </span> <span id="companyLocation">ADI Corporate Training</span>
-                                                                </p>
-                                                                <p class="mb-3">
-                                                                    <span class="avatar avatar-sm avatar-rounded text-primary2 p-1 bg-primary2-transparent me-2">
-                                                                        <i class="ri align-middle fs-15"></i>
-                                                                    </span>
-                                                                    <span class="fw-medium text-default">Training Note: </span> <span id="training_note"></span>
-                                                                </p>
-                                                                <p class="mb-3">
-                                                                    <span class="avatar avatar-sm avatar-rounded text-primary2 p-1 bg-primary2-transparent me-2">
-                                                                        <i class="rialign-middle fs-15"></i>
-                                                                    </span>
-                                                                    <span class="fw-medium text-default">Training Status: </span> <span id="training_status"></span>
-                                                                </p>
-                                                            </div>
-                                                        </li>
-                                                        
-                                                        
-                                                    </ul>
-                                                </div>
-                                                <div class="tab-pane p-0 border-0" id="edit-profile-tab-pane" role="tabpanel" aria-labelledby="edit-profile-tab" tabindex="0">
-                                                    <ul class="list-group list-group-flush border rounded-3">
-                                                        <li class="list-group-item p-3">
-                                                            <span class="fw-medium fs-15 d-block mb-3">Personal Info :</span>
-                                                            <div class="row gy-3 align-items-center">
-                                                                <div class="col-xl-3">
-                                                                    <div class="lh-1">
-                                                                        <span class="fw-medium">User Name :</span>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-xl-9">
-                                                                    <input type="text" class="form-control" placeholder="Placeholder" value="Spencer Robin">
-                                                                </div>
-                                                                <div class="col-xl-3">
-                                                                    <div class="lh-1">
-                                                                        <span class="fw-medium">First Name :</span>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-xl-9">
-                                                                    <input type="text" class="form-control" placeholder="Placeholder" value="Spencer">
-                                                                </div>
-                                                                <div class="col-xl-3">
-                                                                    <div class="lh-1">
-                                                                        <span class="fw-medium">Last Name :</span>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-xl-9">
-                                                                    <input type="text" class="form-control" placeholder="Placeholder" value="Robin">
-                                                                </div>
-                                                                <div class="col-xl-3">
-                                                                    <div class="lh-1">
-                                                                        <!-- <span class="fw-medium">Designation :</span> -->
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-xl-9">
-                                                                    <input type="text" class="form-control" placeholder="Placeholder" value="Software Development Manager">
-                                                                </div>
-                                                            </div>
-                                                        </li>
-                                                        <li class="list-group-item p-3">
-                                                            <span class="fw-medium fs-15 d-block mb-3">Contact Info :</span>
-                                                            <div class="row gy-3 align-items-center">
-                                                                <div class="col-xl-3">
-                                                                    <div class="lh-1">
-                                                                        <span class="fw-medium">Email :</span>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-xl-9">
-                                                                    <input type="email" class="form-control" placeholder="Placeholder" value="spencer.robin22@example.com">
-                                                                </div>
-                                                                <div class="col-xl-3">
-                                                                    <div class="lh-1">
-                                                                        <span class="fw-medium">Phone :</span>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-xl-9">
-                                                                    <input type="text" class="form-control" placeholder="Placeholder" value="+1 (222) 111 - 57840">
-                                                                </div>
-                                                                <div class="col-xl-3">
-                                                                    <div class="lh-1">
-                                                                        <span class="fw-medium">Website :</span>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-xl-9">
-                                                                    <input type="text" class="form-control" placeholder="Placeholder" value="www.yourwebsite.com">
-                                                                </div>
-                                                                <div class="col-xl-3">
-                                                                    <div class="lh-1">
-                                                                        <span class="fw-medium">Location :</span>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-xl-9">
-                                                                    <input type="text" class="form-control" placeholder="Placeholder" value="City, Country">
-                                                                </div>
-                                                            </div>
-                                                        </li>
-                                                        <li class="list-group-item p-3">
-                                                            <span class="fw-medium fs-15 d-block mb-3">Social Info :</span>
-                                                            <div class="row gy-3 align-items-center">
-                                                                <div class="col-xl-3">
-                                                                    <div class="lh-1">
-                                                                        <span class="fw-medium">Github :</span>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-xl-9">
-                                                                    <input type="text" class="form-control" placeholder="Placeholder" value="github.com/spruko">
-                                                                </div>
-                                                                <div class="col-xl-3">
-                                                                    <div class="lh-1">
-                                                                        <span class="fw-medium">Twitter :</span>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-xl-9">
-                                                                    <input type="text" class="form-control" placeholder="Placeholder" value="twitter.com/spruko.me">
-                                                                </div>
-                                                                <div class="col-xl-3">
-                                                                    <div class="lh-1">
-                                                                        <span class="fw-medium">Linkedin :</span>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-xl-9">
-                                                                    <input type="text" class="form-control" placeholder="Placeholder" value="linkedin.com/in/spruko">
-                                                                </div>
-                                                                <div class="col-xl-3">
-                                                                    <div class="lh-1">
-                                                                        <span class="fw-medium">Portfolio :</span>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-xl-9">
-                                                                    <input type="text" class="form-control" placeholder="Placeholder" value="spruko.com/">
-                                                                </div>
-                                                            </div>
-                                                        </li>
-                                                        <li class="list-group-item p-3">
-                                                            <span class="fw-medium fs-15 d-block mb-3">About Info :</span>
-                                                            <div class="row gy-3 align-items-center">
-                                                                <div class="col-xl-3">
-                                                                    <div class="lh-1">
-                                                                        <span class="fw-medium">Biographical Info :</span>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-xl-9">
-                                                                    <textarea class="form-control" id="text-area" rows="4">Hello, I'm [Your Name], a dedicated [Your Profession/Interest] based in [Your Location]. I have a genuine passion for [Your Hobbies/Interests] and enjoy delving into the nuances of [Your Industry/Field].
-
-                                                                        Specializing in [Your Specialization/Area of Expertise], I strive to infuse innovation into every project I undertake. With a track record of [Key Achievements] and valuable experiences, I'm committed to continual growth and eagerly anticipate the opportunities that lie ahead.
-                                                                    </textarea>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-                                                   
-                                                    </ul>
-                                                </div>
-                                                <div class="tab-pane" id="timeline-tab-pane" role="tabpanel" aria-labelledby="timeline-tab" tabindex="0">
-                                                    <ul class="list-unstyled profile-timeline">
-                                                        <li>
-                                                            <div>
-                                                                <span class="avatar avatar-sm bg-primary-transparent avatar-rounded profile-timeline-avatar">
-                                                                    <img src=" assets/images/faces/3-1.jpg" alt="">
-                                                                </span>
-                                                                <div class="d-flex gap-2 flex-wrap mb-2">
-                                                                    <p class="mb-0">
-                                                                        <span class="fw-semibold">Photos </span>from their recent vacation and writes a caption describing their experience..
-                                                                    </p>
-                                                                    <span class="text-end ms-auto fs-11 text-muted">15,May 2024 - 18:47</span>
-                                                                </div>
-                                                                <p class="profile-activity-media mb-0">
-                                                                    <a href="javascript:void(0);">
-                                                                        <img src=" assets/images/media/media-17.jpg" alt="">
-                                                                    </a>    
-                                                                    <a href="javascript:void(0);">
-                                                                        <img src=" assets/images/media/media-18.jpg" alt="">
-                                                                    </a>    
-                                                                    <a href="javascript:void(0);">
-                                                                        <img src=" assets/images/media/media-19.jpg" alt="">
-                                                                    </a>    
-                                                                </p>
-                                                                <div class="d-flex align-items-end justify-content-between gap-2 flex-wrap">
-                                                                    <div>
-                                                                        <a href="javascript:void(0);">
-                                                                            <span class="badge bg-light text-muted m-1 border">#Leadership</span>
-                                                                        </a>
-                                                                        <a href="javascript:void(0);">
-                                                                            <span class="badge bg-light text-muted m-1 border">#Solving</span>
-                                                                        </a>
-                                                                    </div>
-                                                                    <div class="btn-list text-end">
-                                                                        <button class="btn btn-sm btn-primary-light btn-wave waves-effect waves-light"><i class="ri-message-3-line"></i> 4</button>
-                                                                        <button class="btn btn-sm btn-primary1-light btn-wave waves-effect waves-light"><i class="ri-thumb-up-line"></i> 2</button>
-                                                                        <button class="btn btn-sm btn-primary2-light btn-wave waves-effect waves-light"><i class="ri-heart-line"></i> 3</button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-                                                        <li>
-                                                            <div>
-                                                                <span class="avatar avatar-sm avatar-rounded profile-timeline-avatar">
-                                                                    <img src="https://bniconnectglobal.com/web/open/networkViewProfileImage/667047103355150001b6ca93.jpg" alt="">
-                                                                </span>
-                                                                <div class="d-flex gap-2 flex-wrap mb-2">
-                                                                    <p class="mb-0">
-                                                                        Friend comments on the post, expressing admiration for the picturesque location a. <span class="text-primary fw-medium text-decoration-underline">#Trip-photos</span>.
-                                                                    </p>
-                                                                    <span class="text-end ms-auto fs-11 text-muted">18,Dec 2024 - 12:16</span>
-                                                                </div>
-                                                                <p class="text-muted mb-0">
-                                                                    Asking about the user's favorite part of the trip. emporibus inventore ullam tempora eligendi libero sequi dignissimos cumque, et a sint tenetur consequatur omnis!
-                                                                </p>
-                                                                <div class="d-flex align-items-end justify-content-between gap-2 flex-wrap">
-                                                                    <div>
-                                                                        <a href="javascript:void(0);">
-                                                                            <span class="badge bg-light text-muted m-1 border">#Leadership</span>
-                                                                        </a>
-                                                                        <a href="javascript:void(0);">
-                                                                            <span class="badge bg-light text-muted m-1 border">#Solving</span>
-                                                                        </a>
-                                                                    </div>
-                                                                    <div class="btn-list text-end">
-                                                                        <button class="btn btn-sm btn-primary-light btn-wave waves-effect waves-light"><i class="ri-message-3-line"></i> 4</button>
-                                                                        <button class="btn btn-sm btn-primary1-light btn-wave waves-effect waves-light"><i class="ri-thumb-up-line"></i> 2</button>
-                                                                        <button class="btn btn-sm btn-primary2-light btn-wave waves-effect waves-light"><i class="ri-heart-line"></i> 3</button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-                                                        <li>
-                                                            <div>
-                                                                <span class="avatar avatar-sm avatar-rounded profile-timeline-avatar">
-                                                                    <img src=" assets/images/faces/4-1.jpg" alt="">
-                                                                </span>
-                                                                <div class="d-flex gap-2 flex-wrap mb-2">
-                                                                    <p class="text-muted mb-0">
-                                                                        <span class="text-default"><span class="text-primary1 fw-medium">Varun Sonu </span> asking for recommendations on places to visit in the vacation destination</span>.
-                                                                    </p>
-                                                                    <span class="text-end ms-auto fs-11 text-muted">26,May 2024 - 12:45</span>
-                                                                </div>
-                                                                <p class="profile-activity-media mb-0">
-                                                                    <a href="javascript:void(0);">
-                                                                        <img src=" assets/images/media/file-manager/3.png" alt="">
-                                                                    </a>  
-                                                                    <span class="fs-11 text-muted">432.87KB</span>
-                                                                </p>
-                                                                <div class="d-flex align-items-end justify-content-between gap-2 flex-wrap">
-                                                                    <div>
-                                                                        <a href="javascript:void(0);">
-                                                                            <span class="badge bg-light text-muted m-1 border">#Leadership</span>
-                                                                        </a>
-                                                                        <a href="javascript:void(0);">
-                                                                            <span class="badge bg-light text-muted m-1 border">#Solving</span>
-                                                                        </a>
-                                                                    </div>
-                                                                    <div class="btn-list text-end">
-                                                                        <button class="btn btn-sm btn-primary-light btn-wave waves-effect waves-light"><i class="ri-message-3-line"></i> 4</button>
-                                                                        <button class="btn btn-sm btn-primary1-light btn-wave waves-effect waves-light"><i class="ri-thumb-up-line"></i> 2</button>
-                                                                        <button class="btn btn-sm btn-primary2-light btn-wave waves-effect waves-light"><i class="ri-heart-line"></i> 3</button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-                                                        <li>
-                                                            <div>
-                                                                <span class="avatar avatar-sm bg-success avatar-rounded profile-timeline-avatar">
-                                                                    K
-                                                                </span>
-                                                                <div class="d-flex gap-2 flex-wrap mb-2">
-                                                                    <p class="text-muted mb-0">
-                                                                        <span class="text-default">On a trending news topic, offering their perspective and engaging with other group members' <span class="text-primary2 fw-medium text-decoration-underline">#viewpoints</span></span>.
-                                                                    </p>
-                                                                    <span class="text-end ms-auto fs-11 text-muted">28,May 2024 - 22:09</span>
-                                                                </div>
-                                                                <p class="profile-activity-media mb-2">
-                                                                    <a href="javascript:void(0);">
-                                                                        <img src=" assets/images/media/media-75.jpg" alt="">
-                                                                    </a>   
-                                                                </p>
-                                                                <div class="d-flex align-items-end justify-content-between gap-2 flex-wrap">
-                                                                    <div>
-                                                                        <a href="javascript:void(0);">
-                                                                            <span class="badge bg-light text-muted m-1 border">#Leadership</span>
-                                                                        </a>
-                                                                        <a href="javascript:void(0);">
-                                                                            <span class="badge bg-light text-muted m-1 border">#Solving</span>
-                                                                        </a>
-                                                                    </div>
-                                                                    <div class="btn-list text-end">
-                                                                        <button class="btn btn-sm btn-primary-light btn-wave waves-effect waves-light"><i class="ri-message-3-line"></i> 4</button>
-                                                                        <button class="btn btn-sm btn-primary1-light btn-wave waves-effect waves-light"><i class="ri-thumb-up-line"></i> 2</button>
-                                                                        <button class="btn btn-sm btn-primary2-light btn-wave waves-effect waves-light"><i class="ri-heart-line"></i> 3</button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-                                                        <li>
-                                                            <div>
-                                                                <span class="avatar avatar-sm avatar-rounded profile-timeline-avatar">
-                                                                    <img src=" assets/images/faces/5-1.jpg" alt="">
-                                                                </span>
-                                                                <div class="d-flex gap-2 flex-wrap mb-1">
-                                                                    <p class="text-muted mb-0">
-                                                                        <span class="text-default">Reminiscing about a memorable trip they took together and suggesting planning another adventure soon. <span class="fw-semibold text-primary3 text-decoration-underline">#Europe</span> trip was a landmark in our lifes!</span>.
-                                                                    </p>
-                                                                    <span class="text-end ms-auto fs-11 text-muted">29,May 2024 - 16:42</span>
-                                                                </div>
-                                                                <p class="text-muted">"Every time, our Europe trip still lies vividly before our eyes."</p>
-                                                                <p class="profile-activity-media mb-0">
-                                                                    <a href="javascript:void(0);">
-                                                                        <img src=" assets/images/media/media-59.jpg" class="m-1" alt="">
-                                                                    </a>  
-                                                                    <a href="javascript:void(0);">
-                                                                        <img src=" assets/images/media/media-60-1.jpg" class="m-1" alt="">
-                                                                    </a>  
-                                                                    <a href="javascript:void(0);">
-                                                                        <img src=" assets/images/media/media-61.jpg" class="m-1" alt="">
-                                                                    </a>  
-                                                                </p>
-                                                                <div class="d-flex align-items-end justify-content-between gap-2 flex-wrap">
-                                                                    <div>
-                                                                        <a href="javascript:void(0);">
-                                                                            <span class="badge bg-light text-muted m-1 border">#Leadership</span>
-                                                                        </a>
-                                                                        <a href="javascript:void(0);">
-                                                                            <span class="badge bg-light text-muted m-1 border">#Solving</span>
-                                                                        </a>
-                                                                    </div>
-                                                                    <div class="btn-list text-end">
-                                                                        <button class="btn btn-sm btn-primary-light btn-wave waves-effect waves-light"><i class="ri-message-3-line"></i> 4</button>
-                                                                        <button class="btn btn-sm btn-primary1-light btn-wave waves-effect waves-light"><i class="ri-thumb-up-line"></i> 2</button>
-                                                                        <button class="btn btn-sm btn-primary2-light btn-wave waves-effect waves-light"><i class="ri-heart-line"></i> 3</button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-                                                        <li>
-                                                            <div>
-                                                                <span class="avatar avatar-sm avatar-rounded profile-timeline-avatar">
-                                                                    <img src=" assets/images/media/media-39.jpg" alt="">
-                                                                </span>
-                                                                <div class="d-flex gap-2 flex-wrap mb-1">
-                                                                    <p class="mb-1">
-                                                                        <span class="fw-semibold text-primary2">Invitation</span> to a virtual networking event from a professional connection, expressing interest and RSVPing for attendance.
-                                                                    </p>
-                                                                    <span class="text-end ms-auto fs-11 text-muted">06,Jun 2024 - 08:40</span>
-                                                                </div>
-                                                                <p class="profile-activity-media mb-0">
-                                                                    <a href="javascript:void(0);">
-                                                                        <img src=" assets/images/media/media-26.jpg" alt="">
-                                                                    </a>    
-                                                                    <a href="javascript:void(0);">
-                                                                        <img src=" assets/images/media/media-29.jpg" alt="">
-                                                                    </a>    
-                                                                </p>
-                                                                <div class="d-flex align-items-end justify-content-between gap-2 flex-wrap">
-                                                                    <div>
-                                                                        <a href="javascript:void(0);">
-                                                                            <span class="badge bg-light text-muted m-1 border">#Leadership</span>
-                                                                        </a>
-                                                                        <a href="javascript:void(0);">
-                                                                            <span class="badge bg-light text-muted m-1 border">#Solving</span>
-                                                                        </a>
-                                                                    </div>
-                                                                    <div class="btn-list text-end">
-                                                                        <button class="btn btn-sm btn-primary-light btn-wave waves-effect waves-light"><i class="ri-message-3-line"></i> 4</button>
-                                                                        <button class="btn btn-sm btn-primary1-light btn-wave waves-effect waves-light"><i class="ri-thumb-up-line"></i> 2</button>
-                                                                        <button class="btn btn-sm btn-primary2-light btn-wave waves-effect waves-light"><i class="ri-heart-line"></i> 3</button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                                <div class="tab-pane p-0 border-0" id="gallery-tab-pane" role="tabpanel" aria-labelledby="gallery-tab" tabindex="0">
-                                                    <div class="row">
-                                                        <div class="col-xxl-3 col-xl-3 col-lg-3 col-md-6 col-sm-12">
-                                                            <a href=" assets/images/media/media-40.jpg" class="glightbox card" data-gallery="gallery1">
-                                                                <img src=" assets/images/media/media-40.jpg" alt="image">
-                                                            </a>
-                                                        </div>
-                                                        <div class="col-xxl-3 col-xl-3 col-lg-3 col-md-6 col-sm-12">
-                                                            <a href=" assets/images/media/media-41.jpg" class="glightbox card" data-gallery="gallery1">
-                                                                <img src=" assets/images/media/media-41.jpg" alt="image">
-                                                            </a>
-                                                        </div>
-                                                        <div class="col-xxl-3 col-xl-3 col-lg-3 col-md-6 col-sm-12">
-                                                            <a href=" assets/images/media/media-42.jpg" class="glightbox card" data-gallery="gallery1">
-                                                                <img src=" assets/images/media/media-42.jpg" alt="image">
-                                                            </a>
-                                                        </div>
-                                                        <div class="col-xxl-3 col-xl-3 col-lg-3 col-md-6 col-sm-12">
-                                                            <a href=" assets/images/media/media-43.jpg" class="glightbox card" data-gallery="gallery1">
-                                                                <img src=" assets/images/media/media-43.jpg" alt="image">
-                                                            </a>
-                                                        </div>
-                                                        <div class="col-xxl-3 col-xl-3 col-lg-3 col-md-6 col-sm-12">
-                                                            <a href=" assets/images/media/media-44.jpg" class="glightbox card" data-gallery="gallery1">
-                                                                <img src=" assets/images/media/media-44.jpg" alt="image">
-                                                            </a>
-                                                        </div>
-                                                        <div class="col-xxl-3 col-xl-3 col-lg-3 col-md-6 col-sm-12">
-                                                            <a href=" assets/images/media/media-45.jpg" class="glightbox card" data-gallery="gallery1">
-                                                                <img src=" assets/images/media/media-45.jpg" alt="image">
-                                                            </a>
-                                                        </div>
-                                                        <div class="col-xxl-3 col-xl-3 col-lg-3 col-md-6 col-sm-12">
-                                                            <a href=" assets/images/media/media-46.jpg" class="glightbox card" data-gallery="gallery1">
-                                                                <img src=" assets/images/media/media-46.jpg" alt="image">
-                                                            </a>
-                                                        </div>
-                                                        <div class="col-xxl-3 col-xl-3 col-lg-3 col-md-6 col-sm-12">
-                                                            <a href=" assets/images/media/media-60-1.jpg" class="glightbox card" data-gallery="gallery1">
-                                                                <img src=" assets/images/media/media-60-1.jpg" alt="image">
-                                                            </a>
-                                                        </div>
-                                                        <div class="col-xxl-3 col-xl-3 col-lg-3 col-md-6 col-sm-12">
-                                                            <a href=" assets/images/media/media-26.jpg" class="glightbox card" data-gallery="gallery1">
-                                                                <img src=" assets/images/media/media-26.jpg" alt="image">
-                                                            </a>
-                                                        </div>
-                                                        <div class="col-xxl-3 col-xl-3 col-lg-3 col-md-6 col-sm-12">
-                                                            <a href=" assets/images/media/media-32.jpg" class="glightbox card" data-gallery="gallery1">
-                                                                <img src=" assets/images/media/media-32.jpg" alt="image">
-                                                            </a>
-                                                        </div>
-                                                        <div class="col-xxl-3 col-xl-3 col-lg-3 col-md-6 col-sm-12">
-                                                            <a href=" assets/images/media/media-30.jpg" class="glightbox card" data-gallery="gallery1">
-                                                                <img src=" assets/images/media/media-30.jpg" alt="image">
-                                                            </a>
-                                                        </div>
-                                                        <div class="col-xxl-3 col-xl-3 col-lg-3 col-md-6 col-sm-12">
-                                                            <a href=" assets/images/media/media-31.jpg" class="glightbox card" data-gallery="gallery1">
-                                                                <img src=" assets/images/media/media-31.jpg" alt="image">
-                                                            </a>
-                                                        </div>
-                                                        <div class="col-xxl-3 col-xl-3 col-lg-3 col-md-6 col-sm-12">
-                                                            <a href=" assets/images/media/media-46.jpg" class="glightbox card" data-gallery="gallery1">
-                                                                <img src=" assets/images/media/media-46.jpg" alt="image">
-                                                            </a>
-                                                        </div>
-                                                        <div class="col-xxl-3 col-xl-3 col-lg-3 col-md-6 col-sm-12">
-                                                            <a href=" assets/images/media/media-59.jpg" class="glightbox card" data-gallery="gallery1">
-                                                                <img src=" assets/images/media/media-59.jpg" alt="image">
-                                                            </a>
-                                                        </div>
-                                                        <div class="col-xxl-3 col-xl-3 col-lg-3 col-md-6 col-sm-12">
-                                                            <a href=" assets/images/media/media-61.jpg" class="glightbox card" data-gallery="gallery1">
-                                                                <img src=" assets/images/media/media-61.jpg" alt="image">
-                                                            </a>
-                                                        </div>
-                                                        <div class="col-xxl-3 col-xl-3 col-lg-3 col-md-6 col-sm-12">
-                                                            <a href=" assets/images/media/media-42.jpg" class="glightbox card" data-gallery="gallery1">
-                                                                <img src=" assets/images/media/media-42.jpg" alt="image">
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="tab-pane p-0 border-0" id="friends-tab-pane" role="tabpanel" aria-labelledby="friends-tab" tabindex="0">
-                                                    <div class="row">
-                                                        <div class="col-xxl-4 col-xl-4 col-lg-6 col-md-6 col-sm-12">
-                                                            <div class="card custom-card shadow-none border">
-                                                                <div class="card-body">
-                                                                    <div class="d-flex align-items-center gap-2 flex-wrap">
-                                                                        <span class="avatar avatar-xl avatar-rounded flex-shrink-0">
-                                                                            <img src=" assets/images/faces/2-1.jpg" alt="">
-                                                                        </span>
-                                                                        <div class="text-truncate">
-                                                                            <a href="javascript:void(0);" class="mb-0 fw-semibold">Della Jasmine</a>
-                                                                            <p class="w-75 text-truncate fs-12 op-7 mb-1 text-muted">dellajasmine117@gmail.com</p>
-                                                                            <span class="badge bg-info-transparent">Product Designer</span>
-                                                                        </div>
-                                                                        <div class="dropdown ms-auto">
-                                                                            <a aria-label="anchor" class="btn btn-secondary-light btn-icon btn-sm btn-wave" href="javascript:void(0);" data-bs-toggle="dropdown"> 
-                                                                                <i class="ri-more-2-fill"></i>
-                                                                            </a> 
-                                                                            <ul class="dropdown-menu dropdown-menu-end" role="menu"> 
-                                                                                <li><a class="dropdown-item" href="javascript:void(0);">Message</a></li> 
-                                                                                <li><a class="dropdown-item" href="javascript:void(0);">Block</a></li> 
-                                                                                <li><a class="dropdown-item" href="javascript:void(0);">Remove</a></li> 
-                                                                            </ul> 
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="card-footer text-center p-3">
-                                                                    <div class="d-flex gap-2 flex-wrap justify-content-center">
-                                                                        <button class="btn btn-sm btn-primary-light btn-wave me-0">View Profile</button>
-                                                                        <button class="btn btn-sm btn-light btn-wave me-0">Unfollow</button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-xxl-4 col-xl-4 col-lg-6 col-md-6 col-sm-12">
-                                                            <div class="card custom-card shadow-none border">
-                                                                <div class="card-body">
-                                                                    <div class="d-flex align-items-center gap-2 flex-wrap">
-                                                                        <span class="avatar avatar-xl avatar-rounded flex-shrink-0">
-                                                                            <img src=" assets/images/faces/15-5.jpg" alt="">
-                                                                        </span>
-                                                                        <div class="text-truncate">
-                                                                            <p class="mb-0 fw-semibold">Danny Raj</p>
-                                                                            <p class="w-75 text-truncate fs-12 op-7 mb-1 text-muted">dannyraj658@gmail.com</p>
-                                                                            <span class="badge bg-success-transparent">UI Designer</span>
-                                                                        </div>
-                                                                        <div class="dropdown ms-auto">
-                                                                            <a aria-label="anchor" class="btn btn-secondary-light btn-icon btn-sm btn-wave" href="javascript:void(0);" data-bs-toggle="dropdown"> 
-                                                                                <i class="ri-more-2-fill"></i>
-                                                                            </a> 
-                                                                            <ul class="dropdown-menu dropdown-menu-end" role="menu"> 
-                                                                                <li><a class="dropdown-item" href="javascript:void(0);">Message</a></li> 
-                                                                                <li><a class="dropdown-item" href="javascript:void(0);">Block</a></li> 
-                                                                                <li><a class="dropdown-item" href="javascript:void(0);">Remove</a></li> 
-                                                                            </ul> 
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="card-footer text-center p-3">
-                                                                    <div class="d-flex gap-2 flex-wrap justify-content-center">
-                                                                        <button class="btn btn-sm btn-primary-light btn-wave me-0">View Profile</button>
-                                                                        <button class="btn btn-sm btn-light btn-wave me-0">Unfollow</button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-xxl-4 col-xl-4 col-lg-6 col-md-6 col-sm-12">
-                                                            <div class="card custom-card shadow-none border">
-                                                                <div class="card-body">
-                                                                    <div class="d-flex align-items-center gap-2 flex-wrap">
-                                                                        <span class="avatar avatar-xl avatar-rounded flex-shrink-0">
-                                                                            <img src=" assets/images/faces/5-1.jpg" alt="">
-                                                                        </span>
-                                                                        <div class="text-truncate">
-                                                                            <p class="mb-0 fw-semibold">Catalina Keira</p>
-                                                                            <p class="w-75 text-truncate fs-12 op-7 mb-1 text-muted">catalinakeira023@gmail.com</p>
-                                                                            <span class="badge bg-info-transparent">Product Designer</span>
-                                                                        </div>
-                                                                        <div class="dropdown ms-auto">
-                                                                            <a aria-label="anchor" class="btn btn-secondary-light btn-icon btn-sm btn-wave" href="javascript:void(0);" data-bs-toggle="dropdown"> 
-                                                                                <i class="ri-more-2-fill"></i>
-                                                                            </a> 
-                                                                            <ul class="dropdown-menu dropdown-menu-end" role="menu"> 
-                                                                                <li><a class="dropdown-item" href="javascript:void(0);">Message</a></li> 
-                                                                                <li><a class="dropdown-item" href="javascript:void(0);">Block</a></li> 
-                                                                                <li><a class="dropdown-item" href="javascript:void(0);">Remove</a></li> 
-                                                                            </ul> 
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="card-footer text-center p-3">
-                                                                    <div class="d-flex gap-2 flex-wrap justify-content-center">
-                                                                        <button class="btn btn-sm btn-primary-light btn-wave me-0">View Profile</button>
-                                                                        <button class="btn btn-sm btn-light btn-wave me-0">Unfollow</button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-xxl-4 col-xl-4 col-lg-6 col-md-6 col-sm-12">
-                                                            <div class="card custom-card shadow-none border">
-                                                                <div class="card-body">
-                                                                    <div class="d-flex align-items-center gap-2 flex-wrap">
-                                                                        <span class="avatar avatar-xl avatar-rounded flex-shrink-0">
-                                                                            <img src="https://bniconnectglobal.com/web/open/networkViewProfileImage/667047103355150001b6ca93.jpg" alt="">
-                                                                        </span>
-                                                                        <div class="text-truncate">
-                                                                            <p class="mb-0 fw-semibold">Priceton Gray</p>
-                                                                            <p class="w-75 text-truncate fs-12 op-7 mb-1 text-muted">pricetongray451@gmail.com</p>
-                                                                            <span class="badge bg-warning-transparent">Team Manager</span>
-                                                                        </div>
-                                                                        <div class="dropdown ms-auto">
-                                                                            <a aria-label="anchor" class="btn btn-secondary-light btn-icon btn-sm btn-wave" href="javascript:void(0);" data-bs-toggle="dropdown"> 
-                                                                                <i class="ri-more-2-fill"></i>
-                                                                            </a> 
-                                                                            <ul class="dropdown-menu dropdown-menu-end" role="menu"> 
-                                                                                <li><a class="dropdown-item" href="javascript:void(0);">Message</a></li> 
-                                                                                <li><a class="dropdown-item" href="javascript:void(0);">Block</a></li> 
-                                                                                <li><a class="dropdown-item" href="javascript:void(0);">Remove</a></li> 
-                                                                            </ul> 
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="card-footer text-center p-3">
-                                                                    <div class="d-flex gap-2 flex-wrap justify-content-center">
-                                                                        <button class="btn btn-sm btn-primary-light btn-wave me-0">View Profile</button>
-                                                                        <button class="btn btn-sm btn-light btn-wave me-0">Unfollow</button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-xxl-4 col-xl-4 col-lg-6 col-md-6 col-sm-12">
-                                                            <div class="card custom-card shadow-none border">
-                                                                <div class="card-body">
-                                                                    <div class="d-flex align-items-center gap-2 flex-wrap">
-                                                                        <span class="avatar avatar-xl avatar-rounded flex-shrink-0">
-                                                                            <img src=" assets/images/faces/7-1.jpg" alt="">
-                                                                        </span>
-                                                                        <div class="text-truncate">
-                                                                            <p class="mb-0 fw-semibold">Sarah Ruth</p>
-                                                                            <p class="w-75 text-truncate fs-12 op-7 mb-1 text-muted">sarahruth45@gmail.com</p>
-                                                                            <span class="badge bg-info-transparent">Product Designer</span>
-                                                                        </div>
-                                                                        <div class="dropdown ms-auto">
-                                                                            <a aria-label="anchor" class="btn btn-secondary-light btn-icon btn-sm btn-wave" href="javascript:void(0);" data-bs-toggle="dropdown"> 
-                                                                                <i class="ri-more-2-fill"></i>
-                                                                            </a> 
-                                                                            <ul class="dropdown-menu dropdown-menu-end" role="menu"> 
-                                                                                <li><a class="dropdown-item" href="javascript:void(0);">Message</a></li> 
-                                                                                <li><a class="dropdown-item" href="javascript:void(0);">Block</a></li> 
-                                                                                <li><a class="dropdown-item" href="javascript:void(0);">Remove</a></li> 
-                                                                            </ul> 
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="card-footer text-center p-3">
-                                                                    <div class="d-flex gap-2 flex-wrap justify-content-center">
-                                                                        <button class="btn btn-sm btn-primary-light btn-wave me-0">View Profile</button>
-                                                                        <button class="btn btn-sm btn-light btn-wave me-0">Unfollow</button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-xxl-4 col-xl-4 col-lg-6 col-md-6 col-sm-12">
-                                                            <div class="card custom-card shadow-none border">
-                                                                <div class="card-body">
-                                                                    <div class="d-flex align-items-center gap-2 flex-wrap">
-                                                                        <span class="avatar avatar-xl avatar-rounded flex-shrink-0">
-                                                                            <img src=" assets/images/faces/12-1.jpg" alt="">
-                                                                        </span>
-                                                                        <div class="text-truncate">
-                                                                            <p class="mb-0 fw-semibold">Mahira Hose</p>
-                                                                            <p class="w-75 text-truncate fs-12 op-7 mb-1 text-muted">mahirahose9456@gmail.com</p>
-                                                                            <span class="badge bg-info-transparent">Product Designer</span>
-                                                                        </div>
-                                                                        <div class="dropdown ms-auto">
-                                                                            <a aria-label="anchor" class="btn btn-secondary-light btn-icon btn-sm btn-wave" href="javascript:void(0);" data-bs-toggle="dropdown"> 
-                                                                                <i class="ri-more-2-fill"></i>
-                                                                            </a> 
-                                                                            <ul class="dropdown-menu dropdown-menu-end" role="menu"> 
-                                                                                <li><a class="dropdown-item" href="javascript:void(0);">Message</a></li> 
-                                                                                <li><a class="dropdown-item" href="javascript:void(0);">Block</a></li> 
-                                                                                <li><a class="dropdown-item" href="javascript:void(0);">Remove</a></li> 
-                                                                            </ul> 
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="card-footer text-center p-3">
-                                                                    <div class="d-flex gap-2 flex-wrap justify-content-center">
-                                                                        <button class="btn btn-sm btn-primary-light btn-wave me-0">View Profile</button>
-                                                                        <button class="btn btn-sm btn-light btn-wave me-0">Unfollow</button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-xxl-4 col-xl-4 col-lg-6 col-md-6 col-sm-12">
-                                                            <div class="card custom-card shadow-none border">
-                                                                <div class="card-body">
-                                                                    <div class="d-flex align-items-center gap-2 flex-wrap">
-                                                                        <span class="avatar avatar-xl avatar-rounded flex-shrink-0">
-                                                                            <img src=" assets/images/faces/1-5.jpg" alt="">
-                                                                        </span>
-                                                                        <div class="text-truncate">
-                                                                            <p class="mb-0 fw-semibold">Victoria Gracie</p>
-                                                                            <p class="w-75 text-truncate fs-12 op-7 mb-1 text-muted">victoriagracie@gmail.com</p>
-                                                                            <span class="badge bg-info-transparent">Product Designer</span>
-                                                                        </div>
-                                                                        <div class="dropdown ms-auto">
-                                                                            <a aria-label="anchor" class="btn btn-secondary-light btn-icon btn-sm btn-wave" href="javascript:void(0);" data-bs-toggle="dropdown"> 
-                                                                                <i class="ri-more-2-fill"></i>
-                                                                            </a> 
-                                                                            <ul class="dropdown-menu dropdown-menu-end" role="menu"> 
-                                                                                <li><a class="dropdown-item" href="javascript:void(0);">Message</a></li> 
-                                                                                <li><a class="dropdown-item" href="javascript:void(0);">Block</a></li> 
-                                                                                <li><a class="dropdown-item" href="javascript:void(0);">Remove</a></li> 
-                                                                            </ul> 
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="card-footer text-center p-3">
-                                                                    <div class="d-flex gap-2 flex-wrap justify-content-center">
-                                                                        <button class="btn btn-sm btn-primary-light btn-wave me-0">View Profile</button>
-                                                                        <button class="btn btn-sm btn-light btn-wave me-0">Unfollow</button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-xxl-4 col-xl-4 col-lg-6 col-md-6 col-sm-12">
-                                                            <div class="card custom-card shadow-none border">
-                                                                <div class="card-body">
-                                                                    <div class="d-flex align-items-center gap-2 flex-wrap">
-                                                                        <span class="avatar avatar-xl avatar-rounded flex-shrink-0">
-                                                                            <img src=" assets/images/faces/13-1.jpg" alt="">
-                                                                        </span>
-                                                                        <div class="text-truncate">
-                                                                            <p class="mb-0 fw-semibold">Amith Gray</p>
-                                                                            <p class="w-75 text-truncate fs-12 op-7 mb-1 text-muted">amithgray132@gmail.com</p>
-                                                                            <span class="badge bg-info-transparent">Product Designer</span>
-                                                                        </div>
-                                                                        <div class="dropdown ms-auto">
-                                                                            <a aria-label="anchor" class="btn btn-secondary-light btn-icon btn-sm btn-wave" href="javascript:void(0);" data-bs-toggle="dropdown"> 
-                                                                                <i class="ri-more-2-fill"></i>
-                                                                            </a> 
-                                                                            <ul class="dropdown-menu dropdown-menu-end" role="menu"> 
-                                                                                <li><a class="dropdown-item" href="javascript:void(0);">Message</a></li> 
-                                                                                <li><a class="dropdown-item" href="javascript:void(0);">Block</a></li> 
-                                                                                <li><a class="dropdown-item" href="javascript:void(0);">Remove</a></li> 
-                                                                            </ul> 
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="card-footer text-center p-3">
-                                                                    <div class="d-flex gap-2 flex-wrap justify-content-center">
-                                                                        <button class="btn btn-sm btn-primary-light btn-wave me-0">View Profile</button>
-                                                                        <button class="btn btn-sm btn-light btn-wave me-0">Unfollow</button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-xxl-4 col-xl-4 col-lg-6 col-md-6 col-sm-12">
-                                                            <div class="card custom-card shadow-none border">
-                                                                <div class="card-body">
-                                                                    <div class="d-flex align-items-center gap-2 flex-wrap">
-                                                                        <span class="avatar avatar-xl avatar-rounded flex-shrink-0">
-                                                                            <img src=" assets/images/faces/6-1.jpg" alt="">
-                                                                        </span>
-                                                                        <div class="text-truncate">
-                                                                            <p class="mb-0 fw-semibold">Isha Bella</p>
-                                                                            <p class="w-75 text-truncate fs-12 op-7 mb-1 text-muted">ishabella255@gmail.com</p>
-                                                                            <span class="badge bg-info-transparent">Product Designer</span>
-                                                                        </div>
-                                                                        <div class="dropdown ms-auto">
-                                                                            <a aria-label="anchor" class="btn btn-secondary-light btn-icon btn-sm btn-wave" href="javascript:void(0);" data-bs-toggle="dropdown"> 
-                                                                                <i class="ri-more-2-fill"></i>
-                                                                            </a> 
-                                                                            <ul class="dropdown-menu dropdown-menu-end" role="menu"> 
-                                                                                <li><a class="dropdown-item" href="javascript:void(0);">Message</a></li> 
-                                                                                <li><a class="dropdown-item" href="javascript:void(0);">Block</a></li> 
-                                                                                <li><a class="dropdown-item" href="javascript:void(0);">Remove</a></li> 
-                                                                            </ul> 
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="card-footer text-center p-3">
-                                                                    <div class="d-flex gap-2 flex-wrap justify-content-center">
-                                                                        <button class="btn btn-sm btn-primary-light btn-wave me-0">View Profile</button>
-                                                                        <button class="btn btn-sm btn-light btn-wave me-0">Unfollow</button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-xl-12">
-                                                            <div class="text-center">
-                                                                <button class="btn btn-primary-light btn-wave">Show All</button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xl-8">
-                                    <div class="card custom-card overflow-hidden">
-                                        <div class="card-header justify-content-between">
-                                            <div class="card-title">Registered Member's</div>
-                                            <!-- <div class="btn btn-sm btn-primary-light btn-wave"><i class="ri-add-line align-middle me-1 fw-medium"></i>Add Task</div> -->
-                                        </div>
-                                        <div class="card-body p-0 position-relative" id="todo-content">
-                                            <div>
-                                                <div class="table-responsive">
-                                                    <table class="table text-nowrap">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>
-                                                                    <input class="form-check-input check-all" type="checkbox" id="all-tasks" value="" aria-label="...">
-                                                                </th>
-                                                                <th scope="col">S.No.</th>
-                          <th scope="col">Date</th>
-                          <th scope="col">Member Name</th>
-                          <th scope="col">Chapter</th>
-                          <th scope="col">Amount</th>
-                          <th scope="col">Payment Method</th>
-                          <th scope="col">Order ID</th>
-                          <th scope="col">Transaction ID</th>
-                          <th scope="col">PG Status</th>
-                          <th scope="col">Gateway</th>
-                          <th scope="col">Invoice</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody id="todo-drag">
-                                                            <tr class="todo-box">
-                                                                <td class="task-checkbox"><input class="form-check-input" type="checkbox" value="" aria-label="..." checked=""></td>
-                                                                <td>
-                                                                    <span class="fw-medium">1</span>
-                                                                </td>
-                                                                <td>
-                                                                    12/09/24
-                                                                </td>
-                                                                <td>
-                                                                   <b>Raja Shukla</b> 
-                                                                </td>
-                                                                <td>
-                                                                    Prolific
-                                                                </td>
-                                                                <td>
-                                                                   <b><img src="https://economictimes.indiatimes.com/thumb/msid-74960608,width-1200,height-900,resizemode-4,imgsize-49172/upi-twitter.jpg?from=mdr" alt="UPI" width="30" height="30">₹ 50,000</b> 
-                                                                </td>
-                                                                <td>
-                                                                    UPI
-                                                                </td>
-                                                                <td>
-                                                                    order_103197982pyfrYia4ILpAtWm1e5NxKzsvaj
-                                                                </td>
-                                                                <td>
-                                                                  <b><em>5114915265772</em></b>  
-                                                                </td>
-                                                                <td>
-                                                                    success
-                                                                </td>
-                                                                <td>
-                                                                   <b><em>Cashfree</em></b> 
-                                                                </td>
-                                                                <td>
-                                                                  <a href="" style="color: blue;">View Invoice</a>  
-                                                                 </td>
-                                                                
-                                                            </tr>
-                                                            <tr class="todo-box">
-                                                                <td class="task-checkbox"><input class="form-check-input" type="checkbox" value="" aria-label="..."></td>
-                                                                <td>
-                                                                    <span class="fw-medium">2</span>
-                                                                </td>
-                                                                <td>
-                                                                    12/09/24
-                                                                </td>
-                                                                <td>
-                                                                   <b>Prince Sachdeva</b> 
-                                                                </td>
-                                                                <td>
-                                                                    Prolific
-                                                                </td>
-                                                                <td>
-                                                                   <b><img src="https://economictimes.indiatimes.com/thumb/msid-74960608,width-1200,height-900,resizemode-4,imgsize-49172/upi-twitter.jpg?from=mdr" alt="UPI" width="30" height="30">₹ 50,000</b> 
-                                                                </td>
-                                                                <td>
-                                                                    UPI
-                                                                </td>
-                                                                <td>
-                                                                    order_103197982pyfrYia4ILpAtWm1e5NxKzsvaj
-                                                                </td>
-                                                                <td>
-                                                                  <b><em>5114915265772</em></b>  
-                                                                </td>
-                                                                <td>
-                                                                    success
-                                                                </td>
-                                                                <td>
-                                                                   <b><em>Cashfree</em></b> 
-                                                                </td>
-                                                                <td>
-                                                                  <a href="" style="color: blue;">View Invoice</a>  
-                                                                 </td>
-                                                                
-                                                            </tr>
-                                                            <tr class="todo-box">
-                                                                <td class="task-checkbox"><input class="form-check-input" type="checkbox" value="" aria-label="..."></td>
-                                                                <td>
-                                                                    <span class="fw-medium">3</span>
-                                                                </td>
-                                                                <td>
-                                                                    12/09/24
-                                                                </td>
-                                                                <td>
-                                                                   <b>Rajat Arora</b> 
-                                                                </td>
-                                                                <td>
-                                                                    Prolific
-                                                                </td>
-                                                                <td>
-                                                                   <b><img src="https://economictimes.indiatimes.com/thumb/msid-74960608,width-1200,height-900,resizemode-4,imgsize-49172/upi-twitter.jpg?from=mdr" alt="UPI" width="30" height="30">₹ 50,000</b> 
-                                                                </td>
-                                                                <td>
-                                                                    UPI
-                                                                </td>
-                                                                <td>
-                                                                    order_103197982pyfrYia4ILpAtWm1e5NxKzsvaj
-                                                                </td>
-                                                                <td>
-                                                                  <b><em>5114915265772</em></b>  
-                                                                </td>
-                                                                <td>
-                                                                    success
-                                                                </td>
-                                                                <td>
-                                                                   <b><em>Cashfree</em></b> 
-                                                                </td>
-                                                                <td>
-                                                                  <a href="" style="color: blue;">View Invoice</a>  
-                                                                 </td>
-                                                                
-                                                            </tr>
-                                                            <tr class="todo-box">
-                                                                <td class="task-checkbox"><input class="form-check-input" type="checkbox" value="" aria-label="..." checked=""></td>
-                                                                <td>
-                                                                    <span class="fw-medium">4</span>
-                                                                </td>
-                                                                <td>
-                                                                    12/09/24
-                                                                </td>
-                                                                <td>
-                                                                   <b>Avinash Shukla</b> 
-                                                                </td>
-                                                                <td>
-                                                                    Prolific
-                                                                </td>
-                                                                <td>
-                                                                   <b><img src="https://economictimes.indiatimes.com/thumb/msid-74960608,width-1200,height-900,resizemode-4,imgsize-49172/upi-twitter.jpg?from=mdr" alt="UPI" width="30" height="30">₹ 50,000</b> 
-                                                                </td>
-                                                                <td>
-                                                                    UPI
-                                                                </td>
-                                                                <td>
-                                                                    order_103197982pyfrYia4ILpAtWm1e5NxKzsvaj
-                                                                </td>
-                                                                <td>
-                                                                  <b><em>5114915265772</em></b>  
-                                                                </td>
-                                                                <td>
-                                                                    success
-                                                                </td>
-                                                                <td>
-                                                                   <b><em>Cashfree</em></b> 
-                                                                </td>
-                                                                <td>
-                                                                  <a href="" style="color: blue;">View Invoice</a>  
-                                                                 </td>
-                                                                
-                                                            </tr>
-                                                            <tr class="todo-box">
-                                                                <td class="task-checkbox"><input class="form-check-input" type="checkbox" value="" aria-label="..." checked=""></td>
-                                                                <td>
-                                                                    <span class="fw-medium">5</span>
-                                                                </td>
-                                                                <td>
-                                                                    12/09/24
-                                                                </td>
-                                                                <td>
-                                                                   <b>Ashutosh Shukla</b> 
-                                                                </td>
-                                                                <td>
-                                                                    Prolific
-                                                                </td>
-                                                                <td>
-                                                                   <b><img src="https://economictimes.indiatimes.com/thumb/msid-74960608,width-1200,height-900,resizemode-4,imgsize-49172/upi-twitter.jpg?from=mdr" alt="UPI" width="30" height="30">₹ 50,000</b> 
-                                                                </td>
-                                                                <td>
-                                                                    UPI
-                                                                </td>
-                                                                <td>
-                                                                    order_103197982pyfrYia4ILpAtWm1e5NxKzsvaj
-                                                                </td>
-                                                                <td>
-                                                                  <b><em>5114915265772</em></b>  
-                                                                </td>
-                                                                <td>
-                                                                    success
-                                                                </td>
-                                                                <td>
-                                                                   <b><em>Cashfree</em></b> 
-                                                                </td>
-                                                                <td>
-                                                                  <a href="" style="color: blue;">View Invoice</a>  
-                                                                 </td>
-                                                                
-                                                            </tr>
-                                                            <tr class="todo-box">
-                                                                <td class="task-checkbox"><input class="form-check-input" type="checkbox" value="" aria-label="..." checked=""></td>
-                                                                <td>
-                                                                    <span class="fw-medium">6</span>
-                                                                </td>
-                                                                <td>
-                                                                    12/09/24
-                                                                </td>
-                                                                <td>
-                                                                   <b>Ishan Monga</b> 
-                                                                </td>
-                                                                <td>
-                                                                    Prolific
-                                                                </td>
-                                                                <td>
-                                                                   <b><img src="https://economictimes.indiatimes.com/thumb/msid-74960608,width-1200,height-900,resizemode-4,imgsize-49172/upi-twitter.jpg?from=mdr" alt="UPI" width="30" height="30">₹ 50,000</b> 
-                                                                </td>
-                                                                <td>
-                                                                    UPI
-                                                                </td>
-                                                                <td>
-                                                                    order_103197982pyfrYia4ILpAtWm1e5NxKzsvaj
-                                                                </td>
-                                                                <td>
-                                                                  <b><em>5114915265772</em></b>  
-                                                                </td>
-                                                                <td>
-                                                                    success
-                                                                </td>
-                                                                <td>
-                                                                   <b><em>Cashfree</em></b> 
-                                                                </td>
-                                                                <td>
-                                                                  <a href="" style="color: blue;">View Invoice</a>  
-                                                                 </td>
-                                                                
-                                                            </tr>
-                                                            <tr class="todo-box">
-                                                                <td class="task-checkbox"><input class="form-check-input" type="checkbox" value="" aria-label="..."></td>
-                                                                <td>
-                                                                    <span class="fw-medium">7</span>
-                                                                </td>
-                                                                <td>
-                                                                    12/09/24
-                                                                </td>
-                                                                <td>
-                                                                   <b>Aman Aggarwal</b> 
-                                                                </td>
-                                                                <td>
-                                                                    Prolific
-                                                                </td>
-                                                                <td>
-                                                                   <b><img src="https://economictimes.indiatimes.com/thumb/msid-74960608,width-1200,height-900,resizemode-4,imgsize-49172/upi-twitter.jpg?from=mdr" alt="UPI" width="30" height="30">₹ 50,000</b> 
-                                                                </td>
-                                                                <td>
-                                                                    UPI
-                                                                </td>
-                                                                <td>
-                                                                    order_103197982pyfrYia4ILpAtWm1e5NxKzsvaj
-                                                                </td>
-                                                                <td>
-                                                                  <b><em>5114915265772</em></b>  
-                                                                </td>
-                                                                <td>
-                                                                    success
-                                                                </td>
-                                                                <td>
-                                                                   <b><em>Cashfree</em></b> 
-                                                                </td>
-                                                                <td>
-                                                                  <a href="" style="color: blue;">View Invoice</a>  
-                                                                 </td>
-                                                                
-                                                            </tr>
-                                                            <tr class="todo-box">
-                                                                <td class="task-checkbox"><input class="form-check-input" type="checkbox" value="" aria-label="..." checked=""></td>
-                                                                <td>
-                                                                    <span class="fw-medium">8</span>
-                                                                </td>
-                                                                <td>
-                                                                    12/09/24
-                                                                </td>
-                                                                <td>
-                                                                   <b>Kunal Wadhwa</b> 
-                                                                </td>
-                                                                <td>
-                                                                    Prolific
-                                                                </td>
-                                                                <td>
-                                                                   <b><img src="https://economictimes.indiatimes.com/thumb/msid-74960608,width-1200,height-900,resizemode-4,imgsize-49172/upi-twitter.jpg?from=mdr" alt="UPI" width="30" height="30">₹ 50,000</b> 
-                                                                </td>
-                                                                <td>
-                                                                    UPI
-                                                                </td>
-                                                                <td>
-                                                                    order_103197982pyfrYia4ILpAtWm1e5NxKzsvaj
-                                                                </td>
-                                                                <td>
-                                                                  <b><em>5114915265772</em></b>  
-                                                                </td>
-                                                                <td>
-                                                                    success
-                                                                </td>
-                                                                <td>
-                                                                   <b><em>Cashfree</em></b> 
-                                                                </td>
-                                                                <td>
-                                                                  <a href="" style="color: blue;">View Invoice</a>  
-                                                                 </td>
-                                                                
-                                                            </tr>
-                                                            <tr class="todo-box">
-                                                                <td class="task-checkbox"><input class="form-check-input" type="checkbox" value="" aria-label="..."></td>
-                                                                <td>
-                                                                    <span class="fw-medium">9</span>
-                                                                </td>
-                                                                <td>
-                                                                    12/09/24
-                                                                </td>
-                                                                <td>
-                                                                   <b>Raja Shukla</b> 
-                                                                </td>
-                                                                <td>
-                                                                    Prolific
-                                                                </td>
-                                                                <td>
-                                                                   <b><img src="https://economictimes.indiatimes.com/thumb/msid-74960608,width-1200,height-900,resizemode-4,imgsize-49172/upi-twitter.jpg?from=mdr" alt="UPI" width="30" height="30">₹ 50,000</b> 
-                                                                </td>
-                                                                <td>
-                                                                    UPI
-                                                                </td>
-                                                                <td>
-                                                                    order_103197982pyfrYia4ILpAtWm1e5NxKzsvaj
-                                                                </td>
-                                                                <td>
-                                                                  <b><em>5114915265772</em></b>  
-                                                                </td>
-                                                                <td>
-                                                                    success
-                                                                </td>
-                                                                <td>
-                                                                   <b><em>Cashfree</em></b> 
-                                                                </td>
-                                                                <td>
-                                                                  <a href="" style="color: blue;">View Invoice</a>  
-                                                                 </td>
-                                                                
-                                                            </tr>
-                                                            <tr class="todo-box">
-                                                                <td class="task-checkbox"><input class="form-check-input" type="checkbox" value="" aria-label="..."></td>
-                                                                <td>
-                                                                    <span class="fw-medium">10</span>
-                                                                </td>
-                                                                <td>
-                                                                    12/09/24
-                                                                </td>
-                                                                <td>
-                                                                   <b>Raja Shukla</b> 
-                                                                </td>
-                                                                <td>
-                                                                    Prolific
-                                                                </td>
-                                                                <td>
-                                                                   <b><img src="https://economictimes.indiatimes.com/thumb/msid-74960608,width-1200,height-900,resizemode-4,imgsize-49172/upi-twitter.jpg?from=mdr" alt="UPI" width="30" height="30">₹ 50,000</b> 
-                                                                </td>
-                                                                <td>
-                                                                    UPI
-                                                                </td>
-                                                                <td>
-                                                                    order_103197982pyfrYia4ILpAtWm1e5NxKzsvaj
-                                                                </td>
-                                                                <td>
-                                                                  <b><em>5114915265772</em></b>  
-                                                                </td>
-                                                                <td>
-                                                                    success
-                                                                </td>
-                                                                <td>
-                                                                   <b><em>Cashfree</em></b> 
-                                                                </td>
-                                                                <td>
-                                                                  <a href="" style="color: blue;">View Invoice</a>  
-                                                                 </td>
-                                                                
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="profile-banner-img">
+                        <img src="../../assets/images/bni-header-full.png" class="card-img-top" alt="...">
                     </div>
                 </div>
-            </div>
+                    <div class="card-body add-products">
+                      <div class="row gx-4">
+                        <div class="col-xxl-12 col-xl-12 col-lg-12 col-md-6">
+                          <div class="card custom-card shadow-none mb-0 border-0">
+                            <div class="card-body p-0">
+                              <div class="row gy-3">
+                                <div class="col-xl-6">
+                                  <label for="training_name" class="form-label"
+                                    >Training Name</label
+                                  >
+                                  <input
+                                    type="text"
+                                    class="form-control"
+                                    id="training_name"
+                                    name="training_name"
+                                    placeholder="Training Name"
+                                    readonly
+                                    style="background-color: #F0F0F0;"
+                                  />
+                                  <label
+                                    for="product-cost-add"
+                                    class="form-label mt-1 fs-12 fw-normal text-muted mb-0"
+                                    >
+                                </div>    
+                                <div class="col-xl-6">
+                                  <label for="billing_company" class="form-label"
+                                    >Billing Company</label
+                                  >
+                                  <input
+                                    type="text"
+                                    class="form-control"
+                                    id="billing_company"
+                                    name="billing_company"
+                                    placeholder="ADI Corporate Training"
+                                    value="ADI Corporate Training"
+                                    readonly
+                                    style="background-color: #F0F0F0;"
+                                  />
+                                </div> 
+                                <div class="col-xl-6">
+                                  <label for="training_venue" class="form-label"
+                                    >Training Venue</label
+                                  >
+                                  <input
+                                    type="text"
+                                    class="form-control"
+                                    id="training_venue"
+                                    name="training_venue"
+                                    placeholder="The Roseate House.."
+                                    readonly
+                                    style="background-color: #F0F0F0;"
+                                  />
+                                </div> 
+          
+                                <div class="col-xl-6">
+                                  <label for="training_ticket_price" class="form-label"
+                                    >Training Venue Price</label
+                                  >
+                                  <input
+                                    type="text"
+                                    class="form-control"
+                                    id="training_ticket_price"
+                                    name="training_ticket_price"
+                                    placeholder="₹26,5000/-.."
+                                    readonly
+                                    style="background-color: #F0F0F0;"
+                                  />
+                                </div> 
+                                <div class="col-xl-6">
+                                  <label for="training_date" class="form-label"
+                                    >Training Date</label
+                                  >
+                                  <input
+                                    type="date"
+                                    class="form-control"
+                                    id="training_date"
+                                    name="training_date"
+                                    placeholder="Stock in date.."
+                                    readonly
+                                    style="background-color: #F0F0F0;"
+                                  />
+                                </div>
+                                <div class="col-xl-6">
+                                  <label for="training_note" class="form-label"
+                                    >Training Note</label
+                                  >
+                                  <input
+                                    type="text"
+                                    class="form-control"
+                                    id="training_note"
+                                    name="training_note"
+                                    placeholder="Stock in date.."
+                                    readonly
+                                    style="background-color: #F0F0F0;"
+                                  />
+                                </div>
+                                <div class="col-xl-6">
+                                  <label for="training_published_by" class="form-label"
+                                    >Training Published by</label
+                                  >
+                                  <input
+                                    type="text"
+                                    class="form-control"
+                                    id="training_published_by"
+                                    name="training_published_by"
+                                    placeholder="Stock in date.."
+                                    readonly
+                                    style="background-color: #F0F0F0;"
+                                  />
+                                </div>
+                                <div class="col-xl-6">
+                                  <label for="training_status" class="form-label">Training Status</label>
+                                  <select class="form-control" name="training_status" id="training_status">
+                                    <option value="">Select</option>
+                                    <option value="Scheduled">Scheduled</option>
+                                    <option value="Completed">Completed</option>
+                                    <option value="Postponed">Postponed</option>
+                                    <option value="Cancelled">Cancelled</option>
+                                  </select>
+                                </div>
+                              
+                                
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             <!-- End:: row-1 -->
+
+            <div class="row">
+                <div class="col-xl-12">
+                  <div class="card custom-card">
+                    <div
+                      class="card-header justify-content-between"
+                      style="background-color: gainsboro !important"
+                    >
+                      <div class="card-title">Training Transactions</div>
+                      <div class="d-flex">
+                        <!-- Region Filter -->
+                        <div class="dropdown me-2">
+                          <a href="javascript:void(0);"
+                             class="btn btn-sm btn-light text-muted dropdown-toggle"
+                             data-bs-toggle="dropdown"
+                             aria-expanded="true">
+                            <i class="ti ti-sort-descending-2 me-1"></i> Region
+                          </a>
+                          <ul class="dropdown-menu" id="region-filter" role="menu">
+                            <!-- Items will be dynamically inserted here -->
+                          </ul>
+                        </div>
+                      
+                        <!-- Chapter Filter -->
+                        <div class="dropdown me-2">
+                          <a href="javascript:void(0);"
+                             class="btn btn-sm btn-light text-muted dropdown-toggle"
+                             data-bs-toggle="dropdown"
+                             aria-expanded="true">
+                            <i class="ti ti-sort-descending-2 me-1"></i> Chapter
+                          </a>
+                          <ul class="dropdown-menu" id="chapter-filter" role="menu">
+                            <!-- Items will be dynamically inserted here -->
+                          </ul>
+                        </div>
+                      
+                        <!-- Month Filter -->
+                        <div class="dropdown me-2">
+                          <a href="javascript:void(0);"
+                             class="btn btn-sm btn-light text-muted dropdown-toggle"
+                             data-bs-toggle="dropdown"
+                             aria-expanded="true">
+                            <i class="ti ti-sort-descending-2 me-1"></i> Month
+                          </a>
+                          <ul class="dropdown-menu" id="month-filter" role="menu">
+                            <!-- Items will be dynamically inserted here -->
+                          </ul>
+                        </div>
+                      
+                      
+                        <!-- Payment Gateway Filter -->
+                        <div class="dropdown me-2">
+                          <a href="javascript:void(0);"
+                             class="btn btn-sm btn-light text-muted dropdown-toggle"
+                             data-bs-toggle="dropdown"
+                             aria-expanded="true">
+                            <i class="ti ti-sort-descending-2 me-1"></i> Gateway
+                          </a>
+                          <ul class="dropdown-menu" id="payment-gateway-filter" role="menu">
+                            <!-- Items will be dynamically inserted here -->
+                          </ul>
+                        </div>
+                      
+                        <!-- Payment Status Filter -->
+                        <div class="dropdown me-2">
+                          <a href="javascript:void(0);"
+                             class="btn btn-sm btn-light text-muted dropdown-toggle"
+                             data-bs-toggle="dropdown"
+                             aria-expanded="true">
+                            <i class="ti ti-sort-descending-2 me-1"></i> PG Status
+                          </a>
+                          <ul class="dropdown-menu" id="payment-status-filter" role="menu">
+                            <!-- Items will be dynamically inserted here -->
+                          </ul>
+                        </div>
+                      
+                        <!-- Payment Method Filter -->
+                        <div class="dropdown me-2">
+                          <a href="javascript:void(0);"
+                             class="btn btn-sm btn-light text-muted dropdown-toggle"
+                             data-bs-toggle="dropdown"
+                             aria-expanded="true">
+                            <i class="ti ti-sort-descending-2 me-1"></i> Method
+                          </a>
+                          <ul class="dropdown-menu" id="payment-method-filter" role="menu">
+                            <!-- Items will be dynamically inserted here -->
+                          </ul>
+                        </div>
+                      
+                        <!-- Apply Filter Button -->
+                        <button href=""
+                                id="apply-filters-btn"
+                                class="btn btn-sm btn-primary btn-wave waves-light">
+                          Apply Filter
+                        </button>
+                        <div style="margin-left: 3px;"><button id="reset-filters-btn" class="btn btn-sm btn-danger btn-wave waves-light">
+                          Reset Filter
+                        </button></div>
+                        
+                        
+                      </div>
+                      
+                    </div>
+                    <div class="card-body p-0">
+                      <div class="table-responsive">
+                        <table class="table text-nowrap">
+                          <thead>
+                            <tr>
+                              <th scope="col">Checked In</th>
+                              <th scope="col">S.No.</th>
+                              <th scope="col">Date</th>
+                              <th scope="col">Member Name</th>
+                              <th scope="col">Chapter</th>
+                              <th scope="col">Amount</th>
+                              <th scope="col">Payment Method</th>
+                              <th scope="col">Order ID</th>
+                              <th scope="col">Transaction ID</th>
+                              <th scope="col">PG Status</th>
+                              <th scope="col">Gateway</th>
+                              <th scope="col">Settlement Status</th>
+                              <th scope="col">Tranfer UTR</th>
+                              <th scope="col">Tranfer Time</th>
+                              <th scope="col">IRN</th>
+                              <th scope="col">QR Code</th>
+                              <th scope="col">E-Invoice Status</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr class="invoice-list">
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                    <div class="card-footer border-top-0">
+                      <nav aria-label="Page navigation">
+                        <ul class="pagination mb-0 float-end">
+                          <li class="page-item disabled">
+                            <a class="page-link">Previous</a>
+                          </li>
+                          <li class="page-item active">
+                            <a class="page-link" href="javascript:void(0);">1</a>
+                          </li>
+                          <li class="page-item">
+                            <a class="page-link" href="javascript:void(0);">Next</a>
+                          </li>
+                        </ul>
+                      </nav>
+                    </div>
+                  </div>
+                </div>
+              </div
 
             
         </div>
     </div>
     <!-- End::content  -->
+    <script src="../../assets/js/editTraining.js"></script>
     <script src="../../assets/js/viewTraining.js"></script>
 
     <%- include('../partials/footer') %> 
