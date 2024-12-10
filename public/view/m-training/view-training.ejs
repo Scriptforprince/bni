@@ -45,7 +45,7 @@
                             <li class="breadcrumb-item active" aria-current="page">View Training Details</li>
                         </ol>
                     </nav>
-                    <h1 class="page-title fw-medium fs-18 mb-0">Training Overview</h1>
+                    <h1 class="page-title fw-medium fs-18 mb-0" id="page_title"></h1>
                 </div>
             </div>
             <!-- Page Header Close -->
@@ -568,7 +568,71 @@
         </div>
     </div>
     <!-- End::content  -->
-    <script src="../../assets/js/editTraining.js"></script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+const training_id = urlParams.get('training_id'); // Get the accolade ID from the URL
+
+// Function to show the loader
+function showLoader() {
+    document.getElementById('loader').style.display = 'flex'; // Show loader
+  }
+  
+  // Function to hide the loader
+  function hideLoader() {
+    document.getElementById('loader').style.display = 'none'; // Hide loader
+  }
+
+
+// DOM elements for the form fields
+const page_title = document.getElementById('page_title');
+const training_name = document.getElementById('training_name');
+const training_venue = document.getElementById('training_venue');
+const training_ticket_price = document.getElementById('training_ticket_price');
+const training_date = document.getElementById('training_date');
+const training_note = document.getElementById('training_note');
+const training_published_by = document.getElementById('training_published_by');
+const training_status = document.getElementById('training_status');
+
+// Function to format date to YYYY-MM-DD for input[type="date"]
+function formatDateForInput(dateString) {
+    const date = new Date(dateString);
+    if (isNaN(date)) return ''; // If the date is invalid, return an empty string
+    return date.toISOString().split('T')[0]; // Format as YYYY-MM-DD
+  }
+
+// Function to fetch event details and populate the form
+async function fetchTrainingDetails() {
+  try {
+    showLoader();
+    const response = await fetch(`https://bni-data-backend.onrender.com/api/getTraining/${training_id}`);
+    if (!response.ok) throw new Error('Failed to fetch event details');
+    
+    const trainingData = await response.json();
+
+    // Populate the form fields with the fetched data
+    page_title.textContent = trainingData.training_name || '';
+    training_name.value = trainingData.training_name || '';
+    training_venue.value = trainingData.training_venue || '';
+    training_ticket_price.value = trainingData.training_price || '';
+    training_date.value = formatDateForInput(trainingData.training_date) || '';
+    training_note.value = trainingData.training_note || '';
+    training_published_by.value = trainingData.training_published_by || '';
+    
+    // Set the "availability" dropdown
+    training_status.value = trainingData.training_status || '';
+
+  } catch (error) {
+    console.error('Error fetching training details:', error);
+  } finally {
+    hideLoader();
+  }
+}
+
+// Call the fetchTrainingDetails function on page load
+window.addEventListener('load', fetchTrainingDetails);
+
+
+    </script>
     <script src="../../assets/js/viewTraining.js"></script>
 
     <%- include('../partials/footer') %> 
