@@ -1,10 +1,12 @@
 document.addEventListener("DOMContentLoaded", async () => {
 
+  const training_id = urlParams.get('training_id'); // Get the accolade ID from the URL
+  console.log("training id from viewTraining.js file - supports every code", training_id);
+
   const regionsDropdown = document.getElementById("region-filter");
   const chaptersDropdown = document.getElementById("chapter-filter");
   const monthsDropdown = document.getElementById("month-filter");
   const paymentStatusDropdown = document.getElementById("payment-status-filter");
-  // const paymentTypeDropdown = document.getElementById("payment-type-filter");
   const paymentGatewayDropdown = document.getElementById("payment-gateway-filter");
   const paymentMethodDropdown = document.getElementById("payment-method-filter");
   // Function to show the loader
@@ -74,8 +76,9 @@ const populateDropdown = (dropdown, data, valueField, textField, defaultText) =>
     });
   };
 
-showLoader();
+
   try {
+    showLoader();
     // Fetch data from all necessary endpoints
     const [
       ordersResponse,
@@ -84,29 +87,31 @@ showLoader();
       paymentGatewayResponse,
       universalLinksResponse,
       regionsResponse,
-      paymentTypeResponse,
     ] = await Promise.all([
-      fetch("https://bni-data-backend.onrender.com/api/allOrders"),
+      fetch(`https://bni-data-backend.onrender.com/api/getTrainingOrder/${training_id}`),
       fetch("https://bni-data-backend.onrender.com/api/allTransactions"),
       fetch("https://bni-data-backend.onrender.com/api/chapters"),
       fetch("https://bni-data-backend.onrender.com/api/paymentGateway"),
       fetch("https://bni-data-backend.onrender.com/api/universalLinks"),
       fetch("https://bni-data-backend.onrender.com/api/regions"),
-      fetch("https://bni-data-backend.onrender.com/api/universalLinks"),
     ]);
 
     const orders = await ordersResponse.json();
-    const transactions = await transactionsResponse.json();
+    const allTransactions = await transactionsResponse.json();
     const chapters = await chaptersResponse.json();
     const paymentGateways = await paymentGatewayResponse.json();
     const universalLinks = await universalLinksResponse.json();
     const regions = await regionsResponse.json();
-    const paymentType = await paymentTypeResponse.json();
+
+    // Filter transactions related to the orders
+const transactions = allTransactions.filter(transaction =>
+  orders.some(order => order.order_id === transaction.order_id)
+);
+    
 
     // Populate region and chapter dropdowns
     populateDropdown(regionsDropdown, regions, "region_id", "region_name", "Select Region");
     populateDropdown(chaptersDropdown, chapters, "chapter_id", "chapter_name", "Select Chapter");
-    // populateDropdown(paymentTypeDropdown, paymentType, "id", "universal_link_name", "Select Payment Type");
     populateDropdown(paymentGatewayDropdown, paymentGateways, "gateway_id", "gateway_name", "Select Gateway");
 
     // Populate month dropdown
@@ -196,7 +201,6 @@ document.getElementById("apply-filters-btn").addEventListener("click", () => {
   const chapterId = chaptersDropdown.querySelector('.dropdown-item.active')?.getAttribute('data-value') || '';
   const month = monthsDropdown.querySelector('.dropdown-item.active')?.getAttribute('data-value') || '';
   const paymentStatus = paymentStatusDropdown.querySelector('.dropdown-item.active')?.getAttribute('data-value') || '';
-  // const paymentType = paymentTypeDropdown.querySelector('.dropdown-item.active')?.getAttribute('data-value') || '';
   const paymentGateway = paymentGatewayDropdown.querySelector('.dropdown-item.active')?.getAttribute('data-value') || '';
   const paymentMethod = (paymentMethodDropdown.querySelector('.dropdown-item.active')?.getAttribute('data-value') || '').toLowerCase();
 
@@ -208,7 +212,6 @@ document.getElementById("apply-filters-btn").addEventListener("click", () => {
   if (chapterId) queryParams.append('chapter_id', chapterId);
   if (month) queryParams.append('month', month);
   if (paymentStatus) queryParams.append('payment_status', paymentStatus);
-  // if (paymentType) queryParams.append('payment_type', paymentType);
   if (paymentGateway) queryParams.append('payment_gateway', paymentGateway);
   if (paymentMethod) queryParams.append('payment_method', paymentMethod);
 
@@ -236,7 +239,6 @@ const filters = {
   chapter_id: urlParams.get("chapter_id"),
   month: urlParams.get("month"),
   payment_status: urlParams.get("payment_status"),
-  payment_type: urlParams.get("payment_type"),
   payment_gateway: urlParams.get("payment_gateway"),
   payment_method: urlParams.get("payment_method"),
 };
@@ -277,23 +279,6 @@ const filteredTransactions = transactions.filter((transaction) => {
 
       // Compare as strings (or numbers, depending on the data type)
       if (orderChapterId !== filterChapterId) {
-        isValid = false;
-      }
-    } else {
-      console.log(`No matching order found for transaction ${transaction.order_id}`);
-    }
-  }
-
-  if (filters.payment_type && transaction.order_id) {
-    const order = orders.find(order => order.order_id === transaction.order_id);
-
-    if (order) {
-      // Ensure both region_id values are strings (or numbers)
-      const orderPaymentId = String(order.universal_link_id);  // Convert to string
-      const filterPaymentId = String(filters.payment_type);  // Convert to string
-
-      // Compare as strings (or numbers, depending on the data type)
-      if (orderPaymentId !== filterPaymentId) {
         isValid = false;
       }
     } else {
@@ -482,7 +467,7 @@ if (filters.month && transaction.order_id) {
       }" class="fw-medium text-success">View</a></td>
                 <td>${paymentImage} ${paymentMethod}</td>
                 <td><em>${transaction.order_id}</em></td>
-                <td><b><em>${transaction.cf_payment_id}</em></b></td>
+                <td class="custom_id"><b><em>${transaction.cf_payment_id}</em></b></td>
                 <td><span class="badge ${
                   transaction.payment_status === "SUCCESS"
                     ? "bg-success"
@@ -517,7 +502,7 @@ if (filters.month && transaction.order_id) {
           try {
             // Step 1: Send request to save settlement data
             const saveResponse = await fetch(
-              `http://localhost:5000/api/orders/${orderId}/settlementStatus`,
+              `https://bni-data-backend.onrender.com/api/orders/${orderId}/settlementStatus`,
               { method: 'GET' }
             );
     
@@ -527,10 +512,10 @@ if (filters.month && transaction.order_id) {
     
             // Step 2: Fetch settlement data using cf_payment_id
             const row = button.closest('tr');
-            const cfPaymentId = row.querySelector('td:nth-child(8) em').innerText;
+            const cfPaymentId = row.querySelector('.custom_id').innerText;
     
             const fetchResponse = await fetch(
-              `http://localhost:5000/api/settlement/${cfPaymentId}`
+              `https://bni-data-backend.onrender.com/api/settlement/${cfPaymentId}`
             );
     
             if (!fetchResponse.ok) {

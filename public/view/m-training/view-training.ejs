@@ -563,7 +563,6 @@ const training_venue = document.getElementById('training_venue');
 const training_ticket_price = document.getElementById('training_ticket_price');
 const training_date = document.getElementById('training_date');
 const training_published_by = document.getElementById('training_published_by');
-const training_status = document.getElementById('training_status');
 
 // Function to format date to YYYY-MM-DD for input[type="date"]
 function formatDateForInput(dateString) {
@@ -588,9 +587,6 @@ async function fetchTrainingDetails() {
     training_ticket_price.value = trainingData.training_price || '';
     training_date.value = formatDateForInput(trainingData.training_date) || '';
     training_published_by.value = trainingData.training_published_by || '';
-    
-    // Set the "availability" dropdown
-    training_status.value = trainingData.training_status || '';
 
   } catch (error) {
     console.error('Error fetching training details:', error);
