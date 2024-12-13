@@ -119,7 +119,7 @@ async function displayTransactionDetails(order) {
         const transaction = transactions[0]; // Get the first transaction
         
         // Display payment mode, total amount, and status
-        document.querySelector('.payment-mode').textContent = transaction.payment_method[transaction.payment_group].channel; // Display payment method
+        // document.querySelector('.payment-mode').textContent = transaction.payment_method[transaction.payment_group].channel; // Display payment method
         document.querySelector('.total-amount').textContent = `₹${transaction.payment_amount}`; // Display payment amount
         document.querySelector('.payment-status').textContent = transaction.payment_status; // Display payment status
         document.querySelector('.payment-status').classList.add(transaction.payment_status === "SUCCESS" ? 'bg-success' : 'bg-danger'); // Conditional styling for status
