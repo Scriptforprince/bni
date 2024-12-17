@@ -5,6 +5,50 @@
 
     <!-- sidebar -->
 
+    <style>
+        /* Style for dropdown menu to enable scrolling */
+.dropdown-menu {
+  max-height: 200px; /* Adjust the height as needed */
+  overflow-y: auto;  /* Enables vertical scrolling */
+  overflow-x: hidden; /* Prevents horizontal scrolling */
+}
+
+
+.dropdown-menu::-webkit-scrollbar {
+  width: 8px; /* Width of the scrollbar */
+}
+
+.dropdown-menu::-webkit-scrollbar-thumb {
+  background-color: #888; /* Color of the scrollbar thumb */
+  border-radius: 4px; /* Rounded edges for the thumb */
+}
+
+.dropdown-menu::-webkit-scrollbar-thumb:hover {
+  background-color: #555; /* Darker shade on hover */
+}
+
+      </style>
+
+<style>
+    @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+
+    @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+  </style>
+
+  <style>
+    * {
+      font-family: Montserrat !important;
+      font-weight: 800px;
+    }
+    .text-muted {
+      color: black !important;
+      font-family: Montserrat Alternates;
+    }
+    .popins {
+      font-family: Poppins;
+    }
+  </style>
+
     <%- include('../partials/sidebar') %>
       <!-- Start::app-content -->
       <div class="main-content app-content" style="background-color: #f4f4f4">
@@ -21,25 +65,21 @@
               </h1>
               <p>Manage kitty payments with just one click</p>
             </div>
-            <div class="dropdown">
-                <button class="btn btn-danger dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  Select Region
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <a class="dropdown-item" href="#">Action</a>
-                  <a class="dropdown-item" href="#">Another action</a>
-                  <a class="dropdown-item" href="#">Something else here</a>
-                </div>
-                <button class="btn btn-danger dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  Select Chapter
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <a class="dropdown-item" href="#">Action</a>
-                  <a class="dropdown-item" href="#">Another action</a>
-                  <a class="dropdown-item" href="#">Something else here</a>
-                </div>
+            <div class="dropdown me-2">
+                <a href="javascript:void(0);" class="btn btn-sm btn-light text-muted dropdown-toggle region-button" data-bs-toggle="dropdown" aria-expanded="true">
+                    <i class="ti ti-sort-descending-2 me-1"></i> Region
+                </a>
+                <ul class="dropdown-menu" id="region-filter" role="menu">
+                  <!-- Items will be dynamically inserted here -->
+                </ul>
+              
+<a href="javascript:void(0);" class="btn btn-sm btn-light text-muted dropdown-toggle chapter-button" data-bs-toggle="dropdown" aria-expanded="true">
+    <i class="ti ti-sort-descending-2 me-1"></i> Chapter
+</a>
+             <ul class="dropdown-menu" id="chapter-filter" role="menu">
+               <!-- Items will be dynamically inserted here -->
+             </ul>
               </div>
-
             
             <div class="d-flex align-items-center gap-2 flex-wrap">
               <div class="form-group">
@@ -58,27 +98,9 @@
             </div>
           </div>
           <!-- End::page-header -->
-          <style>
-            @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
 
-            @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
-          </style>
-
-          <style>
-            * {
-              font-family: Montserrat !important;
-              font-weight: 800px;
-            }
-            .text-muted {
-              color: black !important;
-              font-family: Montserrat Alternates;
-            }
-            .popins {
-              font-family: Poppins;
-            }
-          </style>
-           <div class="row">
-            <div class="col-xl-12">
+          <div class="row">
+            <div class="col-xl-12 chapter-information" style="display: none;">
               <div class="card custom-card">
                 <div class="card-body add-products" style="background-color: 	#F5F5F5; box-shadow: 0px 2px 8px rgb(251, 109, 109);">
                   <div class="row gx-4">
@@ -87,31 +109,31 @@
                         <div class="card-body p-0">
                           <div class="row gy-3">
                             <div class="col-xl-2">
-                              <label for="region_name" class="form-label"
+                              <label for="chapter_name" class="form-label"
                                 ><b>Chapter Name</b></label
                               >
                               <p class="chapter_name">Prolific</p>
                             </div>
                               <div class="col-xl-2">
-                                <label for="region_name" class="form-label"
+                                <label for="chapter_day" class="form-label"
                                   ><b>Chapter Day</b></label
                                 >
                                 <p class="chapter_day">Prolific</p>
                               </div>
                               <div class="col-xl-2">
-                                <label for="region_name" class="form-label"
+                                <label for="meeting_venue" class="form-label"
                                   ><b>Meeting Venue</b></label
                                 >
                                 <p class="meeting_venue">Prolific</p>
                               </div>
                               <div class="col-xl-2">
-                                <label for="region_name" class="form-label"
+                                <label for="meeting_fee" class="form-label"
                                   ><b>Meeting Fee</b></label
                                 >
                                 <p class="meeting_fee">Prolific</p>
                               </div>
                               <div class="col-xl-2">
-                                <label for="region_name" class="form-label"
+                                <label for="visitor_fee" class="form-label"
                                   ><b>Visitor Fee</b></label
                                 >
                                 <p class="visitor_fee">Prolific</p>
@@ -130,6 +152,7 @@
               </div>
             </div>
           </div>
+        </div>
           <div class="row">
             <div class="col-xl-12">
               <div class="card custom-card">
@@ -277,8 +300,9 @@
               </div>
             </div>
           </div>
-        </div>
       </div>
       <!-- End::content  -->
+
+      <script src="../../assets/js/kittyBill.js"></script>
 
       <%- include('../partials/footer') %> 
