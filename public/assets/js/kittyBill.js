@@ -80,32 +80,37 @@ function hideLoader() {
         if (selectedRegion && selectedChapter) {
             try {
                 showLoader();  // Show loader before fetch
-
+    
                 // Fetch chapter details using chapter_id
                 const chapter = await fetch(`https://bni-data-backend.onrender.com/api/getChapter/${selectedChapter}`)
                     .then(res => res.json());
                 console.log("Fetched Chapter Details:", chapter);
-
+    
                 if (chapter) {
                     document.querySelector('.chapter_name').innerText = chapter.chapter_name || 'N/A';
                     document.querySelector('.chapter_day').innerText = chapter.chapter_meeting_day || 'N/A';
                     document.querySelector('.meeting_venue').innerText = chapter.meeting_hotel_name || 'N/A';
                     document.querySelector('.meeting_fee').innerText = chapter.chapter_kitty_fees || 'N/A';
                     document.querySelector('.visitor_fee').innerText = chapter.chapter_visitor_fees || 'N/A';
-
+    
+                    // Ensure that the value is one of the valid options
+                    const validBillingFrequencies = ['weekly', 'monthly', 'quartely', 'half_yearly', 'yearly'];
+                    const billingFrequency = validBillingFrequencies.includes(chapter.kitty_billing_frequency) ? chapter.kitty_billing_frequency : 'weekly';
+                    document.querySelector('#kitty_billing_frequency').value = billingFrequency;
+    
                     // Show chapter information
                     chapterInfo.style.display = 'block';
-
+    
                     // Log selected chapter and filter members by chapter_id
                     console.log("Selected Chapter ID:", selectedChapter);
-
+    
                     // Now, calculate total members in the selected chapter
                     const totalMembers = members.filter(member => member.chapter_id === parseInt(selectedChapter)).length;
                     console.log("Filtered Members for Chapter:", totalMembers);  // Log filtered members count
-
+    
                     totalMembersElement.innerText = totalMembers || 'N/A';
                 }
-
+    
             } catch (error) {
                 console.error('Error fetching chapter details:', error);
                 alert('Failed to load chapter details.');
@@ -114,5 +119,6 @@ function hideLoader() {
             }
         }
     }
+    
 
 })();
