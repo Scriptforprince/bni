@@ -189,6 +189,7 @@ const populateChapterFields = (data) => {
   document.getElementById("date_of_publishing").value =
     data.date_of_publishing ? new Date(data.date_of_publishing).toISOString().split("T")[0] : "Not Found";
   document.getElementById("chapter_launched_by").value = data.chapter_launched_by || "Not Found";
+  document.getElementById("billing_frequency").value = data.kitty_billing_frequency || "Not Found";
 };
 
 // Initialize the page
@@ -265,6 +266,7 @@ const collectChapterFormData = () => {
       chapter_late_fees: document.querySelector("#chapter_late_fees").value,
       chapter_membership_fee_two_year: document.querySelector("#chapter_membership_fee_two_year").value,
       chapter_membership_fee_five_year: document.querySelector("#chapter_membership_fee_five_year").value,
+      billing_frequency: document.querySelector("#billing_frequency").value,
   };
 
   return chapterData;

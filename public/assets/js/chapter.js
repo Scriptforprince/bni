@@ -425,6 +425,7 @@ function displayChapters(chapters) {
             <td>${chapter.chapter_meeting_day}</td>
             <td><b>${chapter.chapter_kitty_fees}</b></td>
             <td><b>${chapter.chapter_visitor_fees}</b></td>
+            <td><b>${chapter.kitty_billing_frequency}</b></td>
             <td>
               <span class="badge bg-${
                 chapter.chapter_status === "running" ? "success" : "danger"
