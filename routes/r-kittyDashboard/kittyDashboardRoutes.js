@@ -4,5 +4,6 @@ const kittyController = require('../../controllers/c-kittyDashboard/kittyDashboa
 
 // Events routes
 router.get('/manage-kitty', kittyController.manageKitty);
+router.get('/kitty-management', kittyController.kittyManagement);
 
 module.exports = router;

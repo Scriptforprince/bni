@@ -242,7 +242,7 @@ function renderPage(page) {
                   month: 'short',
                   year: 'numeric',
               }) || 'N/A'}</b></td>
-                <td><b>100</b></td>
+                <td><b>02</b></td>
                 <td class="text-center"><b>${training.training_price}</b></td>
                 
                 <td>

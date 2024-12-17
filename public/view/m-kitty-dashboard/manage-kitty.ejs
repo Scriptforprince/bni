@@ -1,0 +1,284 @@
+
+    <!-- header -->
+    <%- include('../partials/header') %> 
+    <!-- end header -->
+
+    <!-- sidebar -->
+
+    <%- include('../partials/sidebar') %>
+      <!-- Start::app-content -->
+      <div class="main-content app-content" style="background-color: #f4f4f4">
+        <div class="container-fluid">
+          <!-- Start::page-header -->
+          <div
+            class="d-flex align-items-center justify-content-between page-header-breadcrumb flex-wrap gap-2"
+          >
+            <div>
+              <h1 class="page-title fw-medium fs-18 mb-0">
+                <span style="font-weight: 700; font-family: Poppins"
+                  >Raise a New Bill</span
+                >
+              </h1>
+              <p>Manage kitty payments with just one click</p>
+            </div>
+            <div class="dropdown">
+                <button class="btn btn-danger dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Select Region
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <a class="dropdown-item" href="#">Action</a>
+                  <a class="dropdown-item" href="#">Another action</a>
+                  <a class="dropdown-item" href="#">Something else here</a>
+                </div>
+                <button class="btn btn-danger dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Select Chapter
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <a class="dropdown-item" href="#">Action</a>
+                  <a class="dropdown-item" href="#">Another action</a>
+                  <a class="dropdown-item" href="#">Something else here</a>
+                </div>
+              </div>
+
+            
+            <div class="d-flex align-items-center gap-2 flex-wrap">
+              <div class="form-group">
+                <div class="input-group">
+                  <div class="input-group-text bg-white border">
+                    <i class="ri-calendar-line"></i>
+                  </div>
+                  <input
+                    type="text"
+                    class="form-control breadcrumb-input"
+                    id="daterange"
+                    placeholder="Search By Date Range"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- End::page-header -->
+          <style>
+            @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+
+            @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+          </style>
+
+          <style>
+            * {
+              font-family: Montserrat !important;
+              font-weight: 800px;
+            }
+            .text-muted {
+              color: black !important;
+              font-family: Montserrat Alternates;
+            }
+            .popins {
+              font-family: Poppins;
+            }
+          </style>
+           <div class="row">
+            <div class="col-xl-12">
+              <div class="card custom-card">
+                <div class="card-body add-products" style="background-color: 	#F5F5F5; box-shadow: 0px 2px 8px rgb(251, 109, 109);">
+                  <div class="row gx-4">
+                    <div class="col-xxl-12 col-xl-12 col-lg-12 col-md-6">
+                      <div class="card custom-card shadow-none mb-0 border-0" style="background-color: 	#F5F5F5;">
+                        <div class="card-body p-0">
+                          <div class="row gy-3">
+                            <div class="col-xl-2">
+                              <label for="region_name" class="form-label"
+                                ><b>Chapter Name</b></label
+                              >
+                              <p class="chapter_name">Prolific</p>
+                            </div>
+                              <div class="col-xl-2">
+                                <label for="region_name" class="form-label"
+                                  ><b>Chapter Day</b></label
+                                >
+                                <p class="chapter_day">Prolific</p>
+                              </div>
+                              <div class="col-xl-2">
+                                <label for="region_name" class="form-label"
+                                  ><b>Meeting Venue</b></label
+                                >
+                                <p class="meeting_venue">Prolific</p>
+                              </div>
+                              <div class="col-xl-2">
+                                <label for="region_name" class="form-label"
+                                  ><b>Meeting Fee</b></label
+                                >
+                                <p class="meeting_fee">Prolific</p>
+                              </div>
+                              <div class="col-xl-2">
+                                <label for="region_name" class="form-label"
+                                  ><b>Visitor Fee</b></label
+                                >
+                                <p class="visitor_fee">Prolific</p>
+                              </div>
+                              <div class="col-xl-2">
+                                <label for="region_name" class="form-label"
+                                  ><b>Total Members</b></label
+                                >
+                                <p class="total_members">Prolific</p>
+                              </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xl-12">
+              <div class="card custom-card">
+                <div class="card-body add-products">
+                  <div class="row gx-4">
+                    <div class="col-xxl-12 col-xl-12 col-lg-12 col-md-6">
+                      <div class="card custom-card shadow-none mb-0 border-0">
+                        <div class="card-body p-0">
+                          <div class="row gy-3">
+                            <div class="col-xl-1">
+                              <label for="region_name" class="form-label"
+                                >Date</label
+                              >
+                              <input
+                                type="date"
+                                class="form-control"
+                                id="region_name"
+                                name="region_name"
+                                placeholder="New region name.."
+                              />
+                            </div>
+                            <div class="col-xl-3">
+                                <label for="region_status" class="form-label">Bill Type</label>
+                                <select class="form-control" name="region_status" id="region_status">
+                                  <option value="">Select</option>
+                                  <option value="active">Weekly</option>
+                                  <option value="inactive">Monthly</option>
+                                  <option value="inactive">Quartely</option>
+                                  <option value="inactive">Annually</option>
+                                </select>
+                              </div>
+                            <div class="col-xl-3">
+                                <label for="contact_person" class="form-label"
+                                  >Description
+                                </label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  id="contact_person"
+                                  name="contact_person" 
+                                  placeholder="Oct-Dec"
+                                />
+                              </div>
+                              <div class="col-xl-3">
+                                <label for="contact_person" class="form-label"
+                                  >Weeks/Days/Months
+                                </label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  id="contact_person"
+                                  name="contact_person" 
+                                  placeholder="6 weeks"
+                                />
+                              </div>
+
+                              <div class="col-xl-2">
+                                <label for="contact_person" class="form-label"
+                                  >Total Bill Amount
+                                </label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  id="contact_person"
+                                  name="contact_person" 
+                                  placeholder="₹15,600/-"
+                                />
+                              </div>
+                            
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-footer border-top border-block-start-dashed d-sm-flex justify-content-end align-items-center">
+                    
+                    <button type="submit" class="btn btn-success me-2 mb-2 mb-sm-0">
+                      Add Bill +
+                    </button>
+                  </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xl-12">
+              <div class="card custom-card">
+                <div
+                  class="card-header justify-content-between"
+                  style="background-color: gainsboro !important"
+                >
+                  <div class="card-title">All Bill's Raised</div>
+                  <div class="d-flex">
+                    <!-- Region Filter -->
+
+                  </div>
+                  
+                </div>
+                <div class="card-body p-0">
+                  <div class="table-responsive">
+                    <table class="table text-nowrap">
+                      <thead>
+                        <tr>
+                          <th scope="col">S.No.</th>
+                          <th scope="col">Date</th>
+                          <th scope="col">Member Name</th>
+                          <th scope="col">Chapter</th>
+                          <th scope="col">Amount</th>
+                          <th scope="col">Payment Method</th>
+                          <th scope="col">Order ID</th>
+                          <th scope="col">Transaction ID</th>
+                          <th scope="col">PG Status</th>
+                          <th scope="col">Gateway</th>
+                          <th scope="col">Payment Type</th>
+                          <th scope="col">Settlement Status</th>
+                          <th scope="col">Tranfer UTR</th>
+                          <th scope="col">Tranfer Time</th>
+                          <th scope="col">IRN</th>
+                          <th scope="col">QR Code</th>
+                          <th scope="col">E-Invoice Status</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr class="invoice-list">
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <div class="card-footer border-top-0">
+                  <nav aria-label="Page navigation">
+                    <ul class="pagination mb-0 float-end">
+                      <li class="page-item disabled">
+                        <a class="page-link">Previous</a>
+                      </li>
+                      <li class="page-item active">
+                        <a class="page-link" href="javascript:void(0);">1</a>
+                      </li>
+                      <li class="page-item">
+                        <a class="page-link" href="javascript:void(0);">Next</a>
+                      </li>
+                    </ul>
+                  </nav>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- End::content  -->
+
+      <%- include('../partials/footer') %> 
