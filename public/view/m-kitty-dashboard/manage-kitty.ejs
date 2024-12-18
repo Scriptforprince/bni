@@ -561,7 +561,7 @@ async function fetchKittyPayments() {
                 <td><b>${payment.bill_type || 'N/A'}</b></td>
                 <td><b>${payment.description || 'N/A'}</b></td>
                 <td><b>${payment.total_weeks || 'N/A'}</b></td>
-                <td><b>₹ ${payment.total_bill_amount || 'N/A'}</b></td>
+                <td><b>₹${payment.total_bill_amount || 'N/A'}</b></td>
                 <td>
         <span class="badge bg-danger text-light delete-btn" data-region-id="${payment.payment_id}">
      Delete
