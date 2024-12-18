@@ -122,3 +122,134 @@ function hideLoader() {
     
 
 })();
+
+function calculateBilling() {
+    const selectedDate = new Date(document.querySelector('#region_name').value);
+    const billingFrequency = document.querySelector('#kitty_billing_frequency').value;
+    const chapterMeetingDay = document.querySelector('.chapter_day').innerText.toLowerCase();
+    const meetingFee = parseFloat(document.querySelector('.meeting_fee').innerText);
+
+    if (!selectedDate || !billingFrequency || !chapterMeetingDay || isNaN(meetingFee)) {
+        alert("Please select all required fields.");
+        return;
+    }
+
+    let totalWeeks = 0;
+    let totalBillAmount = 0;
+
+    const getMeetingDaysCount = (startDate, endDate, meetingDay) => {
+        let count = 0;
+        const dayIndex = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'].indexOf(meetingDay);
+
+        for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
+            if (d.getDay() === dayIndex) count++;
+        }
+        return count;
+    };
+
+    switch (billingFrequency) {
+        case 'weekly':
+            totalWeeks = 1;
+            totalBillAmount = meetingFee;
+            break;
+
+        case 'monthly':
+            const monthStart = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1);
+            const monthEnd = new Date(selectedDate.getFullYear(), selectedDate.getMonth() + 1, 0);
+            totalWeeks = getMeetingDaysCount(monthStart, monthEnd, chapterMeetingDay);
+            totalBillAmount = totalWeeks * meetingFee;
+            break;
+
+        case 'quartely':
+            const quarterEnd = new Date(selectedDate.getFullYear(), selectedDate.getMonth() + 3, 0);
+            totalWeeks = getMeetingDaysCount(selectedDate, quarterEnd, chapterMeetingDay);
+            totalBillAmount = totalWeeks * meetingFee;
+            break;
+
+        case 'half_yearly':
+            const halfYearEnd = new Date(selectedDate.getFullYear(), selectedDate.getMonth() + 6, 0);
+            totalWeeks = getMeetingDaysCount(selectedDate, halfYearEnd, chapterMeetingDay);
+            totalBillAmount = totalWeeks * meetingFee;
+            break;
+
+        case 'yearly':
+            totalWeeks = 52;
+            totalBillAmount = totalWeeks * meetingFee;
+            break;
+
+        default:
+            alert("Invalid billing frequency.");
+            return;
+    }
+
+    document.querySelector('.total_weeks').value = `${totalWeeks} weeks`;
+    document.querySelector('.total_bill_amount').value = `${totalBillAmount.toFixed(2)}`;
+}
+
+// Attach event listeners
+const billingFrequencyElement = document.querySelector('#kitty_billing_frequency');
+billingFrequencyElement.addEventListener('change', calculateBilling);
+
+const dateElement = document.querySelector('#region_name');
+dateElement.addEventListener('change', calculateBilling);
+
+// Calculate and display dynamic descriptions based on the selected date and billing frequency
+function updateDescriptionField() {
+    const dateInput = document.querySelector('#region_name');
+    const descriptionField = document.querySelector('#contact_person');
+    const billingFrequencySelect = document.querySelector('#kitty_billing_frequency');
+
+    dateInput.addEventListener('change', updateDescription);
+    billingFrequencySelect.addEventListener('change', updateDescription);
+
+    function updateDescription() {
+        const selectedDate = new Date(dateInput.value);
+        if (isNaN(selectedDate)) {
+            descriptionField.value = '';
+            return;
+        }
+
+        const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        const billingFrequency = billingFrequencySelect.value;
+        let description = '';
+
+        switch (billingFrequency) {
+            case 'weekly':
+                const weekStart = new Date(selectedDate);
+                const weekEnd = new Date(selectedDate);
+                weekEnd.setDate(weekStart.getDate() + 6);
+                description = `${weekStart.toLocaleDateString()} - ${weekEnd.toLocaleDateString()}`;
+                break;
+
+            case 'monthly':
+                description = monthNames[selectedDate.getMonth()];
+                break;
+
+            case 'quartely':
+                const quarterStartMonth = Math.floor(selectedDate.getMonth() / 3) * 3;
+                const quarterEndMonth = quarterStartMonth + 2;
+                description = `${monthNames[quarterStartMonth]} - ${monthNames[quarterEndMonth]}`;
+                break;
+
+            case 'half_yearly':
+                const halfYearStartMonth = selectedDate.getMonth();
+                const halfYearEndMonth = (halfYearStartMonth + 5) % 12;
+                description = `${monthNames[halfYearStartMonth]} - ${monthNames[halfYearEndMonth]}`;
+                break;
+
+            case 'yearly':
+                description = 'January - December';
+                break;
+
+            default:
+                description = '';
+        }
+
+        descriptionField.value = description;
+    }
+}
+
+updateDescriptionField();
+
+
+
