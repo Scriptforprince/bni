@@ -157,12 +157,25 @@ function hideLoader() {
             const result = await response.json();
 
             if (response.ok) {
-                alert(result.message || 'Bill added successfully.');
-                document.querySelector('form').reset();
-                selectedChapter = null;  // Reset selected chapter
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: result.message || 'Bill added successfully.',
+                    confirmButtonText: 'OK'
+                }).then(() => {
+                    document.querySelector('form').reset();
+                    selectedChapter = null;  // Reset selected chapter
+
+                    window.location.href = '/k/kitty-management';
+                });
             } else {
-                alert(result.message || 'Failed to add bill.');
-            }
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: result.message || 'Failed to add bill.',
+                    confirmButtonText: 'OK'
+                });
+            }            
         } catch (error) {
             console.error('Error adding bill:', error);
             alert('Something went wrong. Please try again.');
