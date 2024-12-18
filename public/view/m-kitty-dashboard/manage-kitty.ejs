@@ -237,7 +237,7 @@
                 </div>
                 <div class="card-footer border-top border-block-start-dashed d-sm-flex justify-content-end align-items-center">
                     
-                    <button type="submit" class="btn btn-success me-2 mb-2 mb-sm-0">
+                    <button type="submit" class="btn btn-danger me-2 mb-2 mb-sm-0 add_bill">
                       Add Bill +
                     </button>
                   </div>
@@ -264,27 +264,17 @@
                       <thead>
                         <tr>
                           <th scope="col">S.No.</th>
-                          <th scope="col">Date</th>
-                          <th scope="col">Member Name</th>
-                          <th scope="col">Chapter</th>
-                          <th scope="col">Amount</th>
-                          <th scope="col">Payment Method</th>
-                          <th scope="col">Order ID</th>
-                          <th scope="col">Transaction ID</th>
-                          <th scope="col">PG Status</th>
-                          <th scope="col">Gateway</th>
-                          <th scope="col">Payment Type</th>
-                          <th scope="col">Settlement Status</th>
-                          <th scope="col">Tranfer UTR</th>
-                          <th scope="col">Tranfer Time</th>
-                          <th scope="col">IRN</th>
-                          <th scope="col">QR Code</th>
-                          <th scope="col">E-Invoice Status</th>
+                          <th scope="col">Bill Date</th>
+                          <th scope="col">Chapter Name</th>
+                          <th scope="col">Chapter Kitty Fees</th>
+                          <th scope="col">Chapter Meeting Day</th>
+                          <th scope="col">Bill Type</th>
+                          <th scope="col">Description</th>
+                          <th scope="col">Total Weeks</th>
+                          <th scope="col">Total Amount</th>
                         </tr>
                       </thead>
                       <tbody>
-                        <tr class="invoice-list">
-                        </tr>
                       </tbody>
                     </table>
                   </div>
@@ -311,5 +301,69 @@
       <!-- End::content  -->
 
       <script src="../../assets/js/kittyBill.js"></script>
+
+      <script>
+        function showLoader() {
+    document.getElementById('loader').style.display = 'flex';
+}
+
+function hideLoader() {
+    document.getElementById('loader').style.display = 'none';
+}
+
+
+
+async function fetchKittyPayments() {
+    try {
+        showLoader();
+
+        const response = await fetch('https://bni-data-backend.onrender.com/api/getKittyPayments');
+        const data = await response.json();
+
+        if (!response.ok || !Array.isArray(data)) {
+            throw new Error('Failed to fetch data');
+        }
+
+        // Fetch chapter details from the API
+        const chapterResponse = await fetch('https://bni-data-backend.onrender.com/api/chapters');
+        const chapters = await chapterResponse.json();
+        const chapterMap = new Map(chapters.map(chapter => [chapter.chapter_id, chapter]));
+
+        const tableBody = document.querySelector('table tbody');
+        tableBody.innerHTML = ''; // Clear existing data
+
+        data.forEach((payment, index) => {
+
+            // Retrieve chapter details from the chapterMap
+            const chapter = chapterMap.get(payment.chapter_id) || {};
+
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td><b>${index + 1}</b></td>
+                <td><b>${new Date(payment.payment_date).toLocaleDateString()}</b></td>
+                <td><b>${chapter.chapter_name || 'N/A'}</b></td>
+                <td><b>${chapter.chapter_meeting_day || 'N/A'}</b></td>
+                <td><b>${chapter.chapter_kitty_fees || 'N/A'}</b></td>
+                <td><b>${payment.bill_type || 'N/A'}</b></td>
+                <td><b>${payment.description || 'N/A'}</b></td>
+                <td><b>${payment.total_weeks || 'N/A'}</b></td>
+                <td><b>₹ ${payment.total_bill_amount || 'N/A'}</b></td>
+            `;
+            tableBody.appendChild(row);
+        });
+    } catch (error) {
+        console.error('Error fetching kitty payments:', error);
+        alert('Failed to load data. Please try again later.');
+    } finally {
+        hideLoader();
+    }
+}
+
+// Call the function on page load
+fetchKittyPayments();
+
+
+
+      </script>
 
       <%- include('../partials/footer') %> 

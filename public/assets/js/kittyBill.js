@@ -6,6 +6,7 @@ function hideLoader() {
     document.getElementById('loader').style.display = 'none';
 }
 
+
 (async function() {
     const regionFilter = document.getElementById('region-filter');
     const chapterFilter = document.getElementById('chapter-filter');
@@ -119,6 +120,56 @@ function hideLoader() {
             }
         }
     }
+
+    document.querySelector('.add_bill').addEventListener('click', async (e) => {
+        e.preventDefault();
+
+        const chapter_id = selectedChapter;
+        const date = document.querySelector('#region_name').value;
+        const bill_type = document.querySelector('#kitty_billing_frequency').value;
+        const description = document.querySelector('#contact_person').value;
+        const total_weeks = parseInt(document.querySelector('.total_weeks').value) || 0;
+        const total_bill_amount = parseFloat(document.querySelector('.total_bill_amount').value) || 0;
+
+        if (!chapter_id || !date || !bill_type || !description || total_weeks <= 0 || total_bill_amount <= 0) {
+            alert("Please fill all fields correctly.");
+            return;
+        }
+
+        try {
+            showLoader();
+
+            const response = await fetch('https://bni-data-backend.onrender.com/api/addKittyPayment', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    chapter_id,
+                    date,
+                    bill_type,
+                    description,
+                    total_weeks,
+                    total_bill_amount,
+                }),
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                alert(result.message || 'Bill added successfully.');
+                document.querySelector('form').reset();
+                selectedChapter = null;  // Reset selected chapter
+            } else {
+                alert(result.message || 'Failed to add bill.');
+            }
+        } catch (error) {
+            console.error('Error adding bill:', error);
+            alert('Something went wrong. Please try again.');
+        } finally {
+            hideLoader();
+        }
+    });
     
 
 })();
@@ -250,6 +301,9 @@ function updateDescriptionField() {
 }
 
 updateDescriptionField();
+
+
+
 
 
 
