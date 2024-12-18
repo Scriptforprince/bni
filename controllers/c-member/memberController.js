@@ -13,3 +13,7 @@ exports.editMember = (req, res) => {
 exports.viewMember = (req, res) => {
     res.render('m-member/view-members', { title: 'viewMember' });
 };
+
+exports.memberTransactions = (req, res) => {
+    res.render('m-member/member-transactions', { title: 'Member Transactions' });
+};
