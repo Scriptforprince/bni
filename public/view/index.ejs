@@ -488,13 +488,10 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
-                                    
                                     <div class="d-grid mt-4">
                                         <button type="submit" id="signInButton" class="btn btn-danger">Sign In</button>
                                     </div>
                                 </form>
-                                
                             </div>
                         </div>
                     </div>
@@ -524,38 +521,9 @@
 
         	
         <!-- Show Password JS -->
-        <script src="../assets/js/showPassword.js"></script>
+        <!-- <script src="../assets/js/showPassword.js"></script> -->
 
-        <script>
-            function showLoader() {
-    document.getElementById('loader').style.display = 'flex'; 
-}
-
-function hideLoader() {
-    document.getElementById('loader').style.display = 'none'; 
-}
-
-function handleLoginTypeChange() {
-    showLoader();
-
-    // Delay to simulate processing time
-    setTimeout(() => {
-        const loginType = document.getElementById('login-type').value;
-        const passwordField = document.getElementById('password-field');
-
-        if (loginType === 'chapter' || loginType === 'member') {
-            passwordField.style.display = 'none';
-        } else {
-            passwordField.style.display = 'block';
-        }
-
-        hideLoader();
-    }, 1000); // Simulate a loading delay
-}
-
-        </script>
-
-
+        <script src="../assets/js/authentication.js"></script>
     </body>
     
 </html>
