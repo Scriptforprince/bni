@@ -448,31 +448,50 @@
             <div class="col-xxl-6 col-xl-7">
                 <div class="row justify-content-center align-items-center h-100">
                     <div class="col-xxl-7 col-xl-9 col-lg-6 col-md-6 col-sm-8 col-12">
-                        <div class="card custom-card my-auto border">
+                        <div class="card custom-card my-auto border" style="background-color: #e8e8e89f; box-shadow: 1px 5px 52px red;">
                             <div class="card-body p-5">
                                 <p class="h5 mb-2 text-center">Sign In</p>
-                                <p class="mb-4 text-muted op-7 fw-normal text-center">Welcome back!</p>
+                                <p class="mb-4 text-muted op-7 fw-normal text-center">Welcome here!</p>
                                 <form id="signInForm">
                                     <div class="row gy-3">
                                         <div class="col-xl-12">
-                                            <label for="signin-username" class="form-label text-default">User Name</label>
-                                            <input type="text" class="form-control" id="signin-username" name="username" placeholder="user name" required>
+                                            <label for="login-type" class="form-label text-default">Login Type</label>
+                                            <select class="form-select" id="login-type" name="login_type" required onchange="handleLoginTypeChange()">
+                                                <option value="" selected disabled>Select Login Type</option>
+                                                <option value="ro_admin">RO Admin</option>
+                                                <option value="chapter">Chapter</option>
+                                                <option value="member">Member</option>
+                                            </select>
                                         </div>
-                                        <div class="col-xl-12 mb-2">
+                                    
+                                        <div class="col-xl-12" id="email-field">
+                                            <label for="signin-email" class="form-label text-default">Email ID</label>
+                                            <input type="text" class="form-control" id="signin-email" name="email" placeholder="Email ID" required>
+                                        </div>
+                                    
+                                        <div class="col-xl-12 mb-2" id="password-field">
                                             <label for="signin-password" class="form-label text-default d-block">
                                                 Password
                                                 <a href="reset-password-basic.html" class="float-end fw-normal text-muted">Forget password?</a>
                                             </label>
                                             <div class="position-relative">
-                                                <input type="password" class="form-control create-password-input" id="signin-password" name="password" placeholder="password" required>
+                                                <input type="password" class="form-control create-password-input" id="signin-password" name="password" placeholder="Password" required>
                                                 <a href="javascript:void(0);" class="show-password-button text-muted" id="showPasswordButton">
-                                                    <i class="ri-eye-off-line align-middle"></i> <!-- Eye Icon -->
+                                                    <i class="ri-eye-off-line align-middle"></i>
                                                 </a>
                                             </div>
                                         </div>
+                                    
+                                        <div id="loader" style="display: none; justify-content: center; align-items: center;">
+                                            <div class="spinner-border text-primary" role="status">
+                                                <span class="visually-hidden">Loading...</span>
+                                            </div>
+                                        </div>
                                     </div>
+                                    
+                                    
                                     <div class="d-grid mt-4">
-                                        <button type="submit" id="signInButton" class="btn btn-primary">Sign In</button>
+                                        <button type="submit" id="signInButton" class="btn btn-danger">Sign In</button>
                                     </div>
                                 </form>
                                 
@@ -490,9 +509,9 @@
                     </div>
                     <div class="aunthentication-cover-content d-flex align-items-center justify-content-center">
                         <div>
-                            <h3 class="text-fixed-white mb-1 fw-medium">Welcome to the RO Dashboard!</h3>
+                            <h3 class="text-fixed-white mb-1 fw-medium">Welcome to the BNI Dashboard!</h3>
                             <h6 class="text-fixed-white mb-3 fw-medium">Login to Your Account</h6>
-                            <p class="text-fixed-white mb-1 op-6">Welcome to the Admin Dashboard. Please log in to securely manage your administrative tools and oversee platform activities. Your credentials ensure system integrity and functionality.</p>
+                            <p class="text-fixed-white mb-1 op-6">Welcome to the BNI Dashboard. Please log in to securely manage your administrative tools and oversee platform activities. Your credentials ensure system integrity and functionality.</p>
                         </div>
                     </div>
                 </div>
@@ -506,6 +525,35 @@
         	
         <!-- Show Password JS -->
         <script src="../assets/js/showPassword.js"></script>
+
+        <script>
+            function showLoader() {
+    document.getElementById('loader').style.display = 'flex'; 
+}
+
+function hideLoader() {
+    document.getElementById('loader').style.display = 'none'; 
+}
+
+function handleLoginTypeChange() {
+    showLoader();
+
+    // Delay to simulate processing time
+    setTimeout(() => {
+        const loginType = document.getElementById('login-type').value;
+        const passwordField = document.getElementById('password-field');
+
+        if (loginType === 'chapter' || loginType === 'member') {
+            passwordField.style.display = 'none';
+        } else {
+            passwordField.style.display = 'block';
+        }
+
+        hideLoader();
+    }, 1000); // Simulate a loading delay
+}
+
+        </script>
 
 
     </body>
