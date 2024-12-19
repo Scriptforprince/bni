@@ -10,20 +10,22 @@ function hideLoader() {
 
 // Function to handle login type change
 function handleLoginTypeChange() {
-    showLoader();
+    showLoader(); // Show loader on login type change
 
     setTimeout(() => {
         const loginType = document.getElementById('login-type').value;
         const passwordField = document.getElementById('password-field');
+        const passwordInput = document.getElementById('signin-password');
 
-        // Show or hide password field based on login type
         if (loginType === 'chapter' || loginType === 'member') {
             passwordField.style.display = 'none';
+            passwordInput.removeAttribute('required');
         } else {
             passwordField.style.display = 'block';
+            passwordInput.setAttribute('required', 'required');
         }
 
-        hideLoader();
+        hideLoader(); // Hide loader after updating UI
     }, 500); // Simulate a short delay
 }
 
