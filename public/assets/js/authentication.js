@@ -71,11 +71,12 @@ document.getElementById('signInForm').addEventListener('submit', async function 
         signInButton.disabled = false;
 
         if (response.ok && result.success) {
-            alert('Login successful!');
-            window.location.href = '/d/member-dashboard'; // Redirect on success
+            alert('OTP sent successfully!');
+            window.location.href = '/otp'; // Redirect to OTP page for entering OTP
         } else {
-            alert(result.message || 'Login failed');
+            alert(result.message || 'Error sending OTP');
         }
+        
     } catch (error) {
         hideLoader();
         signInButton.disabled = false;
