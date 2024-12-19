@@ -1,7 +1,10 @@
-// Extract email from query params
+// Extract email and login_type from query params
 const urlParams = new URLSearchParams(window.location.search);
 const email = urlParams.get('email');
+const login_type = urlParams.get('login_type');
+
 console.log(email);
+console.log(login_type);
 
 document.getElementById('otpVerificationForm').addEventListener('submit', async (e) => {
   e.preventDefault();
@@ -15,7 +18,7 @@ document.getElementById('otpVerificationForm').addEventListener('submit', async 
   }
 
   try {
-    const response = await fetch('http://localhost:5000/api/auth/verify-otp', {
+    const response = await fetch('https://bni-data-backend.onrender.com/api/auth/verify-otp', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, otp: otpCode }),
@@ -25,7 +28,18 @@ document.getElementById('otpVerificationForm').addEventListener('submit', async 
 
     if (result.success) {
       alert('Login successful!');
-      window.location.href = '/d/ro-dashboard'; // Redirect to dashboard
+
+      // Redirect based on login_type
+      let redirectUrl = '/';
+      if (login_type === 'ro_admin') {
+        redirectUrl = '/d/ro-dashboard';
+      } else if (login_type === 'chapter') {
+        redirectUrl = '/d/chapter-dashboard';
+      } else if (login_type === 'member') {
+        redirectUrl = '/d/member-dashboard';
+      }
+
+      window.location.href = redirectUrl;
     } else {
       alert(result.message || 'OTP verification failed');
     }

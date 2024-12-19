@@ -60,7 +60,7 @@ document.getElementById('signInForm').addEventListener('submit', async function 
     showLoader();
 
     try {
-        const response = await fetch('http://localhost:5000/api/auth/login', {
+        const response = await fetch('https://bni-data-backend.onrender.com/api/auth/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
@@ -72,7 +72,8 @@ document.getElementById('signInForm').addEventListener('submit', async function 
 
         if (response.ok && result.success) {
             alert('OTP sent successfully!');
-            window.location.href = `/auth/otp-verification?email=${encodeURIComponent(email)}`; // Redirect to OTP page for entering OTP
+            window.location.href = `/auth/otp-verification?email=${encodeURIComponent(email)}&login_type=${encodeURIComponent(loginType)}`;
+ // Redirect to OTP page for entering OTP
         } else {
             alert(result.message || 'Error sending OTP');
         }
