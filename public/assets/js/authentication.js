@@ -72,7 +72,7 @@ document.getElementById('signInForm').addEventListener('submit', async function 
 
         if (response.ok && result.success) {
             alert('OTP sent successfully!');
-            window.location.href = '/otp'; // Redirect to OTP page for entering OTP
+            window.location.href = `/auth/otp-verification?email=${encodeURIComponent(email)}`; // Redirect to OTP page for entering OTP
         } else {
             alert(result.message || 'Error sending OTP');
         }
