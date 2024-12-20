@@ -8,6 +8,14 @@ document.querySelector('.email b').textContent = email;
 console.log(email);
 console.log(login_type);
 
+document.querySelectorAll('.otp-input').forEach((input, index, inputs) => {
+  input.addEventListener('input', () => {
+      if (input.value.length === 1 && index < inputs.length - 1) {
+          inputs[index + 1].focus();
+      }
+  });
+});
+
 document.getElementById('otpVerificationForm').addEventListener('submit', async (e) => {
   e.preventDefault();
 
