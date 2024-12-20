@@ -3,6 +3,8 @@ const urlParams = new URLSearchParams(window.location.search);
 const email = urlParams.get('email');
 const login_type = urlParams.get('login_type');
 
+document.querySelector('.email b').textContent = email;
+
 console.log(email);
 console.log(login_type);
 
@@ -13,9 +15,14 @@ document.getElementById('otpVerificationForm').addEventListener('submit', async 
   const otpCode = Array.from(otpInputs).map(input => input.value).join('');
 
   if (otpCode.length !== 6) {
-    alert('Please enter a 6-digit OTP');
+    Swal.fire({
+        icon: 'warning',
+        title: 'Invalid OTP',
+        text: 'Please enter a 6-digit OTP',
+        confirmButtonText: 'OK'
+    });
     return;
-  }
+}
 
   try {
     const response = await fetch('http://localhost:5000/api/auth/verify-otp', {
@@ -27,23 +34,38 @@ document.getElementById('otpVerificationForm').addEventListener('submit', async 
     const result = await response.json();
 
     if (result.success) {
-      alert('Login successful!');
-
-      // Redirect based on login_type
-      let redirectUrl = '/';
-      if (login_type === 'ro_admin') {
-        redirectUrl = '/d/ro-dashboard';
-      } else if (login_type === 'chapter') {
-        redirectUrl = '/d/chapter-dashboard';
-      } else if (login_type === 'member') {
-        redirectUrl = '/d/member-dashboard';
-      }
-
-      window.location.href = redirectUrl;
-    } else {
-      alert(result.message || 'OTP verification failed');
-    }
+      Swal.fire({
+          icon: 'success',
+          title: 'Login successful!',
+          text: 'You are being redirected...',
+          confirmButtonText: 'OK'
+      }).then(() => {
+          // Redirect based on login_type
+          let redirectUrl = '/';
+          if (login_type === 'ro_admin') {
+              redirectUrl = '/d/ro-dashboard';
+          } else if (login_type === 'chapter') {
+              redirectUrl = '/d/chapter-dashboard';
+          } else if (login_type === 'member') {
+              redirectUrl = '/d/member-dashboard';
+          }
+  
+          window.location.href = redirectUrl;
+      });
+  }  else {
+    Swal.fire({
+        icon: 'error',
+        title: 'OTP Verification Failed',
+        text: result.message || 'OTP verification failed',
+        confirmButtonText: 'OK'
+    });
+}
   } catch (error) {
-    alert('An error occurred. Please try again.');
-  }
+    Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'An error occurred. Please try again.',
+        confirmButtonText: 'OK'
+    });
+}
 });
