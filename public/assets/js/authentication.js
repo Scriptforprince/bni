@@ -41,17 +41,29 @@ document.getElementById('signInForm').addEventListener('submit', async function 
     // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-        alert('Please enter a valid email address');
+        Swal.fire({
+            icon: 'error',
+            title: 'Invalid Email',
+            text: 'Please enter a valid email address',
+            confirmButtonText: 'OK'
+        });
         return;
     }
+    
 
     // Prepare request payload
     const payload = { login_type: loginType, email };
     if (loginType === 'ro_admin') {
         if (!password) {
-            alert('Password is required for RO Admin login');
+            Swal.fire({
+                icon: 'warning',
+                title: 'Missing Password',
+                text: 'Password is required for RO Admin login',
+                confirmButtonText: 'OK'
+            });
             return;
         }
+        
         payload.password = password;
     }
 
@@ -60,7 +72,7 @@ document.getElementById('signInForm').addEventListener('submit', async function 
     showLoader();
 
     try {
-        const response = await fetch('https://bni-data-backend.onrender.com/api/auth/login', {
+        const response = await fetch('http://localhost:5000/api/auth/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
@@ -71,16 +83,33 @@ document.getElementById('signInForm').addEventListener('submit', async function 
         signInButton.disabled = false;
 
         if (response.ok && result.success) {
-            alert('OTP sent successfully!');
-            window.location.href = `/auth/otp-verification?email=${encodeURIComponent(email)}&login_type=${encodeURIComponent(loginType)}`;
- // Redirect to OTP page for entering OTP
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: 'Please Verify OTP sent on email!',
+                confirmButtonText: 'OK'
+            }).then(() => {
+                window.location.href = `/auth/otp-verification?email=${encodeURIComponent(email)}&login_type=${encodeURIComponent(loginType)}`;
+            });
         } else {
-            alert(result.message || 'Error sending OTP');
+            Swal.fire({
+                icon: 'error',
+                title: 'OTP Sending Failed',
+                text: result.message || 'Error sending OTP',
+                confirmButtonText: 'OK'
+            });
         }
+        
         
     } catch (error) {
         hideLoader();
         signInButton.disabled = false;
-        alert('An error occurred during login. Please try again.');
+        Swal.fire({
+            icon: 'error',
+            title: 'Login Failed',
+            text: 'An error occurred during login. Please try again.',
+            confirmButtonText: 'OK'
+        });
     }
+    
 });
