@@ -1284,8 +1284,8 @@
               >
                 <li>
                   <div class="dropdown-item text-center border-bottom">
-                    <span> Raja Shukla </span>
-                    <span class="d-block fs-12 text-muted">RO Dashboard</span>
+                    <span id="user-email"></span>
+                    <span class="d-block fs-12 text-muted" id="login_type"></span>
                   </div>
                 </li>
                 <!-- <li>
@@ -1316,7 +1316,7 @@
 
                 <li>
                   <a class="dropdown-item d-flex align-items-center" href="/"
-                    ><i
+                  id="logoutBtn"><i
                       class="fe fe-lock p-1 rounded-circle bg-primary-transparent ut me-2 fs-16"
                     ></i
                     >Log Out</a
@@ -1332,5 +1332,41 @@
       </header>
       <!-- End Main-Header -->
     </div>
+    <script>
+      // Retrieve the email from local storage
+      const email = localStorage.getItem('loggedInEmail');
+      const login_type = localStorage.getItem('loginType');
+      console.log("getting email", email);
+  
+      // Check if the email exists and update the span content
+      if (email) {
+          document.getElementById('user-email').textContent = email;
+      }
+
+      if (login_type) {
+          document.getElementById('login_type').textContent = login_type;
+      }
+  </script>
+  <script>
+    // Logout functionality
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+        // Clear the local storage items
+        localStorage.removeItem('loggedInEmail');
+        localStorage.removeItem('loginType');
+
+        // Redirect to the home page
+        window.location.href = '/';
+    });
+</script>
+
+<script>
+  // Check if loggedInEmail and loginType exist in local storage
+  const email_id = localStorage.getItem('loggedInEmail');
+
+  if (!email_id) {
+      // Redirect to the home page if not logged in
+      window.location.href = '/';
+  }
+</script>
   </body>
 </html>
