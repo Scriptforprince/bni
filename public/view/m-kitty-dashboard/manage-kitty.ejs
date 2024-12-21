@@ -27,7 +27,28 @@
   background-color: #555; /* Darker shade on hover */
 }
 
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+table, th, td {
+    border: 1px solid rgba(90, 80, 80, 0.689); /* Adds border to the table, headers, and cells */
+}
+
+td, th {
+    padding: 8px; /* Adds some spacing within the cells */
+    text-align: center; /* Centers the text horizontally */
+    vertical-align: middle; /* Centers the text vertically */
+}
+
+th {
+    background-color: #f2f2f2; /* Optional: Adds a light background to the headers */
+}
+
+
       </style>
+      
 
 <style>
     @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
@@ -485,10 +506,11 @@
                           <th scope="col">Description</th>
                           <th scope="col">Total Weeks</th>
                           <th scope="col">Total Amount</th>
+                          <th scope="col">Raised On</th>
                           <th scope="col" >Actions</th>
                         </tr>
                       </thead>
-                      <tbody>
+                      <tbody id="chaptersTableBody">
                       </tbody>
                     </table>
                   </div>
@@ -562,8 +584,13 @@ async function fetchKittyPayments() {
                 <td><b>${payment.description || 'N/A'}</b></td>
                 <td><b>${payment.total_weeks || 'N/A'}</b></td>
                 <td><b>₹${payment.total_bill_amount || 'N/A'}</b></td>
+                <td><b>${
+        payment.raised_on
+            ? formatDate(payment.raised_on)
+            : 'N/A'
+    }</b></td>
                 <td>
-        <span class="badge bg-danger text-light delete-btn" data-region-id="${payment.payment_id}">
+        <span class="badge bg-danger text-light delete-btn" data-kitty-id="${payment.payment_id}">
      Delete
     </span>
       </td>
@@ -580,6 +607,60 @@ async function fetchKittyPayments() {
 
 // Call the function on page load
 fetchKittyPayments();
+
+function formatDate(isoDate) {
+    const date = new Date(isoDate);
+    const day = date.getDate();
+    const month = date.toLocaleString('en-US', { month: 'short' }); // Get abbreviated month
+    const year = date.getFullYear().toString().slice(-2); // Get last 2 digits of the year
+    const time = date.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true }).toLowerCase(); // Format time
+    return `${day} ${month}, ${year} (${time})`;
+}
+
+const deleteKittyBill = async (payment_id) => {
+  // Show confirmation using SweetAlert
+  const result = await Swal.fire({
+      title: 'Are you sure?',
+      text: "This action will mark the kitty bill as deleted.",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'No, cancel'
+  });
+
+  if (result.isConfirmed) {
+      try {
+          showLoader();  // Show loading indicator
+          const response = await fetch(`https://bni-data-backend.onrender.com/api/deleteKittyBill/${payment_id}`, {
+              method: 'PUT',
+          });
+
+          if (response.ok) {
+              const data = await response.json();
+              Swal.fire('Deleted!', data.message, 'success');
+              // After deletion, remove the region from the table
+              document.querySelector(`[data-kitty-id="${payment_id}"]`).closest('tr').remove();
+          } else {
+              const errorResponse = await response.json();
+              Swal.fire('Failed!', errorResponse.message, 'error');
+          }
+      } catch (error) {
+          console.error('Error deleting kitty:', error);
+          Swal.fire('Error!', 'Failed to delete kitty. Please try again.', 'error');
+      } finally {
+          hideLoader();  // Hide loading indicator
+      }
+  }
+};
+
+// Add event listener for delete buttons dynamically
+document.getElementById('chaptersTableBody').addEventListener('click', (event) => {
+  if (event.target.classList.contains('delete-btn')) {
+    const payment_id  = event.target.getAttribute('data-kitty-id');
+    deleteKittyBill(payment_id);
+  }
+});
+
 
       </script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

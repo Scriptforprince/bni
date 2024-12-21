@@ -873,3 +873,4 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Append the style to the head of the document
   document.head.appendChild(style);
   
+  document.getElementById("member_id").innerHTML(`${blur}`)
