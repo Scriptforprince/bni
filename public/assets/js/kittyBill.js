@@ -139,7 +139,7 @@ function hideLoader() {
         try {
             showLoader();
 
-            const response = await fetch('http://localhost:5000/api/addKittyPayment', {
+            const response = await fetch('https://bni-data-backend.onrender.com/api/addKittyPayment', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

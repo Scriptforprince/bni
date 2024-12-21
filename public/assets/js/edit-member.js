@@ -177,6 +177,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     document.getElementById('member_youtube').value = member.member_youtube || 'Not Found';
     document.getElementById('member_sponsored_by').value = member.member_sponsored_by || 'Not Found';
     document.getElementById('date_of_publishing').value = formatDate(member.date_of_publishing);
+    document.getElementById('meeting_opening_balance').value = member.meeting_opening_balance || 'Not Found';
 
   } catch (error) {
     console.error('Error fetching member details:', error);
@@ -289,6 +290,7 @@ const collectMemberFormData = () => {
     member_sponsored_by: document.querySelector("#member_sponsored_by").value,
     date_of_publishing: document.querySelector("#date_of_publishing").value,
     member_status: document.querySelector("#member_status").value,
+    meeting_opening_balance: document.querySelector("#meeting_opening_balance").value,
   };
 
   return memberData;
