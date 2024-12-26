@@ -64,7 +64,7 @@
               <div class="d-flex gap-3 align-items-center flex-wrap">
                 <div class="btn-group">
 
-                  <div class="dropdown">
+                  <div class="dropdown me-2">
                     <a
                       href="javascript:void(0);"
                       class="btn btn-sm btn-light text-muted dropdown-toggle"
@@ -72,44 +72,29 @@
                       aria-expanded="true"
                     >
                       <i class="ti ti-sort-descending-2 me-1"></i>
-                      Status
+                      Sort
                     </a>
                     <ul class="dropdown-menu" role="menu" data-popper-placement="bottom-end">
                       <li>
-                        <a class="dropdown-item filter-option" href="javascript:void(0);" data-filter="active">Active</a>
+                        <a class="dropdown-item filter-option" href="javascript:void(0);" data-filter="ascending">Ascending</a>
                       </li>
                       <li>
-                        <a class="dropdown-item filter-option" href="javascript:void(0);" data-filter="inactive">Inactive</a>
+                        <a class="dropdown-item filter-option" href="javascript:void(0);" data-filter="descending">Decending</a>
                       </li>
-                      <li>
-                        <a class="dropdown-item filter-option" href="javascript:void(0);" data-filter="deleted">Deleted</a>
-                      </li>
+                  
                     </ul>
                   </div>
                   
-                
-               <a href="/r/add-region"><button
-                class="btn btn-outline-light border"
-                type="button"
-              >
-                + Add New Region
-              </button></a>   
+                  <button
+                  class="btn btn-outline-light border"
+                  type="button"
+                  id="addNewExpenseBtn"
+                  data-region-id="123" 
+                >
+                  + Add New Expense
+                </button> 
                 </div>
-                <div class="custom-form-group flex-grow-1">
-                  <inputx
-                    type="text"
-                    id="searchChapterInput"
-                    class="form-control"
-                    placeholder="Search Region.."
-                    aria-label="Event : custom'id"
-                    aria-describedby="button-addon2"
-                  />
-                  <a
-                    href="javascript:void(0);"
-                    class="text-muted custom-form-btn"
-                    ><i class="ti ti-search"></i
-                  ></a>
-                </div>
+           
                 
               </div>
             </div>
