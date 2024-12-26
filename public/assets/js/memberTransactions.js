@@ -8,7 +8,6 @@ function hideLoader() {
   document.getElementById('loader').style.display = 'none'; // Hide loader
 }
 
-
 (async function generateLedger() {
   // Fetch email from local storage
   const email = localStorage.getItem('loggedInEmail');
@@ -20,10 +19,11 @@ function hideLoader() {
   }
 
   try {
-    showLoader();  // Show loader
+    showLoader(); // Show loader
+
     // Fetch member data
-    const response = await fetch('https://bni-data-backend.onrender.com/api/members');
-    const members = await response.json();
+    const memberResponse = await fetch('https://bni-data-backend.onrender.com/api/members');
+    const members = await memberResponse.json();
 
     // Filter data for logged-in user
     const userData = members.find(member => member.member_email_address === email);
@@ -33,13 +33,25 @@ function hideLoader() {
       return;
     }
 
-    // Extract relevant fields
     const { meeting_opening_balance, meeting_payable_amount } = userData;
 
-    // Initialize the balance with the opening balance
-    let currentBalance = meeting_opening_balance;
+    // Fetch orders and transactions
+    const [ordersResponse, transactionsResponse] = await Promise.all([
+      fetch('https://bni-data-backend.onrender.com/api/allOrders'),
+      fetch('https://bni-data-backend.onrender.com/api/allTransactions'),
+    ]);
 
-    // Define ledger data
+    const orders = await ordersResponse.json();
+    const transactions = await transactionsResponse.json();
+
+    // Filter orders and transactions where universal_link_id = 4
+    const filteredOrders = orders.filter(order => order.universal_link_id === 4 && order.customer_email === email);
+    const filteredTransactions = transactions.filter(transaction =>
+      filteredOrders.some(order => order.order_id === transaction.order_id)
+    );
+
+    // Prepare ledger data
+    let currentBalance = meeting_opening_balance;
     const ledgerData = [
       {
         sNo: 1,
@@ -57,8 +69,30 @@ function hideLoader() {
       },
     ];
 
+    // Add filtered order and transaction details to the ledger
+    filteredOrders.forEach((order, index) => {
+      ledgerData.push({
+        sNo: ledgerData.length + 1,
+        date: new Date(order.created_at).toLocaleDateString(),
+        description: `Order ID: ${order.order_id} (Order)`,
+        amount: `+${order.order_amount}`,
+        balance: (currentBalance += parseFloat(order.order_amount || 0)),
+      });
+    });
+
+    filteredTransactions.forEach((transaction, index) => {
+      ledgerData.push({
+        sNo: ledgerData.length + 1,
+        date: new Date(transaction.payment_time).toLocaleDateString(),
+        description: `Transaction ID: ${transaction.transaction_id} (Transaction)`,
+        amount: `+${transaction.payment_amount}`,
+        balance: (currentBalance += parseFloat(transaction.payment_amount || 0)),
+      });
+    });
+
     // Populate table rows
     const ledgerBody = document.getElementById('ledger-body');
+    ledgerBody.innerHTML = ''; // Clear existing rows
     ledgerData.forEach(entry => {
       const row = document.createElement('tr');
       row.innerHTML = `
@@ -66,60 +100,14 @@ function hideLoader() {
         <td><b>${entry.date}</b></td>
         <td><b>${entry.description}</b></td>
         <td><b>${entry.amount}</b></td>
-        <td><b>${entry.balance}</b></td>
+        <td><b>${entry.balance.toFixed(2)}</b></td>
       `;
       ledgerBody.appendChild(row);
     });
   } catch (error) {
-    console.error('Error fetching member data:', error);
-    alert('An error occurred while fetching the ledger.');
+    console.error('Error generating ledger:', error);
+    alert('An error occurred while generating the ledger.');
   } finally {
-    hideLoader();
+    hideLoader(); // Hide loader
   }
 })();
-
-async function fetchMemberDataAndCalculateKittyAmount() {
-  try {
-    showLoader(); // Show loader while data is being fetched
-
-    // Fetch logged-in email from local storage
-    const email = localStorage.getItem('loggedInEmail');
-
-    if (!email) {
-      throw new Error('User email not found in local storage.');
-    }
-
-    // Fetch member data from the API
-    const response = await fetch('https://bni-data-backend.onrender.com/api/members');
-    const members = await response.json();
-
-    if (!Array.isArray(members)) {
-      throw new Error('Invalid response from the API.');
-    }
-
-    // Find the logged-in user's data
-    const member = members.find(m => m.member_email_address === email);
-
-    if (!member) {
-      throw new Error('Member data not found.');
-    }
-
-    // Calculate the total kitty amount
-    const meetingOpeningBalance = member.meeting_opening_balance || 0;
-    const meetingPayableAmount = member.meeting_payable_amount || 0;
-    const totalKittyAmount = meetingOpeningBalance + meetingPayableAmount;
-
-    // Update the total kitty amount in the UI
-    document.getElementById('total-kitty-amount').textContent = totalKittyAmount;
-
-  } catch (error) {
-    console.error('Error fetching member data or calculating kitty amount:', error);
-    alert('Failed to load kitty amount. Please try again later.');
-  } finally {
-    hideLoader(); // Hide loader after operation
-  }
-}
-
-// Call the function to load data and calculate the total kitty amount
-fetchMemberDataAndCalculateKittyAmount();
-
