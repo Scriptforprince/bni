@@ -5,6 +5,9 @@ exports.manageExpenses = (req, res) => {
 exports.addExpense = (req, res) => {
     res.render('m-expense/add-expense', { title: 'Add Expense' });
 };
+exports.editExpense = (req, res) => {
+    res.render('m-expense/edit-expense', { title: 'Edit Expense' });
+};
 
 
 

@@ -1,5 +1,5 @@
-let apiUrl = 'https://bni-data-backend.onrender.com/api/regions'; // Default value
-let allRegions = []; // To store fetched regions globally
+let apiUrl = 'https://bni-data-backend.onrender.com/api/allExpenses'; // Default value
+let allExpenses = []; // To store fetched regions globally
 let allChapters = []; // To store all chapters
 let allMembers = []; // To store all members
 let filteredRegions = []; // To store filtered regions based on search
@@ -62,8 +62,8 @@ const fetchRegions = async (filter = '') => {
     const response = await fetch(`${apiUrl}${filterQuery}`); // Make the request with the filter
     if (!response.ok) throw new Error('Network response was not ok');
 
-    allRegions = await response.json(); // Store fetched regions in the global variable
-    filteredRegions = [...allRegions]; // Initialize filtered regions to all regions initially
+    allExpenses = await response.json(); // Store fetched regions in the global variable
+    filteredRegions = [...allExpenses]; // Initialize filtered regions to all regions initially
 
     // Display the filtered regions in the table
     displayRegions(filteredRegions.slice(0, entriesPerPage)); // Display only the first 10 entries
@@ -147,7 +147,7 @@ function filterRegions() {
   const searchValue = document.getElementById('searchChapterInput').value.toLowerCase();
 
   // Filter regions based on the search value
-  filteredRegions = allRegions.filter(region => 
+  filteredRegions = allExpenses.filter(region => 
     region.region_name.toLowerCase().includes(searchValue)
   );
 

@@ -64,26 +64,26 @@
               <div class="d-flex gap-3 align-items-center flex-wrap">
                 <div class="btn-group">
 
-                  <div class="dropdown me-2">
+                  <div class="dropdown me-2" >
                     <a
                       href="javascript:void(0);"
                       class="btn btn-sm btn-light text-muted dropdown-toggle"
                       data-bs-toggle="dropdown"
-                      aria-expanded="true"
+                      aria-expanded="false"
                     >
                       <i class="ti ti-sort-descending-2 me-1"></i>
                       Sort
                     </a>
                     <ul class="dropdown-menu" role="menu" data-popper-placement="bottom-end">
                       <li>
-                        <a class="dropdown-item filter-option" href="javascript:void(0);" data-filter="ascending">Ascending</a>
+                        <a class="dropdown-item filter-option" id="sortButton" href="javascript:void(0);" data-filter="ascending">Ascending</a>
                       </li>
                       <li>
-                        <a class="dropdown-item filter-option" href="javascript:void(0);" data-filter="descending">Decending</a>
+                        <a class="dropdown-item filter-option" id="sortButton" href="javascript:void(0);" data-filter="descending">Descending</a>
                       </li>
-                  
                     </ul>
                   </div>
+                  
                   
                   <button
                   class="btn btn-outline-light border"
@@ -100,22 +100,20 @@
             </div>
             <div class="card-body p-0">
               <div class="table-responsive">
-                <table
-                  class="table table-hover text-nowrap"
-                  style="border: 1px solid grey"
-                >
+                <table class="table table-hover text-nowrap" style="border: 1px solid grey">
                   <thead>
                     <tr>
                       <th scope="col" style="border: 1px solid grey;">S.No.</th>
-                      <th scope="col" style="border: 1px solid grey;">Region Name</th>
-                      <th scope="col" style="border: 1px solid grey;">No. of Chapters</th>
-                      <th scope="col" style="border: 1px solid grey;">No. of Members</th>
-                      <th scope="col" style="border: 1px solid grey;">Contact Number</th>
-                      <th scope="col" style="border: 1px solid grey;">Region Status</th>
+                      <th scope="col" style="border: 1px solid grey;">Expense Type</th>
+                      <th scope="col" style="border: 1px solid grey;">Submitted By</th>
+                      <th scope="col" style="border: 1px solid grey;">Description</th>
+                      <th scope="col" style="border: 1px solid grey;">Amount</th>
+                      <th scope="col" style="border: 1px solid grey;">Payment Status</th>
+                      <th scope="col" style="border: 1px solid grey;">Bill Date</th>
                       <th scope="col" style="border: 1px solid grey;">Actions</th>
                     </tr>
                   </thead>
-                  <tbody id="chaptersTableBody">
+                  <tbody id="expensesTableBody">
                   </tbody>
                 </table>
               </div>

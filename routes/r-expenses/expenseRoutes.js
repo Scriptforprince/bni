@@ -5,5 +5,5 @@ const expenseController = require('../../controllers/c-expense/expensesControlle
 // Events routes
 router.get('/manage-expenses', expenseController.manageExpenses);
 router.get('/add-expenses', expenseController.addExpense);
-
+router.get('/edit-expense/', expenseController.editExpense)
 module.exports = router;
