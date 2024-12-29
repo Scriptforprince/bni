@@ -81,7 +81,7 @@ const AddExpenseType = async () => {
           showLoader(); // Show loading indicator
   
           // Call the API to add the expense (replace with the actual API endpoint)
-          const response = await fetch(`http://localhost:5000/api/expenseType`, {
+          const response = await fetch(`https://bni-data-backend.onrender.com/api/expenseType`, {
             method: 'POST', // Use POST to add an expense
             headers: {
               'Content-Type': 'application/json',
@@ -179,7 +179,7 @@ const deleteExpense = async (expense_id) => {
         try {
             showLoader(); // Show loading indicator
 
-            const response = await fetch(`http://localhost:5000/api/expense/${expense_id}`, {
+            const response = await fetch(`https://bni-data-backend.onrender.com/api/expense/${expense_id}`, {
                 method: 'DELETE',
             });
 
