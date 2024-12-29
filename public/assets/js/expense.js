@@ -165,7 +165,7 @@ document.getElementById('expensesTableBody').addEventListener('click', (event) =
 });
 
 // Function to delete an expense
-const deleteExpense = async (expenseId) => {
+const deleteExpense = async (expense_id) => {
     const result = await Swal.fire({
         title: 'Are you sure?',
         text: "This action will delete the expense.",
@@ -179,14 +179,14 @@ const deleteExpense = async (expenseId) => {
         try {
             showLoader(); // Show loading indicator
 
-            const response = await fetch(`https://bni-data-backend.onrender.com/api/deleteExpense/${expenseId}`, {
+            const response = await fetch(`http://localhost:5000/api/expense/${expense_id}`, {
                 method: 'DELETE',
             });
 
             if (response.ok) {
                 Swal.fire('Deleted!', 'Expense has been deleted.', 'success');
                 // After deletion, remove the row from the table
-                const rowToDelete = document.querySelector(`[data-expense-id="${expenseId}"]`).closest('tr');
+                const rowToDelete = document.querySelector(`tr[data-expense-id="${expense_id}"]`);
                 if (rowToDelete) rowToDelete.remove();
             } else {
                 Swal.fire('Failed!', 'Failed to delete the expense.', 'error');
