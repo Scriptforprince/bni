@@ -8,5 +8,6 @@ router.get('/add-member', memberController.addMember);
 router.get('/edit-member', memberController.editMember);
 router.get('/view-member',memberController.viewMember)
 router.get('/member-transactions',memberController.memberTransactions)
+router.get('/member-allTransactions',memberController.memberAllTransactions)
 
 module.exports = router;

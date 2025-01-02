@@ -17,3 +17,7 @@ exports.viewMember = (req, res) => {
 exports.memberTransactions = (req, res) => {
     res.render('m-member/member-transactions', { title: 'Member Transactions' });
 };
+
+exports.memberAllTransactions = (req, res) => {
+    res.render('m-member/member-Alltransactions', { title: 'Member All Transactions' });
+};
