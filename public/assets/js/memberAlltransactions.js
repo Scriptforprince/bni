@@ -159,6 +159,58 @@ const populateDropdown = (dropdown, data, valueField, textField, defaultText) =>
       
       // Call the function to populate payment methods
       populatePaymentMethodDropdown();
+
+      // Function to check if there are any filters in the query parameters
+function checkFiltersAndToggleResetButton() {
+    const urlParams = new URLSearchParams(window.location.search);
+  
+    // Check if any query parameters exist (indicating filters are applied)
+    if (urlParams.toString()) {
+      // Show the Reset Filter button if filters are applied
+      document.getElementById("reset-filters-btn").style.display = "inline-block";
+    } else {
+      // Hide the Reset Filter button if no filters are applied
+      document.getElementById("reset-filters-btn").style.display = "none";
+    }
+  }
+  
+  // Call this function on page load to check the filters
+  window.addEventListener("load", checkFiltersAndToggleResetButton);
+
+
+  // Attach event listener to a "Filter" button or trigger
+document.getElementById("apply-filters-btn").addEventListener("click", () => {
+    // Capture selected values
+    const month = monthsDropdown.querySelector('.dropdown-item.active')?.getAttribute('data-value') || '';
+    const paymentStatus = paymentStatusDropdown.querySelector('.dropdown-item.active')?.getAttribute('data-value') || '';
+    const paymentType = paymentTypeDropdown.querySelector('.dropdown-item.active')?.getAttribute('data-value') || '';
+    const paymentMethod = (paymentMethodDropdown.querySelector('.dropdown-item.active')?.getAttribute('data-value') || '').toLowerCase();
+  
+  
+    // Construct the query string
+    const queryParams = new URLSearchParams();
+
+    if (month) queryParams.append('month', month);
+    if (paymentStatus) queryParams.append('payment_status', paymentStatus);
+    if (paymentType) queryParams.append('payment_type', paymentType);
+    if (paymentMethod) queryParams.append('payment_method', paymentMethod);
+  
+    // Redirect to the filtered URL
+    const filterUrl = `/m/member-allTransactions?${queryParams.toString()}`;
+    window.location.href = filterUrl;
+  });
+  
+  // Attach event listener to "Reset Filter" button to clear query params
+  document.getElementById("reset-filters-btn").addEventListener("click", () => {
+    // Clear all query parameters from the URL
+    const url = new URL(window.location);
+    url.search = ''; // Remove query parameters
+  
+    // Reload the page without filters (cleared query string)
+    window.location.href = url.toString();
+  });
+
+  checkFiltersAndToggleResetButton();
   
       // Create a mapping of universal link IDs to names
       const universalLinkMap = universalLinks.reduce((map, link) => {
