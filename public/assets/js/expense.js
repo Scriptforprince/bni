@@ -3,6 +3,7 @@ let allExpenses = []; // To store fetched expenses globally
 let filteredExpenses = []; // To store filtered expenses based on search
 let entriesPerPage = 10; // Number of entries to display per page
 let currentPage = 1; // For pagination
+let expenseTypes = []; // Store expense types mapping
 
 // Function to show the loader
 function showLoader() {
@@ -17,19 +18,24 @@ function hideLoader() {
 // Fetch expenses with the applied filter
 const fetchExpenses = async (filter = 'ascending') => {
     try {
-        const response = await fetch(`${apiUrl}`); // Make the request
+        showLoader();
+        
+        const expenseTypesResponse = await fetch('https://bni-data-backend.onrender.com/api/expenseType');
+        if (!expenseTypesResponse.ok) throw new Error('Failed to fetch expense types');
+        expenseTypes = await expenseTypesResponse.json();
+
+        
+        const response = await fetch(`${apiUrl}`);
         if (!response.ok) throw new Error('Network response was not ok');
 
-        allExpenses = await response.json(); // Store fetched expenses in the global variable
-        filteredExpenses = [...allExpenses]; // Initialize filtered expenses to all expenses initially
-
-        // Sort based on the selected filter (ascending or descending)
+        allExpenses = await response.json();
+        filteredExpenses = [...allExpenses];
         sortExpenses(filter);
-
-        // Display the sorted expenses in the table
-        displayExpenses(filteredExpenses.slice(0, entriesPerPage)); // Display only the first 10 entries
+        displayExpenses(filteredExpenses.slice(0, entriesPerPage));
     } catch (error) {
-        console.error('There was a problem fetching the expenses data:', error);
+        console.error('There was a problem fetching the data:', error);
+    } finally {
+        hideLoader();
     }
 };
 
@@ -118,23 +124,22 @@ document.getElementById('addNewExpenseBtn').addEventListener('click', (event) =>
 // Function to display expenses in the table
 function displayExpenses(expenses) {
     const tableBody = document.getElementById('expensesTableBody');
-
-    // Clear existing rows
     tableBody.innerHTML = '';
 
-    // Loop through the expenses and create table rows
     expenses.forEach((expense, index) => {
         const row = document.createElement('tr');
         row.classList.add('order-list');
 
-        // Format the date (bill_date) into a readable format
-        const billDate = new Date(expense.bill_date);
-        const formattedBillDate = billDate.toLocaleDateString(); // Format as per locale (e.g., MM/DD/YYYY)
+        // expense_type ID से expense_name ढूंढें
+        const expenseTypeObj = expenseTypes.find(type => type.expense_id === expense.expense_type);
+        const expenseName = expenseTypeObj ? expenseTypeObj.expense_name : 'Unknown';
 
-        // Add table cells with expense data
+        const billDate = new Date(expense.bill_date);
+        const formattedBillDate = billDate.toLocaleDateString();
+
         row.innerHTML = `
             <td>${(currentPage - 1) * entriesPerPage + index + 1}</td>
-            <td style="border: 1px solid grey;"><b>Expense Type ${expense.expense_type}</b></td>
+            <td style="border: 1px solid grey;"><b>${expenseName}</b></td>
             <td style="border: 1px solid grey;"><b>${expense.submitted_by}</b></td>
             <td style="border: 1px solid grey;"><b>${expense.description}</b></td>
             <td style="border: 1px solid grey;"><b>₹ ${expense.amount}</b></td>
@@ -147,13 +152,8 @@ function displayExpenses(expenses) {
                 <span class="badge bg-danger text-light delete-btn" style="cursor:pointer; color:white;" data-expense-id="${expense.expense_id}">Delete</span>
             </td>
         `;
-
-        // Append the row to the table body
         tableBody.appendChild(row);
     });
-
-    // Hide the loader after expenses are displayed
-    hideLoader();
 }
 
 // Event listener for Delete button
