@@ -278,7 +278,7 @@ document.getElementById("apply-filters-btn").addEventListener("click", () => {
         row.innerHTML = `
           <td>${index + 1}</td>
           <td>${new Date(transaction.payment_time).toLocaleDateString()}</td>
-          <td><b>+ ₹${parseFloat(transaction.payment_amount).toFixed(2)}</b><br><a href="/t/view-invoice?order_id=${
+          <td><b>- ₹${parseFloat(transaction.payment_amount).toFixed(2)}</b><br><a href="/t/view-invoice?order_id=${
             transaction.order_id
           }" class="fw-medium text-success">View</a></td>
           <td>${paymentImage} ${paymentMethod}</td>
