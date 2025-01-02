@@ -36,7 +36,7 @@ function hideLoader() {
     const { meeting_opening_balance, meeting_payable_amount } = userData;
 
     // Fetch orders and transactions
-    const [ordersResponse, transactionsResponse] = await Promise.all([
+    const [ordersResponse, transactionsResponse] = await Promise.all([ 
       fetch('https://bni-data-backend.onrender.com/api/allOrders'),
       fetch('https://bni-data-backend.onrender.com/api/allTransactions'),
     ]);
@@ -57,6 +57,7 @@ function hideLoader() {
 
     // Prepare ledger data
     let currentBalance = meeting_opening_balance + meeting_payable_amount;
+    let totalMeetingFeePaid = 0; // Track total meeting fee paid
 
     const ledgerData = [
       {
@@ -79,6 +80,7 @@ function hideLoader() {
 
     // Add filtered transaction details to the ledger (ignore orders, only show transactions)
     filteredTransactions.forEach(transaction => {
+      totalMeetingFeePaid += parseFloat(transaction.payment_amount || 0); // Sum the paid meeting fee
       currentBalance -= parseFloat(transaction.payment_amount || 0); // Subtract payment amount from current balance
       ledgerData.push({
         sNo: ledgerData.length + 1,
@@ -89,6 +91,11 @@ function hideLoader() {
         balance: currentBalance,
       });
     });
+
+    // Display amounts in the spans
+    document.getElementById('total-kitty-amount').textContent = (meeting_opening_balance + meeting_payable_amount).toFixed(2);
+    document.getElementById('success_kitty_amount').textContent = totalMeetingFeePaid.toFixed(2);
+    document.getElementById('pending_payment_amount').textContent = (currentBalance).toFixed(2);
 
     // Populate table rows
     const ledgerBody = document.getElementById('ledger-body');
