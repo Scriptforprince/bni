@@ -43,6 +43,26 @@ function showLoader() {
       const filteredTransactions = transactions.filter(transaction =>
         filteredOrders.some(order => order.order_id === transaction.order_id)
       );
+
+       // Calculate totals
+    const totalAmount = filteredTransactions.reduce(
+        (sum, transaction) => sum + parseFloat(transaction.payment_amount || 0),
+        0
+      );
+  
+      // Calculate total amount for successful payments
+      const successPaymentsAmount = filteredTransactions
+        .filter(transaction => transaction.payment_status === "SUCCESS")
+        .reduce((sum, transaction) => sum + parseFloat(transaction.payment_amount || 0), 0);
+  
+        const pendingPaymentsAmount = filteredTransactions
+        .filter(transaction => transaction.payment_status !== "SUCCESS")
+        .reduce((sum, transaction) => sum + parseFloat(transaction.payment_amount || 0), 0);
+  
+      // Update the spans with calculated values
+      document.getElementById('total_transactions_amount').textContent = `₹${totalAmount.toFixed(2)}`;
+      document.getElementById('success_payments').textContent = `₹${successPaymentsAmount.toFixed(2)}`;
+      document.getElementById('pending_payments').textContent = `₹${pendingPaymentsAmount.toFixed(2)}`;
   
       // Populate the transactions table
       const transactionsBody = document.querySelector('.member-all-transactions');
