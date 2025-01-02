@@ -56,7 +56,8 @@ function hideLoader() {
     );
 
     // Prepare ledger data
-    let currentBalance = meeting_opening_balance;
+    let currentBalance = meeting_opening_balance + meeting_payable_amount;
+
     const ledgerData = [
       {
         sNo: 1,
@@ -64,7 +65,7 @@ function hideLoader() {
         description: 'Opening Balance',
         debit: meeting_opening_balance,
         credit: 0,
-        balance: (currentBalance -= meeting_opening_balance),
+        balance: 0, // Don't show sum in Opening Balance row
       },
       {
         sNo: 2,
@@ -72,19 +73,20 @@ function hideLoader() {
         description: 'Meeting Payable Amount',
         debit: meeting_payable_amount,
         credit: 0,
-        balance: (currentBalance -= meeting_payable_amount),
+        balance: currentBalance, // Show sum in Meeting Payable Amount row
       },
     ];
 
     // Add filtered transaction details to the ledger (ignore orders, only show transactions)
     filteredTransactions.forEach(transaction => {
+      currentBalance -= parseFloat(transaction.payment_amount || 0); // Subtract payment amount from current balance
       ledgerData.push({
         sNo: ledgerData.length + 1,
         date: new Date(transaction.payment_time).toLocaleDateString(),
-        description: 'Meeting Fee Paid',  // Updated description
+        description: 'Meeting Fee Paid',
         debit: 0,
         credit: transaction.payment_amount,
-        balance: (currentBalance += parseFloat(transaction.payment_amount || 0)),
+        balance: currentBalance,
       });
     });
 
