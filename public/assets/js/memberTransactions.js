@@ -44,9 +44,14 @@ function hideLoader() {
     const orders = await ordersResponse.json();
     const transactions = await transactionsResponse.json();
 
-    // Filter orders and transactions where universal_link_id = 4
-    const filteredOrders = orders.filter(order => order.universal_link_id === 4 && order.customer_email === email);
+    // Filter orders where universal_link_id = 4 and customer_email matches
+    const filteredOrders = orders.filter(order =>
+      order.universal_link_id === 4 && order.customer_email === email
+    );
+
+    // Filter transactions based on matching order_id and payment_status = "SUCCESS"
     const filteredTransactions = transactions.filter(transaction =>
+      transaction.payment_status === 'SUCCESS' &&
       filteredOrders.some(order => order.order_id === transaction.order_id)
     );
 
@@ -56,36 +61,29 @@ function hideLoader() {
       {
         sNo: 1,
         date: new Date().toLocaleDateString(),
-        description: 'Opening Balance (Credit)',
-        amount: `+${meeting_opening_balance}`,
-        balance: currentBalance,
+        description: 'Opening Balance',
+        debit: meeting_opening_balance,
+        credit: 0,
+        balance: (currentBalance -= meeting_opening_balance),
       },
       {
         sNo: 2,
         date: new Date().toLocaleDateString(),
-        description: 'Meeting Payable Amount (Debit)',
-        amount: `+${meeting_payable_amount}`,
-        balance: currentBalance + meeting_payable_amount,
+        description: 'Meeting Payable Amount',
+        debit: meeting_payable_amount,
+        credit: 0,
+        balance: (currentBalance -= meeting_payable_amount),
       },
     ];
 
-    // Add filtered order and transaction details to the ledger
-    filteredOrders.forEach((order, index) => {
-      ledgerData.push({
-        sNo: ledgerData.length + 1,
-        date: new Date(order.created_at).toLocaleDateString(),
-        description: `Order ID: ${order.order_id} (Order)`,
-        amount: `+${order.order_amount}`,
-        balance: (currentBalance += parseFloat(order.order_amount || 0)),
-      });
-    });
-
-    filteredTransactions.forEach((transaction, index) => {
+    // Add filtered transaction details to the ledger (ignore orders, only show transactions)
+    filteredTransactions.forEach(transaction => {
       ledgerData.push({
         sNo: ledgerData.length + 1,
         date: new Date(transaction.payment_time).toLocaleDateString(),
-        description: `Transaction ID: ${transaction.transaction_id} (Transaction)`,
-        amount: `+${transaction.payment_amount}`,
+        description: 'Meeting Fee Paid',  // Updated description
+        debit: 0,
+        credit: transaction.payment_amount,
         balance: (currentBalance += parseFloat(transaction.payment_amount || 0)),
       });
     });
@@ -99,11 +97,13 @@ function hideLoader() {
         <td>${entry.sNo}</td>
         <td><b>${entry.date}</b></td>
         <td><b>${entry.description}</b></td>
-        <td><b>${entry.amount}</b></td>
-        <td><b>${entry.balance.toFixed(2)}</b></td>
+        <td><b style="color: ${entry.debit ? 'red' : 'inherit'}">${entry.debit ? parseFloat(entry.debit).toFixed(2) : '-'}</b></td>
+        <td><b style="color: ${entry.credit ? 'green' : 'inherit'}">${entry.credit ? parseFloat(entry.credit).toFixed(2) : '-'}</b></td>
+        <td><b>${parseFloat(entry.balance).toFixed(2)}</b></td>
       `;
       ledgerBody.appendChild(row);
     });
+    
   } catch (error) {
     console.error('Error generating ledger:', error);
     alert('An error occurred while generating the ledger.');
