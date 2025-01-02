@@ -47,13 +47,17 @@ function showLoader() {
         const row = document.createElement('tr');
         row.innerHTML = `
           <td>${index + 1}</td>
-          <td><b>${new Date(transaction.payment_time).toLocaleDateString()}</b></td>
+          <td>${new Date(transaction.payment_time).toLocaleDateString()}</td>
           <td><b>${parseFloat(transaction.payment_amount).toFixed(2)}</b></td>
           <td><b>${transaction.payment_group}</b></td>
-          <td><b>${order.order_id}</b></td>
-          <td><b>${transaction.transaction_id}</b></td>
-          <td><b>${transaction.payment_status}</b></td>
-          <td><b>${order.universal_link_id}</b></td>
+          <td><em>${order.order_id}</em></td>
+          <td><b><em>${transaction.cf_payment_id}</em></b></td>
+          <td><span class="badge ${
+            transaction.payment_status === "SUCCESS"
+              ? "bg-success"
+              : "bg-danger"
+          }">${transaction.payment_status.toLowerCase()}</span></td>
+          <td>${order.universal_link_id}</td>
         `;
         transactionsBody.appendChild(row);
       });
