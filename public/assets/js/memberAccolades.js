@@ -1,4 +1,14 @@
 // Debug flag
+
+// Function to show the loader
+function showLoader() {
+    document.getElementById('loader').style.display = 'flex'; // Show loader
+  }
+  
+  // Function to hide the loader
+  function hideLoader() {
+    document.getElementById('loader').style.display = 'none'; // Hide loader
+  }
 const DEBUG = true;
 
 // Debug logging function
@@ -11,6 +21,7 @@ function debugLog(message, data = null) {
 
 async function fetchMemberData() {
     try {
+        showLoader();
         // Get logged in email from localStorage
         const loggedInEmail = localStorage.getItem('loggedInEmail');
         debugLog('Logged in email:', loggedInEmail);
@@ -55,6 +66,8 @@ async function fetchMemberData() {
     } catch (error) {
         console.error('Error fetching data:', error);
         debugLog('Error occurred:', error);
+    } finally {
+        hideLoader();
     }
 }
 
