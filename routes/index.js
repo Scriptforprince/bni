@@ -19,6 +19,7 @@ const eventsRoutes = require('./r-events/eventsRoutes')
 const trainingsRoutes = require('./r-trainings/trainingRoutes')
 const kittyDashboardRoutes = require('./r-kittyDashboard/kittyDashboardRoutes')
 const expenseRoutes=require('./r-expenses/expenseRoutes')
+const memberAccoladesRoutes = require('./r-memberAccolades/memberAccolades')
 // Use all the imported routes
 router.use('/', indexRoutes);
 router.use('/d', dashboardRoutes);
@@ -31,6 +32,7 @@ router.use('/a', apiRoutes);
 router.use('/v', eInvoiceRoutes);
 router.use('/auth', authRoutes);
 router.use('/acc', accoladesRoutes);
+router.use('/macc', memberAccoladesRoutes);
 router.use('/s', settingRoutes);
 router.use('/cl', classificationRoutes);
 router.use('/e', eventsRoutes);
