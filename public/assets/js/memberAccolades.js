@@ -116,8 +116,42 @@ function updateAccoladesCount() {
     document.getElementById('totalAccoladesCount').innerHTML = `<b>${totalRows}</b>`;
 }
 
+async function populateAccoladesDropdown() {
+    try {
+        // Fetch accolades data
+        const accoladesResponse = await fetch('https://bni-data-backend.onrender.com/api/accolades');
+        const accoladesData = await accoladesResponse.json();
+        debugLog('Accolades data fetched for dropdown:', accoladesData);
+
+        // Get the select element
+        const selectElement = document.getElementById('region_status');
+        if (!selectElement) {
+            debugLog('Select element not found');
+            return;
+        }
+
+        // Clear existing options except the first one
+        selectElement.innerHTML = '<option value="">Select</option>';
+
+        // Add accolades as options
+        accoladesData.forEach(accolade => {
+            const option = document.createElement('option');
+            option.value = accolade.accolade_id;
+            option.textContent = accolade.accolade_name;
+            selectElement.appendChild(option);
+        });
+
+        debugLog('Dropdown populated with accolades');
+
+    } catch (error) {
+        console.error('Error populating accolades dropdown:', error);
+        debugLog('Error occurred while populating dropdown:', error);
+    }
+}
+
 // Initialize when document is ready
 document.addEventListener('DOMContentLoaded', () => {
     debugLog('Document ready, initializing...');
     fetchMemberData();
+    populateAccoladesDropdown();
 });
