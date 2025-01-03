@@ -123,28 +123,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     // Set the selected membership value
     membershipSelect.value = member.member_current_membership || 2; // Default to 2 Year if no value is found
 
-    // Fetch all countries from the API
-    const countriesResponse = await fetch('https://restcountries.com/v3.1/all');
-    if (!countriesResponse.ok) throw new Error('Error fetching countries data');
-    
-    const countries = await countriesResponse.json();
 
-    // Get the country select element
-    const countrySelect = document.getElementById('country');
-    
-    // Loop through countries and add them to the select dropdown
-    countries.forEach(country => {
-      const option = document.createElement('option');
-      option.value = country.cca2; // Using the country code as value
-      option.textContent = country.name.common; // Country name as text
-      countrySelect.appendChild(option);
-    });
-
-    // Set default country to India (if available)
-    const indiaOption = Array.from(countrySelect.options).find(option => option.textContent === 'India');
-    if (indiaOption) {
-      indiaOption.selected = true;
-    }
 
     // Populate other member fields
     document.getElementById('member_first_name').value = member.member_first_name || 'Not Found';
@@ -177,7 +156,6 @@ document.addEventListener('DOMContentLoaded', async function () {
     document.getElementById('member_youtube').value = member.member_youtube || 'Not Found';
     document.getElementById('member_sponsored_by').value = member.member_sponsored_by || 'Not Found';
     document.getElementById('date_of_publishing').value = formatDate(member.date_of_publishing);
-    document.getElementById('meeting_opening_balance').value = member.meeting_opening_balance || 'Not Found';
 
   } catch (error) {
     console.error('Error fetching member details:', error);
@@ -188,71 +166,6 @@ document.addEventListener('DOMContentLoaded', async function () {
 });
 const urlParams = new URLSearchParams(window.location.search);
 const memberId = urlParams.get('member_id');
-
-// Function to validate the form inputs
-const validateMemberForm = () => {
-
-  const contactNumber = document.querySelector("#member_phone_number").value.trim();
-  const email = document.querySelector("#member_email_address").value.trim();
-  const gst_number = document.querySelector("#member_gst_number").value.trim();
-  // const alternateContactNumber = document.querySelector("#member_alternate_mobile_number").value.trim();
-  const member_company_logo = document.querySelector("#member_company_logo").files[0]; // Assuming file input for the logo
-  const logo = document.querySelector("#member_photo").files[0]; // Assuming file input for the logo
-
-  // Validation messages
-  const errors = [];
-
-  // Contact number validation
-  if (!/^\d{10}$/.test(contactNumber)) {
-    toastr.error("Contact number must be exactly 10 digits.");
-    return;
-  }
-
-  // Contact number validation
-  // if (!/^\d{10}$/.test(alternateContactNumber)) {
-  //   toastr.error("Alternate Contact number must be exactly 10 digits.");
-  //   return;
-  // }
-
-  // Contact number validation
-  if (!/^\d{15}$/.test(gst_number)) {
-    toastr.error("GSTIN Number must be exactly 15 digits.");
-    return;
-  }
-
-  // Email validation
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    toastr.error("Please enter a valid email address.");
-    return;
-  }
-
-  // Logo file validation
-  if (logo) {
-    const validExtensions = ['image/jpeg', 'image/png', 'image/jpg'];
-    if (!validExtensions.includes(logo.type)) {
-      toastr.error("Member Image must be in JPG, JPEG, or PNG format.");
-      return;
-    }
-  } else {
-    toastr.error("Please upload a region logo.");
-    return;
-  }
-
-  // Logo file validation
-  if (member_company_logo) {
-    const validExtensions = ['image/jpeg', 'image/png', 'image/jpg'];
-    if (!validExtensions.includes(logo.type)) {
-      toastr.error("Company Logo must be in JPG, JPEG, or PNG format.");
-      return;
-    }
-  } else {
-    toastr.error("Please upload a region logo.");
-    return;
-  }
-
-  return errors;
-};
-
 
 
 // Function to collect form data and prepare it for the update
@@ -290,7 +203,6 @@ const collectMemberFormData = () => {
     member_sponsored_by: document.querySelector("#member_sponsored_by").value,
     date_of_publishing: document.querySelector("#date_of_publishing").value,
     member_status: document.querySelector("#member_status").value,
-    meeting_opening_balance: document.querySelector("#meeting_opening_balance").value,
   };
 
   return memberData;
@@ -299,13 +211,6 @@ const collectMemberFormData = () => {
 
 // Function to send the updated data to the backend after confirmation
 const updateMemberData = async () => {
-
-  // Validate the form inputs
-  const errors = validateMemberForm();
-  if (errors.length > 0) {
-      Swal.fire("Validation Errors", errors.join("<br>"), "error");
-      return;
-  }
   // Ask for confirmation using SweetAlert
   const result = await Swal.fire({
       title: 'Are you sure?',
@@ -354,4 +259,3 @@ const updateMemberData = async () => {
 
 
 document.getElementById("updateChapterBtn").addEventListener("click", updateMemberData);
-
