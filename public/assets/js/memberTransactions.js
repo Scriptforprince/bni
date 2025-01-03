@@ -125,10 +125,14 @@ function hideLoader() {
         <td><b>${entry.description}</b></td>
         <td><b style="color: ${entry.debit ? 'red' : 'inherit'}">${entry.debit ? parseFloat(entry.debit).toFixed(2) : '-'}</b></td>
         <td><b style="color: ${entry.credit ? 'green' : 'inherit'}">${entry.credit ? parseFloat(entry.credit).toFixed(2) : '-'}</b></td>
-        <td><b>${parseFloat(entry.balance).toFixed(2)}</b></td>
+        <td>
+          <b style="color: ${entry.balance >= 0 ? 'green' : 'red'}">
+            ${entry.balance >= 0 ? '+' : ''}${parseFloat(entry.balance).toFixed(2)}
+          </b>
+        </td>
       `;
       ledgerBody.appendChild(row);
-    });
+    });       
   } catch (error) {
     console.error('Error generating ledger:', error);
     alert('An error occurred while generating the ledger.');
