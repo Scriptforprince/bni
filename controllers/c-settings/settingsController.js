@@ -5,4 +5,7 @@ exports.myProfile = (req, res) => {
 exports.settings = (req, res) => {
     res.render('m-settings/settings', { title: 'Settings' });
 };
+exports.userSettings = (req, res) => {
+    res.render('m-settings/userSettings', { title: 'userSettings' });
+};
 

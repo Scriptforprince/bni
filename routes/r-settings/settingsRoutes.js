@@ -4,7 +4,8 @@ const settingsController = require('../../controllers/c-settings/settingsControl
 
 // Region routes
 router.get('/my-profile', settingsController.myProfile);
-router.get('/settings', settingsController.settings);
+router.get('/member-settings', settingsController.settings);
+router.get('/settings', settingsController.userSettings);
 
 
 module.exports = router;

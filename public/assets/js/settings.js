@@ -41,15 +41,7 @@ function displayCompanyInfo() {
                     noLogoMessage.style.display = 'block';
                 }
 
-                // Debug logs
-                console.log('Company Name:', member.member_company_name);
-                console.log('Company Address:', member.member_company_address);
-                console.log('GST Number:', member.member_gst_number);
-                console.log('Phone Number:', member.member_phone_number);
-                console.log('Email Address:', member.member_email_address);
-                console.log('Current Membership:', member.member_current_membership);
-                console.log('Renewal Date:', renewalDate);
-                console.log('Company Logo:', member.member_company_logo);
+               
 
                 // Update social media links
                 document.getElementById('facebook').value = member.member_facebook || 'Not Available';
