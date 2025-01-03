@@ -33,10 +33,21 @@ function hideLoader() {
       return;
     }
 
-    const { meeting_opening_balance, meeting_payable_amount } = userData;
+    const { meeting_opening_balance, meeting_payable_amount, chapter_id } = userData;
+
+    // Fetch chapter description and bill type using chapter_id
+    const kittyPaymentsResponse = await fetch('https://bni-data-backend.onrender.com/api/getKittyPayments');
+    const kittyPayments = await kittyPaymentsResponse.json();
+
+    // Find the chapter payment details for the logged-in user's chapter
+    const chapterPayment = kittyPayments.find(payment => payment.chapter_id === chapter_id);
+
+    const chapterDescription = chapterPayment
+      ? `${chapterPayment.description} (${chapterPayment.bill_type})`
+      : 'No description available';
 
     // Fetch orders and transactions
-    const [ordersResponse, transactionsResponse] = await Promise.all([ 
+    const [ordersResponse, transactionsResponse] = await Promise.all([
       fetch('https://bni-data-backend.onrender.com/api/allOrders'),
       fetch('https://bni-data-backend.onrender.com/api/allTransactions'),
     ]);
@@ -66,17 +77,23 @@ function hideLoader() {
         description: 'Opening Balance',
         debit: meeting_opening_balance,
         credit: 0,
-        balance: 0, // Don't show sum in Opening Balance row
+        balance: meeting_opening_balance, // Display opening balance here
       },
       {
         sNo: 2,
         date: new Date().toLocaleDateString(),
-        description: 'Meeting Payable Amount',
+        description: `
+  <b>Meeting Payable Amount</b><br>
+  <em>(bill for: ${chapterPayment.bill_type})</em> - 
+  <em>(${chapterPayment.description})</em>
+`,
+
         debit: meeting_payable_amount,
         credit: 0,
         balance: currentBalance, // Show sum in Meeting Payable Amount row
       },
     ];
+    
 
     // Add filtered transaction details to the ledger (ignore orders, only show transactions)
     filteredTransactions.forEach(transaction => {
@@ -108,11 +125,14 @@ function hideLoader() {
         <td><b>${entry.description}</b></td>
         <td><b style="color: ${entry.debit ? 'red' : 'inherit'}">${entry.debit ? parseFloat(entry.debit).toFixed(2) : '-'}</b></td>
         <td><b style="color: ${entry.credit ? 'green' : 'inherit'}">${entry.credit ? parseFloat(entry.credit).toFixed(2) : '-'}</b></td>
-        <td><b>${parseFloat(entry.balance).toFixed(2)}</b></td>
+        <td>
+          <b style="color: ${entry.balance >= 0 ? 'green' : 'red'}">
+            ${entry.balance >= 0 ? '+' : ''}${parseFloat(entry.balance).toFixed(2)}
+          </b>
+        </td>
       `;
       ledgerBody.appendChild(row);
-    });
-    
+    });       
   } catch (error) {
     console.error('Error generating ledger:', error);
     alert('An error occurred while generating the ledger.');
@@ -120,3 +140,5 @@ function hideLoader() {
     hideLoader(); // Hide loader
   }
 })();
+
+
