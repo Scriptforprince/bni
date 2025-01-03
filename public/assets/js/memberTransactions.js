@@ -78,21 +78,23 @@ function hideLoader() {
         debit: meeting_opening_balance,
         credit: 0,
         balance: meeting_opening_balance, // Display opening balance here
+        balanceColor: 'red', // Set balance color to red
       },
       {
         sNo: 2,
         date: new Date().toLocaleDateString(),
         description: `
-  <b>Meeting Payable Amount</b><br>
-  <em>(bill for: ${chapterPayment.bill_type})</em> - 
-  <em>(${chapterPayment.description})</em>
-`,
-
+          <b>Meeting Payable Amount</b><br>
+          <em>(bill for: ${chapterPayment.bill_type})</em> - 
+          <em>(${chapterPayment.description})</em>
+        `,
         debit: meeting_payable_amount,
         credit: 0,
         balance: currentBalance, // Show sum in Meeting Payable Amount row
+        balanceColor: 'red', // Set balance color to red
       },
     ];
+    
     
 
     // Add filtered transaction details to the ledger (ignore orders, only show transactions)
@@ -119,6 +121,11 @@ function hideLoader() {
     ledgerBody.innerHTML = ''; // Clear existing rows
     ledgerData.forEach(entry => {
       const row = document.createElement('tr');
+      
+      // For Opening Balance and Meeting Payable Amount, always show in red with a '-'
+      const balanceColor = (entry.sNo === 1 || entry.sNo === 2) ? 'red' : (entry.balance >= 0 ? 'green' : 'red');
+      const balanceSign = (entry.sNo === 1 || entry.sNo === 2) ? '-' : (entry.balance >= 0 ? '+' : '-');
+    
       row.innerHTML = `
         <td>${entry.sNo}</td>
         <td><b>${entry.date}</b></td>
@@ -126,13 +133,18 @@ function hideLoader() {
         <td><b style="color: ${entry.debit ? 'red' : 'inherit'}">${entry.debit ? parseFloat(entry.debit).toFixed(2) : '-'}</b></td>
         <td><b style="color: ${entry.credit ? 'green' : 'inherit'}">${entry.credit ? parseFloat(entry.credit).toFixed(2) : '-'}</b></td>
         <td>
-          <b style="color: ${entry.balance >= 0 ? 'green' : 'red'}">
-            ${entry.balance >= 0 ? '+' : ''}${parseFloat(entry.balance).toFixed(2)}
+          <b style="color: ${balanceColor}">
+            ${balanceSign}${parseFloat(entry.balance).toFixed(2)}
           </b>
         </td>
       `;
+      
       ledgerBody.appendChild(row);
-    });       
+    });
+    
+    
+    
+               
   } catch (error) {
     console.error('Error generating ledger:', error);
     alert('An error occurred while generating the ledger.');
