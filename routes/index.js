@@ -20,6 +20,7 @@ const trainingsRoutes = require('./r-trainings/trainingRoutes')
 const kittyDashboardRoutes = require('./r-kittyDashboard/kittyDashboardRoutes')
 const expenseRoutes=require('./r-expenses/expenseRoutes')
 const memberAccoladesRoutes = require('./r-memberAccolades/memberAccolades')
+const memberTrainingsRoutes = require('./r-memberTraining/memberTrainings')
 // Use all the imported routes
 router.use('/', indexRoutes);
 router.use('/d', dashboardRoutes);
@@ -39,4 +40,5 @@ router.use('/e', eventsRoutes);
 router.use('/tr', trainingsRoutes);
 router.use('/k', kittyDashboardRoutes);
 router .use('/exp', expenseRoutes);
+router .use('/mtr', memberTrainingsRoutes);
 module.exports = router;
