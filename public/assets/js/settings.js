@@ -1,3 +1,10 @@
+console.log('Settings.js loaded');
+
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('DOM Content Loaded');
+    displayCompanyInfo();
+});
+
 function displayCompanyInfo() {
     const userEmail = localStorage.getItem('loggedInEmail');
     
@@ -63,29 +70,71 @@ function displayCompanyInfo() {
         });
 }
 
+function saveChanges() {
+    const loggedInEmail = localStorage.getItem('loggedInEmail');
+    
+    console.log('Starting save with email:', loggedInEmail);
+    
+    const updatedData = {
+        member_email_address: loggedInEmail,
+        member_phone_number: document.getElementById('phone-number-input').value,
+        member_company_address: document.getElementById('company-address-input').value,
+        member_company_name: document.getElementById('company-name-input').value,
+        member_company_logo: document.getElementById('company-logo-preview').src
+    };
+
+    console.log('Data being sent:', updatedData);
+
+    fetch('https://bni-data-backend.onrender.com/api/updateMemberSettings', {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedData)
+    })
+    .then(response => {
+        console.log('Response status:', response.status);
+        return response.json();
+    })
+    .then(data => {
+        console.log('Response data:', data);
+        
+        const modal = bootstrap.Modal.getInstance(document.getElementById('confirmationModal'));
+        modal.hide();
+
+        if (data.message === "Member settings updated successfully") {
+            toastr.success("Changes have been saved successfully!", "Success");
+            displayCompanyInfo();
+        } else {
+            throw new Error(data.message || 'Update failed');
+        }
+    })
+    .catch(error => {
+        toastr.error("Error saving changes. Please try again.", "Error", {
+            closeButton: true,
+            progressBar: true,
+            timeOut: 3000,
+            positionClass: "toast-top-right",
+        });
+    });
+}
+
+// Make sure the function is globally available
+window.saveChanges = saveChanges;
+
 // Handle company logo upload
 document.getElementById('company-logo-input').addEventListener('change', function(event) {
     const file = event.target.files[0];
-    const logoPreview = document.getElementById('company-logo-preview');
-    const noLogoMessage = document.getElementById('no-logo-message');
-    
     if (file) {
         const reader = new FileReader();
         reader.onload = function(e) {
+            const logoPreview = document.getElementById('company-logo-preview');
+            const noLogoMessage = document.getElementById('no-logo-message');
+            
             logoPreview.src = e.target.result;
             logoPreview.style.display = 'block';
             noLogoMessage.style.display = 'none';
         };
         reader.readAsDataURL(file);
     }
-});
-
-// Call the function when the page loads
-document.addEventListener('DOMContentLoaded', displayCompanyInfo);
-
-// Add event listener for the Save Changes button
-document.querySelector('.btn-danger').addEventListener('click', function() {
-    // Here you can add code to save the updated information
-    console.log('Save changes clicked');
-    showSuccessToast();
 });

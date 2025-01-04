@@ -4,7 +4,7 @@
 
 <!-- sidebar -->
 
-<%- include('../partials/sidebar') %>
+<%- include('../partials/member-sidebar') %>
 
 <!-- Start::app-content -->
 <div class="main-content app-content">
@@ -90,40 +90,36 @@
                 <label for="facebook" class="form-label">Facebook :</label>
                 <input
                   type="text"
-                  class="form-control bg-light"
+                  class="form-control"
                   id="facebook"
                   placeholder="https://"
-                  value="https://www.facebook.com"
                 />
               </div>
               <div class="col-xl-12">
                 <label for="Instagram" class="form-label">Instagram :</label>
                 <input
                   type="text"
-                  class="form-control bg-light"
+                  class="form-control"
                   id="Instagram"
                   placeholder="https://"
-                  value="https://www.instagram.com"
                 />
               </div>
               <div class="col-xl-12">
                 <label for="Youtube" class="form-label">Youtube:</label>
                 <input
                   type="text"
-                  class="form-control bg-light"
+                  class="form-control"
                   id="Youtube"
                   placeholder="https://"
-                  value="https://www.youtube.com"
                 />
               </div>
               <div class="col-xl-12">
                 <label for="Linkedin" class="form-label">Linkedin :</label>
                 <input
                   type="text"
-                  class="form-control bg-light"
+                  class="form-control"
                   id="Linkedin"
                   placeholder="https://"
-                  value="https://www.linkedin.com"
                 />
               </div>
             </div>
@@ -488,39 +484,13 @@
           <div
             class="card-footer border-top-0 d-flex justify-content-between gap-2 flex-wrap"
           >
-            <button class="btn btn-primary1-light" onclick="showRestoreToast()">
-              Restore Defaults
-            </button>
-            <script>
-              function showRestoreToast() {
-                const userConfirmed = confirm(
-                  "Are you sure you want to revert to default settings?"
-                );
-                if (userConfirmed) {
-                  toastr.success("Settings have been restored!", "Success", {
-                    closeButton: true,
-                    progressBar: true,
-                    timeOut: 3000, // 3 seconds
-                    positionClass: "toast-top-right",
-                  });
-                }
-              }
-            </script>
+            
+            
 
             <div class="ms-auto">
-              <button class="btn btn-danger" onclick="showSuccessToast()">
+              <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmationModal">
                 Save Changes
               </button>
-              <script>
-                function showSuccessToast() {
-                  toastr.success("Changes have been saved!", "Success", {
-                    closeButton: true,
-                    progressBar: true,
-                    timeOut: 3000, // 3 seconds
-                    positionClass: "toast-top-right",
-                  });
-                }
-              </script>
             </div>
           </div>
         </div>
@@ -530,12 +500,262 @@
   </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<script>
+  console.log('Before loading settings.js');
+</script>
+<script src="/assets/js/settings.js"></script>
+<script>
+  console.log('After loading settings.js');
+</script>
 
-<!-- Company Information Section -->
+<!-- Add the modal HTML before the closing body tag -->
+<div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirmationModalLabel">Confirm Changes</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to save these changes?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-success" onclick="saveChanges()">Save Changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  async function saveChanges() {
+    const phoneNumber = document.getElementById('phone-number-input').value;
+    const companyName = document.getElementById('company-name-input').value;
+    const companyAddress = document.getElementById('company-address-input').value;
+    const emailInput = document.getElementById('email-address-input').value;
+    const gstNumber = document.getElementById('company-gstin-input').value;
+    const loggedInEmail = localStorage.getItem('loggedInEmail');
+    
+    // Get social links values directly from the input fields
+    const facebook = document.getElementById('facebook').value.trim();
+    const instagram = document.getElementById('Instagram').value.trim();
+    const youtube = document.getElementById('Youtube').value.trim();
+    const linkedin = document.getElementById('Linkedin').value.trim();
 
+    // Phone number validation
+    if (phoneNumber.length !== 10) {
+        toastr.error("Phone number must be exactly 10 digits", "Error");
+        return;
+    }
 
-<!-- Add this before closing body tag -->
-<script src="../../assets/js/settings.js"></script>
+    // Basic validations
+    if (!phoneNumber || !companyName || !companyAddress || !emailInput) {
+        toastr.error("Please fill in all required fields", "Error");
+        return;
+    }
+
+    try {
+        const updatedData = {
+            member_email_address: emailInput,
+            old_email_address: loggedInEmail,
+            member_phone_number: phoneNumber,
+            member_company_address: companyAddress,
+            member_company_name: companyName,
+            member_gst_number: gstNumber,
+            member_facebook: facebook,  // Changed to match backend field names
+            member_instagram: instagram,
+            member_youtube: youtube,
+            member_linkedin: linkedin
+        };
+
+        console.log('Sending request with data:', updatedData);
+        const response = await fetch('http://localhost:5000/api/updateMemberSettings', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify(updatedData)
+        });
+
+        if (!response.ok) {
+            throw new Error('Update failed');
+        }
+
+        const data = await response.json();
+
+        if (data.message === "Member settings updated successfully") {
+            if (emailInput !== loggedInEmail) {
+                localStorage.setItem('loggedInEmail', emailInput);
+            }
+            
+            toastr.success("Changes have been saved successfully!", "Success");
+            
+            // Refresh company info to show updated data
+            if (typeof displayCompanyInfo === 'function') {
+                displayCompanyInfo();
+            }
+        }
+
+        const modal = bootstrap.Modal.getInstance(document.getElementById('confirmationModal'));
+        if (modal) {
+            modal.hide();
+        }
+
+    } catch (error) {
+        console.error('Error:', error);
+        toastr.error(error.message || "Error saving changes. Please try again.", "Error");
+    }
+  }
+
+  // Phone number input validation
+  document.getElementById('phone-number-input').addEventListener('input', function(e) {
+    this.value = this.value.replace(/[^0-9]/g, '');
+    if (this.value.length > 10) {
+        this.value = this.value.slice(0, 10);
+    }
+  });
+
+  // Email input validation
+  document.getElementById('email-address-input').addEventListener('input', function(e) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(this.value) && this.value.length > 0) {
+        this.classList.add('is-invalid');
+        // Optional: Show immediate feedback
+        toastr.warning("Please enter a valid email address", "Warning");
+    } else {
+        this.classList.remove('is-invalid');
+    }
+  });
+
+  // Company name input validation - limit to 50 characters
+  document.getElementById('company-name-input').addEventListener('input', function(e) {
+    if (this.value.length > 50) {
+        this.value = this.value.slice(0, 50);
+        toastr.warning("Company name cannot exceed 50 characters", "Warning");
+    }
+  });
+
+  // Company address input validation - limit to 150 characters
+  document.getElementById('company-address-input').addEventListener('input', function(e) {
+    if (this.value.length > 150) {
+        this.value = this.value.slice(0, 150);
+        toastr.warning("Company address cannot exceed 150 characters", "Warning");
+    }
+  });
+
+  // GST number input validation - Show popup only when user tries to modify the value
+  document.getElementById('company-gstin-input').addEventListener('input', function(e) {
+    // Get the original value
+    const originalValue = this.getAttribute('data-original');
+    
+    // If user tries to change the value, show popup and revert the change
+    if (this.value !== originalValue) {
+        // Show GST update notification modal
+        const gstModal = new bootstrap.Modal(document.getElementById('gstUpdateModal'));
+        gstModal.show();
+    }
+  });
+
+  // Add event listener to OK button in GST modal
+  document.querySelector('#gstUpdateModal .btn-primary').addEventListener('click', function() {
+    const gstInput = document.getElementById('company-gstin-input');
+    const originalValue = gstInput.getAttribute('data-original');
+    gstInput.value = originalValue;
+  });
+
+  // Store original GST number when page loads
+  document.addEventListener('DOMContentLoaded', function() {
+    const gstInput = document.getElementById('company-gstin-input');
+    if (gstInput) {
+        gstInput.setAttribute('data-original', gstInput.value);
+    }
+  });
+
+  // Improve URL validation for social links
+  const validateUrl = (url) => {
+    if (!url) return true; // Empty URLs are allowed
+    try {
+        new URL(url);
+        return true;
+    } catch {
+        return false;
+    }
+  };
+
+  const socialInputs = ['facebook', 'Instagram', 'Youtube', 'Linkedin'];
+  
+  socialInputs.forEach(id => {
+    document.getElementById(id).addEventListener('input', function(e) {
+        let value = this.value.trim();
+        
+        // Add https:// if not present and there's a value
+        if (value && !value.match(/^https?:\/\//)) {
+            value = 'https://' + value;
+            this.value = value;
+        }
+
+        // Validate URL
+        if (value && !validateUrl(value)) {
+            this.classList.add('is-invalid');
+            toastr.warning(`Please enter a valid URL for ${id}`, "Warning");
+        } else {
+            this.classList.remove('is-invalid');
+        }
+    });
+  });
+
+  // Function to load social links
+  async function loadSocialLinks() {
+    try {
+        const loggedInEmail = localStorage.getItem('loggedInEmail');
+        const response = await fetch(`http://localhost:5000/api/getMemberSocialLinks?email=${loggedInEmail}`);
+        
+        if (!response.ok) {
+            throw new Error('Failed to load social links');
+        }
+
+        const data = await response.json();
+        
+        // Update social link inputs and handle null values
+        if (data.social_links) {
+            const links = data.social_links;
+            document.getElementById('facebook').value = links.facebook || '';
+            document.getElementById('Instagram').value = links.instagram || '';
+            document.getElementById('Youtube').value = links.youtube || '';
+            document.getElementById('Linkedin').value = links.linkedin || '';
+        }
+
+        console.log('Loaded social links:', data.social_links); // Debug log
+    } catch (error) {
+        console.error('Error loading social links:', error);
+        toastr.error("Failed to load social links", "Error");
+    }
+  }
+
+  // Call loadSocialLinks when page loads
+  document.addEventListener('DOMContentLoaded', function() {
+    loadSocialLinks();
+  });
+</script>
+
+<!-- Add this modal HTML at the end of your settings.ejs file -->
+<div class="modal fade" id="gstUpdateModal" tabindex="-1" aria-labelledby="gstUpdateModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="gstUpdateModalLabel">GST Number Update Request</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p class="text-center">For updating GST Number, please wait for approval from the administrator. You will be notified once your request is approved.</p>
+      </div>
+      <div class="modal-footer justify-content-center">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- End::content  -->
 <%- include('../partials/footer') %>
+
