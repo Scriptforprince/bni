@@ -30,6 +30,46 @@ function formatDate(date) {
   return `${year}-${month}-${day}`;
 }
 
+// Add this function near the top with other utility functions
+async function fetchAndPopulateCountries(selectedCountry) {
+  try {
+    const response = await fetch('https://restcountries.com/v3.1/all');
+    if (!response.ok) throw new Error('Network response was not ok');
+    
+    const data = await response.json();
+    const selectElement = document.getElementById('country');
+    
+    // Clear existing options
+    selectElement.innerHTML = '<option value="">Select Country</option>';
+
+    // Sort all countries alphabetically
+    const sortedCountries = data.sort((a, b) => 
+      a.name.common.localeCompare(b.name.common)
+    );
+
+    // Add all countries to the dropdown
+    sortedCountries.forEach(country => {
+      const option = document.createElement('option');
+      option.value = country.cca2; // Use country code as value instead of name
+      option.textContent = country.name.common;
+      selectElement.appendChild(option);
+    });
+
+    // Set the selected country if provided, otherwise default to India (IN)
+    if (selectedCountry) {
+      selectElement.value = selectedCountry;
+    } else {
+      selectElement.value = "IN"; // Use India's country code
+    }
+  } catch (error) {
+    console.error('Error fetching countries:', error);
+    // If API fails, ensure India is available and selected
+    const selectElement = document.getElementById('country');
+    selectElement.innerHTML = '<option value="IN">India</option>';
+    selectElement.value = "IN";
+  }
+}
+
 document.addEventListener('DOMContentLoaded', async function () {
   // Get the member ID from the URL
   const urlParams = new URLSearchParams(window.location.search);
@@ -45,6 +85,9 @@ document.addEventListener('DOMContentLoaded', async function () {
   showLoader();
 
   try {
+    // Add country fetching before member data fetch
+    await fetchAndPopulateCountries();
+
     // Fetch member data
     const memberResponse = await fetch(`https://bni-data-backend.onrender.com/api/getMember/${memberId}`);
     if (!memberResponse.ok) throw new Error('Error fetching member data');
@@ -157,8 +200,18 @@ document.addEventListener('DOMContentLoaded', async function () {
     document.getElementById('member_sponsored_by').value = member.member_sponsored_by || 'Not Found';
     document.getElementById('date_of_publishing').value = formatDate(member.date_of_publishing);
 
+    // Add this with other field populations
+    if (member.country) {
+      document.getElementById('country').value = member.country;
+    } else {
+      // If no country is set in member data, default to India
+      document.getElementById('country').value = "India";
+    }
+
+    document.getElementById('meeting_opening_balance').value = member.meeting_opening_balance || '0';
+
   } catch (error) {
-    console.error('Error fetching member details:', error);
+    console.error('Error:', error);
   } finally {
     // Hide loader
     hideLoader();
@@ -184,7 +237,7 @@ const collectMemberFormData = () => {
     address_state: document.querySelector("#address_state").value,
     region_id: document.querySelector("#region_id").value,
     chapter_id: document.querySelector("#chapter_id").value,
-    accolades_id: Array.from(document.querySelectorAll('input[name="accolades"]:checked')).map(checkbox => checkbox.value), // Collecting accolades as an array
+    accolades_id: Array.from(document.querySelectorAll('input[name="accolades"]:checked')).map(checkbox => checkbox.value),
     category_id: document.querySelector("#category").value || null,
     member_current_membership: document.querySelector("#member_current_membership").value,
     member_renewal_date: document.querySelector("#member_renewal_date").value,
@@ -194,7 +247,7 @@ const collectMemberFormData = () => {
     member_company_state: document.querySelector("#member_company_state").value,
     member_company_city: document.querySelector("#member_company_city").value,
     member_company_pincode: document.querySelector("#member_company_pincode").value,
-    member_photo: document.querySelector("#member_photo").src, // Assuming logo is stored in the image src
+    member_photo: document.querySelector("#member_photo").src,
     member_website: document.querySelector("#member_website").value,
     member_facebook: document.querySelector("#member_facebook").value,
     member_instagram: document.querySelector("#member_instagram").value,
@@ -203,8 +256,11 @@ const collectMemberFormData = () => {
     member_sponsored_by: document.querySelector("#member_sponsored_by").value,
     date_of_publishing: document.querySelector("#date_of_publishing").value,
     member_status: document.querySelector("#member_status").value,
+    country: document.querySelector("#country").value,
+    meeting_opening_balance: document.querySelector("#meeting_opening_balance").value || 0
   };
 
+  console.log("Form data being sent:", memberData); // Debug log
   return memberData;
 };
 
