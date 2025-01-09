@@ -94,6 +94,7 @@ const populateDropdown = (dropdown, data, valueField, textField, defaultText) =>
       fetch("https://bni-data-backend.onrender.com/api/paymentGateway"),
       fetch("https://bni-data-backend.onrender.com/api/universalLinks"),
       fetch("https://bni-data-backend.onrender.com/api/regions"),
+      fetch("https://bni-data-backend.onrender.com/api/allOrders"),
     ]);
 
     const orders = await ordersResponse.json();
@@ -108,6 +109,9 @@ const transactions = allTransactions.filter(transaction =>
   orders.some(order => order.order_id === transaction.order_id)
 );
     
+    // Update the registration count with the number of transactions
+    const transactionCount = transactions.length;
+    document.querySelector('.registrations b').textContent = transactionCount;
 
     // Populate region and chapter dropdowns
     populateDropdown(regionsDropdown, regions, "region_id", "region_name", "Select Region");
@@ -455,7 +459,7 @@ if (filters.month && transaction.order_id) {
       <td>
       <input type="checkbox" name="selectRow" value="${index}">
     </td>
-    
+               <td><button class="generate-qr-btn" data-transaction-id="2">Generate QR</button></td>
                 <td>${index + 1}</td>
                 <td>${formattedDate}</td>
                 <td><img src="https://www.kindpng.com/picc/m/78-786207_user-avatar-png-user-avatar-icon-png-transparent.png" alt="Card" width="20" height="20">${
@@ -576,23 +580,25 @@ if (filters.month && transaction.order_id) {
         
                           // Simulate loading for 3-4 seconds
                           setTimeout(() => {
-                              // Generate the QR code using the qrcode.js library
-                              const qrCodeData = einvoiceData.qrcode;
+                              // Generate QR Code as a data URL
+                              const qrCodeImage = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(orderId)}&size=100x100`;
+                              console.log("Order ID:", orderId);
+                              console.log("QR Code Image:", qrCodeImage);
         
-                              // Generate the QR code and set it as an image
-                              QRCode.toDataURL(qrCodeData, { width: 100, height: 100 }, (err, url) => {
-                                  if (err) {
-                                      console.error('Error generating QR Code:', err);
-                                      qrcodeCell.innerHTML = "<em>Error generating QR Code</em>";
-                                  } else {
-                                      // Store the generated QR code URL in localStorage
-                                      localStorage.setItem(qrCodeKey, url);
+                              // Create an image element for the QR code
+                              const qrcodeDiv = document.createElement('div');
+                              qrcodeDiv.className = 'qrcode'; // Add a class for styling
+                              qrcodeDiv.innerHTML = `<img src="${qrCodeImage}" alt="QR Code" width="100" height="100">`;
+                              button.parentNode.insertBefore(qrcodeDiv, button.nextSibling); // Insert QR code after the button
         
-                                      // Display the generated QR code
-                                      qrcodeCell.innerHTML = `<img src="${url}" alt="QR Code" width="100" height="100">`;
-                                  }
-                              });
-                          }, 3000); // Delay for 3 seconds
+                              // Store the generated QR code URL in localStorage
+                              localStorage.setItem(qrCodeKey, qrCodeImage); // Store in localStorage
+                              console.log('QR code stored in localStorage'); // Debug log 3
+        
+                              // Remove loader after QR code is generated
+                              loader.remove();
+                              button.style.display = 'none'; // Hide the Generate QR button after generating the QR code
+                          }, 2000); // 2 seconds delay
                       });
                   } else {
                       qrcodeCell.innerHTML = "<em>Not Applicable</em>";
@@ -769,46 +775,7 @@ if (filters.month && transaction.order_id) {
                     transactionRow.querySelector(".irn").innerHTML =
                       einvoiceData.irn || "<em>Not Applicable</em>";
                   
-                    // Check if QR code is already stored in localStorage for this order
-                    if (localStorage.getItem(qrCodeKey)) {
-                      // If QR code is stored, show the QR code image
-                      transactionRow.querySelector(".qrcode").innerHTML = `<img src="${localStorage.getItem(qrCodeKey)}" alt="QR Code" width="30" height="30">`;
-                    } else if (einvoiceData.qrcode) {
-                      // If QR code is available but not yet stored, show the button
-                      const encodedInvoiceData = encodeURIComponent(JSON.stringify(invoiceData));
-                      const encodedEinvoiceData = encodeURIComponent(JSON.stringify(einvoiceData));
-                      transactionRow.querySelector(".qrcode").innerHTML = `<span class="generate-qr-btn">Generate QR Code</span>`;
-                      transactionRow.querySelector(".generate-invoice-btn").innerHTML = `<a href="/v/einvoice?invoiceData=${encodedInvoiceData}&einvoiceData=${encodedEinvoiceData}" class="btn btn-sm btn-link">View E-Invoice</a>`;
-                  
-                      // Add event listener to the button to display loading and then the QR code
-                      transactionRow.querySelector(".generate-qr-btn").addEventListener("click", () => {
-                        // Show "Loading..." message
-                        transactionRow.querySelector(".qrcode").innerHTML = "<em>Loading...</em>";
-                  
-                        // Simulate loading for 3-4 seconds
-                        setTimeout(() => {
-                          // Generate the QR code using the qrcode.js library
-                          const qrCodeData = einvoiceData.qrcode;
-                
-                          // Generate the QR code and set it as an image
-                          QRCode.toDataURL(qrCodeData, { width: 100, height: 100 }, (err, url) => {
-                            if (err) {
-                              console.error('Error generating QR Code:', err);
-                              transactionRow.querySelector(".qrcode").innerHTML = "<em>Error generating QR Code</em>";
-                            } else {
-                              // Store the generated QR code URL in localStorage
-                              localStorage.setItem(qrCodeKey, url);
-                
-                              // Display the generated QR code
-                              transactionRow.querySelector(".qrcode").innerHTML = `<img src="${url}" alt="QR Code" width="100" height="100">`;
-                            }
-                          });
-                        }, 3000); // Delay for 3 seconds
-                      });
-                    } else {
-                      transactionRow.querySelector(".qrcode").innerHTML = "<em>Not Applicable</em>";
-                    }
-                }
+                  }
                 
                   else {
                     // Error response handling
@@ -856,7 +823,92 @@ style.innerHTML = `
     100% { background-position: 100% 0%; }
   }
 
+  .loader {
+    border: 4px solid rgba(0, 123, 255, 0.3); /* Light blue border */
+    border-top: 4px solid #007bff; /* Blue border */
+    border-radius: 50%; /* Make it round */
+    width: 24px; /* Size of the loader */
+    height: 24px; /* Size of the loader */
+    animation: spin 1s linear infinite; /* Spin animation */
+    margin-left: 10px; /* Space from the button */
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
 `;
 
 // Append the style to the head of the document
 document.head.appendChild(style);
+
+// Event delegation for QR code generation
+document.addEventListener('click', async function(event) {
+  if (event.target.closest('.generate-qr-btn')) {
+    const button = event.target.closest('.generate-qr-btn');
+    
+    // Get the closest table row to the button
+    const transactionRow = button.closest('tr');
+    
+    // Retrieve the cf_payment_id from the corresponding table cell
+    const cfPaymentIdCell = transactionRow.querySelector('.custom_id b em');
+    const cfPaymentId = cfPaymentIdCell ? cfPaymentIdCell.textContent : null; // Get the cf_payment_id
+    console.log('CF Payment ID:', cfPaymentId); // Debug log
+
+    if (cfPaymentId) {
+      // Create and show a loader next to the button
+      const loaderDiv = document.createElement('div');
+      loaderDiv.className = 'loader'; // Add a class for styling the loader
+      button.parentNode.insertBefore(loaderDiv, button.nextSibling); // Insert loader after the button
+      
+      // Hide the "Generate QR" button
+      button.style.display = 'none';
+
+      // Wait for 3 seconds (simulate loading)
+      setTimeout(() => {
+        // Generate QR Code as a data URL using cf_payment_id
+        const qrCodeImage = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(cfPaymentId)}&size=100x100`;
+        console.log("Order ID:", cfPaymentId);
+        console.log("QR Code Image:", qrCodeImage);
+
+        // Create an image element for the QR code
+        const qrcodeDiv = document.createElement('div');
+        qrcodeDiv.className = 'qrcode'; // Add a class for styling
+        qrcodeDiv.innerHTML = `<img src="${qrCodeImage}" alt="QR Code" width="100" height="100">`;
+        
+        // Insert QR code after the button
+        button.parentNode.insertBefore(qrcodeDiv, loaderDiv.nextSibling); 
+
+        // Remove the loader
+        loaderDiv.remove();
+
+        // Optionally, you could re-enable the button after QR code generation if you want to
+        // button.style.display = 'block'; // Uncomment to make the button visible again if needed
+
+        // After generating the QR code
+        const orderId = transactionRow.querySelector('.custom_id b em').textContent;
+        const qrCodeImage1 = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(orderId)}&size=100x100`;
+
+        // Send the QR code to the backend
+        fetch('http://localhost:5000/api/send-qr-code', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ orderId, qrCodeImage1 }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data.message); // Handle success message
+        })
+        .catch(error => {
+            console.error("Error sending QR code:", error); // Handle error
+        });
+
+      }, 3000); // 3 seconds delay
+    } else {
+      console.error('CF Payment ID not found');
+      toastr.error('CF Payment ID not found');
+    }
+  }
+});
