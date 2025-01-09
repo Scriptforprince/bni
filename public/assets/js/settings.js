@@ -48,7 +48,18 @@ function displayCompanyInfo() {
                     noLogoMessage.style.display = 'block';
                 }
 
-               
+                // Handle member photo
+                const photoPreview = document.getElementById('member-photo-preview');
+                const noPhotoMessage = document.getElementById('no-photo-message');
+                
+                if (member.member_photo && member.member_photo !== '{}') {
+                    photoPreview.src = member.member_photo;
+                    photoPreview.style.display = 'block';
+                    noPhotoMessage.style.display = 'none';
+                } else {
+                    photoPreview.style.display = 'none';
+                    noPhotoMessage.style.display = 'block';
+                }
 
                 // Update social media links
                 document.getElementById('facebook').value = member.member_facebook || 'Not Available';
@@ -134,6 +145,23 @@ document.getElementById('company-logo-input').addEventListener('change', functio
             logoPreview.src = e.target.result;
             logoPreview.style.display = 'block';
             noLogoMessage.style.display = 'none';
+        };
+        reader.readAsDataURL(file);
+    }
+});
+
+// Add event listener for member photo upload
+document.getElementById('member-photo-input').addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const photoPreview = document.getElementById('member-photo-preview');
+            const noPhotoMessage = document.getElementById('no-photo-message');
+            
+            photoPreview.src = e.target.result;
+            photoPreview.style.display = 'block';
+            noPhotoMessage.style.display = 'none';
         };
         reader.readAsDataURL(file);
     }

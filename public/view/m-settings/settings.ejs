@@ -348,7 +348,11 @@
                             </p>
                           </div>
                           <div class="mb-0 ms-0 mt-sm-0 mt-2" id="recovery-mail">
-                            <input type="file" />
+                            <input type="file" id="member-photo-input" accept=".jpg,.jpeg,.png"/>
+                            <div id="photo-container" class="mt-2">
+                              <img id="member-photo-preview" src="" alt="Profile Picture" style="max-width: 100px; display: none;"/>
+                              <p id="no-photo-message" class="text-muted fs-12">No profile picture uploaded</p>
+                            </div>
                           </div>
                         </div>
 
@@ -535,6 +539,26 @@
     const gstNumber = document.getElementById('company-gstin-input').value;
     const loggedInEmail = localStorage.getItem('loggedInEmail');
     
+    // Get member photo from input
+    const memberPhotoInput = document.getElementById('member-photo-input');
+    let memberPhotoData = '';
+    let memberPhotoName = '';
+    
+    // Check if a new file is selected
+    if (memberPhotoInput.files && memberPhotoInput.files[0]) {
+        const file = memberPhotoInput.files[0];
+        const fileExtension = file.name.split('.').pop();
+        const timestamp = Date.now();
+        memberPhotoName = `/home/mindaviator/Desktop/expenses1/bni/public/assets/memberProfileImage/member_${timestamp}.${fileExtension}`;
+        
+        // Convert file to base64
+        const reader = new FileReader();
+        memberPhotoData = await new Promise((resolve) => {
+            reader.onload = (e) => resolve(e.target.result);
+            reader.readAsDataURL(file);
+        });
+    }
+    
     // Get social links values directly from the input fields
     const facebook = document.getElementById('facebook').value.trim();
     const instagram = document.getElementById('Instagram').value.trim();
@@ -561,10 +585,12 @@
             member_company_address: companyAddress,
             member_company_name: companyName,
             member_gst_number: gstNumber,
-            member_facebook: facebook,  // Changed to match backend field names
+            member_facebook: facebook,
             member_instagram: instagram,
             member_youtube: youtube,
-            member_linkedin: linkedin
+            member_linkedin: linkedin,
+            member_photo: memberPhotoData || '',  // Send the actual image data
+            member_photo_name: memberPhotoName    // Send the full path filename
         };
 
         console.log('Sending request with data:', updatedData);
@@ -606,6 +632,40 @@
         toastr.error(error.message || "Error saving changes. Please try again.", "Error");
     }
   }
+
+  // Add event listener for member photo upload preview
+  document.getElementById('member-photo-input').addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+    
+    // Check if file exists and validate type
+    if (file) {
+        if (!allowedTypes.includes(file.type)) {
+            toastr.error('Only JPG, JPEG and PNG files are allowed', 'Invalid File Type');
+            this.value = ''; // Clear the file input
+            return;
+        }
+
+        // Check file size (optional, set to 5MB here)
+        const maxSize = 5 * 1024 * 1024; // 5MB in bytes
+        if (file.size > maxSize) {
+            toastr.error('File size should not exceed 5MB', 'File Too Large');
+            this.value = ''; // Clear the file input
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const photoPreview = document.getElementById('member-photo-preview');
+            const noPhotoMessage = document.getElementById('no-photo-message');
+            
+            photoPreview.src = e.target.result;
+            photoPreview.style.display = 'block';
+            noPhotoMessage.style.display = 'none';
+        };
+        reader.readAsDataURL(file);
+    }
+  });
 
   // Phone number input validation
   document.getElementById('phone-number-input').addEventListener('input', function(e) {
@@ -758,4 +818,3 @@
 
 <!-- End::content  -->
 <%- include('../partials/footer') %>
-
