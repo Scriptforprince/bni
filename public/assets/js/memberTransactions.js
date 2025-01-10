@@ -115,6 +115,9 @@ function hideLoader() {
     document.getElementById('total-kitty-amount').textContent = (meeting_opening_balance + meeting_payable_amount).toFixed(2);
     document.getElementById('success_kitty_amount').textContent = totalMeetingFeePaid.toFixed(2);
     document.getElementById('pending_payment_amount').textContent = (currentBalance).toFixed(2);
+     // Save pending_payment_amount to local storage
+     localStorage.setItem('pendingPaymentAmount', currentBalance.toFixed(2));
+
 
     // Populate table rows
     const ledgerBody = document.getElementById('ledger-body');

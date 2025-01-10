@@ -580,25 +580,55 @@ if (filters.month && transaction.order_id) {
         
                           // Simulate loading for 3-4 seconds
                           setTimeout(() => {
-                              // Generate QR Code as a data URL
-                              const qrCodeImage = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(orderId)}&size=100x100`;
-                              console.log("Order ID:", orderId);
+                              // Generate QR Code as a data URL using cf_payment_id
+                              const qrCodeImage = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(cfPaymentId)}&size=100x100`;
+                              
                               console.log("QR Code Image:", qrCodeImage);
-        
+
                               // Create an image element for the QR code
                               const qrcodeDiv = document.createElement('div');
                               qrcodeDiv.className = 'qrcode'; // Add a class for styling
                               qrcodeDiv.innerHTML = `<img src="${qrCodeImage}" alt="QR Code" width="100" height="100">`;
-                              button.parentNode.insertBefore(qrcodeDiv, button.nextSibling); // Insert QR code after the button
-        
-                              // Store the generated QR code URL in localStorage
-                              localStorage.setItem(qrCodeKey, qrCodeImage); // Store in localStorage
-                              console.log('QR code stored in localStorage'); // Debug log 3
-        
-                              // Remove loader after QR code is generated
-                              loader.remove();
-                              button.style.display = 'none'; // Hide the Generate QR button after generating the QR code
-                          }, 2000); // 2 seconds delay
+                              
+                              // Insert QR code after the button
+                              button.parentNode.insertBefore(qrcodeDiv, loaderDiv.nextSibling); 
+
+                              // Remove the loader
+                              loaderDiv.remove();
+
+                              // Fetch the transaction data to get the orderId
+                              fetch('https://bni-data-backend.onrender.com/api/allTransactions')
+                                  .then(response => response.json())
+                                  .then(transactions => {
+                                      // Find the transaction with the matching cf_payment_id
+                                      const transaction = transactions.find(tx => tx.cf_payment_id === cfPaymentId);
+                                      if (transaction) {
+                                          const orderId = transaction.order_id; // Get the order_id
+
+                                          // Send both orderId and cf_payment_id to the backend
+                                          fetch('http://localhost:5000/api/send-qr-code', {
+                                              method: 'POST',
+                                              headers: {
+                                                  'Content-Type': 'application/json',
+                                              },
+                                              body: JSON.stringify({ orderId, cfPaymentId }), // Send both values
+                                          })
+                                          .then(response => response.json())
+                                          .then(data => {
+                                              console.log(data.message); // Handle success message
+                                          })
+                                          .catch(error => {
+                                              console.error("Error sending data to backend:", error); // Handle error
+                                          });
+                                      } else {
+                                          console.error("Transaction not found for cf_payment_id:", cfPaymentId);
+                                      }
+                                  })
+                                  .catch(error => {
+                                      console.error("Error fetching transactions:", error); // Handle error
+                                  });
+
+                          }, 3000); // 3 seconds delay
                       });
                   } else {
                       qrcodeCell.innerHTML = "<em>Not Applicable</em>";
@@ -868,7 +898,7 @@ document.addEventListener('click', async function(event) {
       setTimeout(() => {
         // Generate QR Code as a data URL using cf_payment_id
         const qrCodeImage = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(cfPaymentId)}&size=100x100`;
-        console.log("Order ID:", cfPaymentId);
+        
         console.log("QR Code Image:", qrCodeImage);
 
         // Create an image element for the QR code
@@ -882,28 +912,37 @@ document.addEventListener('click', async function(event) {
         // Remove the loader
         loaderDiv.remove();
 
-        // Optionally, you could re-enable the button after QR code generation if you want to
-        // button.style.display = 'block'; // Uncomment to make the button visible again if needed
+        // Fetch the transaction data to get the orderId
+        fetch('https://bni-data-backend.onrender.com/api/allTransactions')
+            .then(response => response.json())
+            .then(transactions => {
+                // Find the transaction with the matching cf_payment_id
+                const transaction = transactions.find(tx => tx.cf_payment_id === cfPaymentId);
+                if (transaction) {
+                    const orderId = transaction.order_id; // Get the order_id
 
-        // After generating the QR code
-        const orderId = transactionRow.querySelector('.custom_id b em').textContent;
-        const qrCodeImage1 = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(orderId)}&size=100x100`;
-
-        // Send the QR code to the backend
-        fetch('http://localhost:5000/api/send-qr-code', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ orderId, qrCodeImage1 }),
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log(data.message); // Handle success message
-        })
-        .catch(error => {
-            console.error("Error sending QR code:", error); // Handle error
-        });
+                    // Send both orderId and cf_payment_id to the backend
+                    fetch('http://localhost:5000/api/send-qr-code', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ orderId, cfPaymentId }), // Send both values
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data.message); // Handle success message
+                    })
+                    .catch(error => {
+                        console.error("Error sending data to backend:", error); // Handle error
+                    });
+                } else {
+                    console.error("Transaction not found for cf_payment_id:", cfPaymentId);
+                }
+            })
+            .catch(error => {
+                console.error("Error fetching transactions:", error); // Handle error
+            });
 
       }, 3000); // 3 seconds delay
     } else {
@@ -912,3 +951,6 @@ document.addEventListener('click', async function(event) {
     }
   }
 });
+
+// Function to generate the first QR code
+

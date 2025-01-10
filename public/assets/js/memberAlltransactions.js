@@ -241,6 +241,7 @@ document.getElementById("apply-filters-btn").addEventListener("click", () => {
   
       // Update the spans with calculated values
       document.getElementById('total_transactions_amount').textContent = `₹${totalAmount.toFixed(2)}`;
+      localStorage.setItem('totalTransactionsAmount', totalAmount.toFixed(2)); // Save total amount in local storage
       document.getElementById('success_payments').textContent = `₹${successPaymentsAmount.toFixed(2)}`;
       document.getElementById('pending_payments').textContent = `₹${pendingPaymentsAmount.toFixed(2)}`;
   
