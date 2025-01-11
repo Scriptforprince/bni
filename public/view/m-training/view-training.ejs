@@ -5,7 +5,7 @@
     <!-- sidebar -->
 
     <%- include('../partials/sidebar') %>
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
         /* Style for dropdown menu to enable scrolling */
 .dropdown-menu {
@@ -49,8 +49,13 @@
                 </div>
                 <div class="btn-list">
                   <h6>No. of Registrations: <span style="color: #fb3e4e;" class="registrations"><b>0</b></span></h6>
-                  </div>
-                
+                  <h6>Scan QR Code: 
+                      <a href="#" id="openCamera">   
+                          <i class="fa fa-camera" style="font-size:20px;color:red"></i> 
+                      </a> 
+                  </h6>
+              </div>
+              <video id="videoElement" width="320" height="240" autoplay style="display:none;"></video>              
             </div>
             <!-- Page Header Close -->
 
@@ -605,6 +610,33 @@ window.addEventListener('load', fetchTrainingDetails);
     <%- include('../partials/footer') %> 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script>
+      document.getElementById('openCamera').addEventListener('click', function(e) {
+    e.preventDefault();  // Prevent the default anchor behavior
+    
+    // Access the user's camera
+    navigator.mediaDevices.getUserMedia({ video: true })
+    .then(function(stream) {
+        // Display the camera stream in a video element
+        var videoElement = document.getElementById('videoElement');
+        videoElement.style.display = 'block';  // Show the video element
+        videoElement.srcObject = stream;  // Set the camera stream as the source
+        
+        // Optionally, add a button to stop the camera and hide the video
+        var stopButton = document.createElement('button');
+        stopButton.textContent = 'Stop Camera';
+        stopButton.addEventListener('click', function() {
+            stream.getTracks().forEach(track => track.stop());  // Stop the camera stream
+            videoElement.style.display = 'none';  // Hide the video element
+        });
+        document.body.appendChild(stopButton);
+    })
+    .catch(function(error) {
+        console.error('Error accessing the camera: ', error);
+    });
+});
+
+    </script>
 
 
     <!-- Add QR Code library before your closing body tag -->
