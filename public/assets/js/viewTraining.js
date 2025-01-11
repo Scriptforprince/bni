@@ -456,11 +456,12 @@ if (filters.month && transaction.order_id) {
       row.classList.add("invoice-list");
 
       row.innerHTML = `
+      <td>${index + 1}</td>
       <td>
-      <input type="checkbox" name="selectRow" value="${index}">
+      <button value="${index}" class="btn btn-sm btn-outline-danger mark_attendence btn-wave waves-light">Mark Attendence</button>
     </td>
                <td><button class="generate-qr-btn" data-transaction-id="2">Generate QR</button></td>
-                <td>${index + 1}</td>
+                
                 <td>${formattedDate}</td>
                 <td><img src="https://www.kindpng.com/picc/m/78-786207_user-avatar-png-user-avatar-icon-png-transparent.png" alt="Card" width="20" height="20">${
                   order?.member_name || "Unknown"
@@ -470,7 +471,7 @@ if (filters.month && transaction.order_id) {
         transaction.order_id
       }" class="fw-medium text-success">View</a></td>
                 <td>${paymentImage} ${paymentMethod}</td>
-                <td><em>${transaction.order_id}</em></td>
+                <td class="o_id"><em>${transaction.order_id}</em></td>
                 <td class="custom_id"><b><em>${transaction.cf_payment_id}</em></b></td>
                 <td><span class="badge ${
                   transaction.payment_status === "SUCCESS"
@@ -491,6 +492,79 @@ if (filters.month && transaction.order_id) {
       tableBody.appendChild(row);
     
     });
+
+    // Attach event listener to the dynamically created "Mark Attendance" buttons
+tableBody.addEventListener("click", (event) => {
+  const target = event.target;
+
+  if (target.classList.contains("mark_attendence")) {
+    // Get the transaction ID from the row
+    const row = target.closest("tr");
+    const transactionId = row.querySelector(".custom_id b em").innerText;
+    const orderId = row.querySelector(".o_id").innerText;
+    const training_id = urlParams.get('training_id');
+
+
+
+    // Show SweetAlert confirmation dialog
+    Swal.fire({
+      title: "Are you sure?",
+      text: "Do you want to mark attendance for this member?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, mark attendance!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Send a request to the backend
+        fetch("https://bni-data-backend.onrender.com/api/markAttendence", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ transaction_id: transactionId, training_id, orderId}),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.success) {
+              // Success alert
+              Swal.fire({
+                title: "Attendance Marked!",
+                text: "The member's attendance has been successfully marked.",
+                icon: "success",
+                confirmButtonText: "OK",
+              });
+
+              // Optionally update UI
+              target.classList.remove("mark_attendence");
+              target.classList.add("btn-success");
+              target.innerText = "Attendance Marked ✔";
+              target.disabled = true;
+            } else {
+              // Failure alert
+              Swal.fire({
+                title: "Error!",
+                text: data.message || "Failed to mark attendance.",
+                icon: "error",
+                confirmButtonText: "OK",
+              });
+            }
+          })
+          .catch((error) => {
+            console.error("Error marking attendance:", error);
+            Swal.fire({
+              title: "Error!",
+              text: "An unexpected error occurred.",
+              icon: "error",
+              confirmButtonText: "OK",
+            });
+          });
+      }
+    });
+  }
+});
+
 
       // Add event listener for "Track Settlement" buttons
       document.addEventListener('click', async (event) => {
