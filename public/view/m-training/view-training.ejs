@@ -328,11 +328,6 @@
                                     <h5 class="fw-medium mb-1">
                                       <span class="count-up" data-count="385"
                                         >
-                                        
-    
-    
-    
-    
                                         </span
                                       >
                                     </h5>
@@ -611,49 +606,7 @@ window.addEventListener('load', fetchTrainingDetails);
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
-    <!-- Add QR Modal -->
-    <div class="modal fade" id="qrModal" tabindex="-1" aria-labelledby="qrModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="qrModalLabel">Check-in QR Code</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body text-center">
-            <div id="qrcode"></div>
-            <p class="mt-2" id="orderIdText"></p>
-          </div>
-        </div>
-      </div>
-    </div> 
 
     <!-- Add QR Code library before your closing body tag -->
     <script src="https://cdn.jsdelivr.net/npm/qrcode.js@1.0.0/qrcode.min.js"></script>
 
-    <script>
-    // QR Code generation logic
-    document.addEventListener('DOMContentLoaded', function() {
-      // Initialize QR Modal
-      const qrModal = new bootstrap.Modal(document.getElementById('qrModal'));
-      
-      // Add click handlers to all Generate QR buttons
-      document.querySelectorAll('.generate-qr-btn').forEach(button=> {
-        button.addEventListener('click', async function() {
-          const row = this.closest('tr');
-          const orderId = row.dataset.orderId; // You'llneed to add data-order-id to your tr elements
-          
-          // Clear previous QR code
-          document.getElementById('qrcode').innerHTML = '';
-          document.getElementById('orderId').textContent = `Order ID: ${orderId}`;
-          
-          // Generate new QR code
-          QRCode.toCanvas(document.getElementById('qrcode'),orderId, function (error) {
-            if (error) console.error(error);
-          });
-          
-          // Show modal
-          qrModal.show();
-        });
-      });
-    });
-    </script>
