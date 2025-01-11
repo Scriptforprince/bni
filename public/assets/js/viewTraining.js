@@ -876,7 +876,24 @@ document.head.appendChild(style);
 document.addEventListener('click', async function(event) {
   if (event.target.closest('.generate-qr-btn')) {
     const button = event.target.closest('.generate-qr-btn');
-    
+    const training_id = urlParams.get('training_id');
+    console.log("Training ID:", training_id);
+
+    // Function to fetch training details and return the data
+    async function fetchTrainingDetails() {
+      try {
+        showLoader();
+        const response = await fetch(`https://bni-data-backend.onrender.com/api/getTraining/${training_id}`);
+        if (!response.ok) throw new Error('Failed to fetch training details');
+        return await response.json(); // Return the training data
+      } catch (error) {
+        console.error('Error fetching training details:', error);
+        return null;
+      } finally {
+        hideLoader();
+      }
+    }
+
     // Get the closest table row to the button
     const transactionRow = button.closest('tr');
     
@@ -895,54 +912,77 @@ document.addEventListener('click', async function(event) {
       button.style.display = 'none';
 
       // Wait for 3 seconds (simulate loading)
-      setTimeout(() => {
-        // Generate QR Code as a data URL using cf_payment_id
+      setTimeout(async () => {
+        // Fetch the training details
+        const trainingData = await fetchTrainingDetails();
+
+        if (trainingData) {
         const qrCodeImage = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(cfPaymentId)}&size=100x100`;
-        
+
+
         console.log("QR Code Image:", qrCodeImage);
 
-        // Create an image element for the QR code
         const qrcodeDiv = document.createElement('div');
         qrcodeDiv.className = 'qrcode'; // Add a class for styling
         qrcodeDiv.innerHTML = `<img src="${qrCodeImage}" alt="QR Code" width="100" height="100">`;
-        
-        // Insert QR code after the button
+
         button.parentNode.insertBefore(qrcodeDiv, loaderDiv.nextSibling); 
+          // Extract the additional data
+          const page_title = trainingData.training_name || '';
+          const training_name = trainingData.training_name || '';
+          const training_venue = trainingData.training_venue || '';
+          const training_ticket_price = trainingData.training_price || '';
+          const training_date = formatDateForInput(trainingData.training_date) || '';
+          const training_published_by = trainingData.training_published_by || '';
+
+          // Fetch the transaction data to get the orderId
+          fetch('https://bni-data-backend.onrender.com/api/allTransactions')
+              .then(response => response.json())
+              .then(transactions => {
+                  // Find the transaction with the matching cf_payment_id
+                  const transaction = transactions.find(tx => tx.cf_payment_id === cfPaymentId);
+                  if (transaction) {
+                      const orderId = transaction.order_id; // Get the order_id
+
+                      // Send all details to the backend
+                      fetch('http://localhost:5000/api/send-qr-code', {
+                          method: 'POST',
+                          headers: {
+                              'Content-Type': 'application/json',
+                          },
+                          body: JSON.stringify({
+                              orderId,
+                              cfPaymentId,
+                              page_title,
+                              training_name,
+                              training_venue,
+                              training_ticket_price,
+                              training_date,
+                              training_published_by,
+                              qrCodeImage,
+                              training_id
+                          }), // Send all values
+                      })
+                      .then(response => response.json())
+                      .then(data => {
+                          console.log(data.message); // Handle success message
+                      })
+                      .catch(error => {
+                          console.error("Error sending data to backend:", error); // Handle error
+                      });
+                  } else {
+                      console.error("Transaction not found for cf_payment_id:", cfPaymentId);
+                  }
+              })
+              .catch(error => {
+                  console.error("Error fetching transactions:", error); // Handle error
+              });
+        } else {
+          console.error("Training data not found.");
+        }
 
         // Remove the loader
         loaderDiv.remove();
-
-        // Fetch the transaction data to get the orderId
-        fetch('https://bni-data-backend.onrender.com/api/allTransactions')
-            .then(response => response.json())
-            .then(transactions => {
-                // Find the transaction with the matching cf_payment_id
-                const transaction = transactions.find(tx => tx.cf_payment_id === cfPaymentId);
-                if (transaction) {
-                    const orderId = transaction.order_id; // Get the order_id
-
-                    // Send both orderId and cf_payment_id to the backend
-                    fetch('http://localhost:5000/api/send-qr-code', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({ orderId, cfPaymentId }), // Send both values
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log(data.message); // Handle success message
-                    })
-                    .catch(error => {
-                        console.error("Error sending data to backend:", error); // Handle error
-                    });
-                } else {
-                    console.error("Transaction not found for cf_payment_id:", cfPaymentId);
-                }
-            })
-            .catch(error => {
-                console.error("Error fetching transactions:", error); // Handle error
-            });
 
       }, 3000); // 3 seconds delay
     } else {
@@ -951,6 +991,8 @@ document.addEventListener('click', async function(event) {
     }
   }
 });
+
+
 
 // Function to generate the first QR code
 
