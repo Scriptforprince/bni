@@ -1269,6 +1269,7 @@
                 <div class="d-flex align-items-center">
                   <div>
                     <img
+                      id="headerLogo"
                       src="https://cdn-icons-png.flaticon.com/512/194/194828.png"
                       alt="img"
                       class="avatar avatar-sm"
@@ -1367,6 +1368,64 @@
       // Redirect to the home page if not logged in
       window.location.href = '/';
   }
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('Checking login type and logo status...');
+  const loginType = localStorage.getItem('loginType');
+  console.log('Login type:', loginType);
+  
+  const headerLogo = document.getElementById('headerLogo');
+  
+  if (loginType === 'ro_admin') {
+    console.log('RO Admin detected, checking for active logo...');
+    
+    fetch('https://bni-data-backend.onrender.com/api/getDisplayLogo')
+      .then(response => {
+        console.log('Logo fetch response:', response.status);
+        return response.json();
+      })
+      .then(data => {
+        console.log('Logo data received:', data);
+        
+        // Find the active logo from the array
+        const activeLogo = data.find(logo => logo.display_status === 'active');
+        console.log('Active logo found:', activeLogo);
+        
+        if (activeLogo && activeLogo.display_image_name) {
+          console.log('Found active logo:', activeLogo.display_image_name);
+          const imageName = activeLogo.display_image_name;
+          const imageUrl = `https://bni-data-backend.onrender.com/uploads/dynamicLogo/${imageName}`;
+          console.log('Setting header logo URL:', imageUrl);
+          
+          // Create a new Image object to test if the image loads successfully
+          const testImage = new Image();
+          testImage.onload = function() {
+            headerLogo.src = imageUrl + '?t=' + new Date().getTime();
+            console.log('Custom logo loaded successfully');
+          };
+          testImage.onerror = function() {
+            console.log('Custom logo failed to load, keeping default avatar');
+            headerLogo.src = "https://cdn-icons-png.flaticon.com/512/194/194828.png";
+          };
+          testImage.src = imageUrl;
+          
+        } else {
+          console.log('No active logo found, keeping default avatar');
+          headerLogo.src = "https://cdn-icons-png.flaticon.com/512/194/194828.png";
+        }
+      })
+      .catch(error => {
+        console.error('Error loading header logo:', error);
+        console.log('Error occurred, keeping default avatar');
+        headerLogo.src = "https://cdn-icons-png.flaticon.com/512/194/194828.png";
+      });
+  } else {
+    console.log('Not RO Admin, keeping default avatar');
+    headerLogo.src = "https://cdn-icons-png.flaticon.com/512/194/194828.png";
+  }
+});
 </script>
   </body>
 </html>
