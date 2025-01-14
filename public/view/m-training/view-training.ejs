@@ -49,13 +49,16 @@
                 </div>
                 <div class="btn-list">
                   <h6>No. of Registrations: <span style="color: #fb3e4e;" class="registrations"><b>0</b></span></h6>
-                  <h6>Scan QR Code: 
-                      <a href="#" id="openCamera">   
-                          <i class="fa fa-camera" style="font-size:20px;color:red"></i> 
-                      </a> 
-                  </h6>
-              </div>
-              <video id="videoElement" width="320" height="240" autoplay style="display:none;"></video>              
+                  <h6>Total Checkin: <span style="color: #fb3e4e;" class="registrations"><b>0</b></span></h6>
+                  <h6>Total Missed: <span style="color: #fb3e4e;" class="non-registrations"><b>0</b></span></h6>
+                  <h6>Scan QR Code:</h6>
+<a href="#" id="openCamera">
+  <i class="fa fa-camera" style="font-size:20px; color:red;"></i>
+</a>
+<div id="qr-reader" style="width: 300px;"></div>
+<div id="qr-reader-results"></div>
+
+              </div>             
             </div>
             <!-- Page Header Close -->
 
@@ -326,7 +329,7 @@
                             <div class="d-flex align-items-start gap-3">
                               <div class="flex-fill">
                                 <h6 class="mb-2 fs-12 cus">
-                                  Pending Payments (in ₹)
+                                  
                                 </h6>
                                 <div class="pb-0 mt-0">
                                   <div>
@@ -540,9 +543,8 @@
                     </div>
                   </div>
                 </div>
-              </div
-
-            
+              </div>
+              
         </div>
     </div>
     <!-- End::content  -->
@@ -607,41 +609,37 @@ window.addEventListener('load', fetchTrainingDetails);
     </script>
     <script src="../../assets/js/viewTraining.js"></script>
 
+    <script>
+fetch('http://localhost:5000/api/allCheckins')
+  .then((response) => response.json())
+  .then((data) => {
+    // Count the total check-ins where checked_in is true
+    const totalCheckins = data.filter((checkin) => checkin.checked_in === true).length;
+
+    // Update the span for total check-ins
+    document.querySelector('.registrations').textContent = totalCheckins;
+
+    // Count the total check-ins where checked_in is false (missed)
+    const totalMissed = data.filter((checkin) => checkin.checked_in === false).length;
+
+    // Update the span for total missed check-ins
+    document.querySelector('.non-registrations b').textContent = totalMissed;
+  })
+  .catch((error) => {
+    console.error('Error fetching check-ins:', error);
+  });
+
+    </script>
+
     <%- include('../partials/footer') %> 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <script>
-      document.getElementById('openCamera').addEventListener('click', function(e) {
-    e.preventDefault();  // Prevent the default anchor behavior
-    
-    // Access the user's camera
-    navigator.mediaDevices.getUserMedia({ video: true })
-    .then(function(stream) {
-        // Display the camera stream in a video element
-        var videoElement = document.getElementById('videoElement');
-        videoElement.style.display = 'block';  // Show the video element
-        videoElement.srcObject = stream;  // Set the camera stream as the source
-        
-        // Optionally, add a button to stop the camera and hide the video
-        var stopButton = document.createElement('button');
-        stopButton.textContent = 'Stop Camera';
-        stopButton.addEventListener('click', function() {
-            stream.getTracks().forEach(track => track.stop());  // Stop the camera stream
-            videoElement.style.display = 'none';  // Hide the video element
-        });
-        document.body.appendChild(stopButton);
-    })
-    .catch(function(error) {
-        console.error('Error accessing the camera: ', error);
-    });
-});
-
-    </script>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
     <!-- Add QR Code library before your closing body tag -->
     <script src="https://cdn.jsdelivr.net/npm/qrcode.js@1.0.0/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js" integrity="sha512-r6rDA7W6ZeQhvl8S7yRVQUKVHdexq+GAlNkNNqVC7YyIV+NwqCTJe2hDWCiffTyRNOeGEzRRJ9ifvRm/HCzGYg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 
