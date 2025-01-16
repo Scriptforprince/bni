@@ -1,8 +1,8 @@
-// Function to get logged in email from localStorage
+// Function to get logged in email from token
 function getLoggedInEmail() {
-    console.log('Getting logged in email...');
-    const email = localStorage.getItem('loggedInEmail');
-    console.log('Logged in email:', email);
+    console.log('Getting logged in email from token...');
+    const email = getUserEmail();
+    console.log('Email from token:', email);
     return email;
 }
 
@@ -10,9 +10,17 @@ function getLoggedInEmail() {
 async function checkUserAuthorization() {
     try {
         console.log('Checking user authorization...');
-        const loggedInEmail = getLoggedInEmail();
-        if (!loggedInEmail) {
-            console.error('No logged in email found');
+        const loggedInEmail = getUserEmail();
+        const loginType = getUserLoginType();
+        
+        if (!loggedInEmail || !loginType) {
+            console.error('No valid token found');
+            return false;
+        }
+
+        // Only proceed with authorization check for ro_admin
+        if (loginType !== 'ro_admin') {
+            console.log('User is not ro_admin');
             return false;
         }
 
@@ -46,12 +54,61 @@ function populateCompanyInfo(data) {
     document.getElementById('company-youtube').value = data.company_youtube || '';
 }
 
+// Function to decode JWT token
+function getDecodedToken() {
+    try {
+        console.log('=== DECODING TOKEN START ===');
+        const token = localStorage.getItem('token');
+        
+        if (!token) {
+            console.error('No token found in localStorage');
+            return null;
+        }
+
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+
+        const decoded = JSON.parse(jsonPayload);
+        console.log('Decoded token:', decoded);
+        return decoded;
+    } catch (error) {
+        console.error('Error decoding token:', error);
+        return null;
+    }
+}
+
 // Function to fetch company info with detailed debugging
 async function fetchCompanyInfo() {
     try {
-        console.log('Fetching company info...');
-        const response = await fetch('https://bni-data-backend.onrender.com/api/company');
+        console.log('=== FETCH COMPANY INFO START ===');
         
+        // Get email from decoded token
+        const decoded = getDecodedToken();
+        if (!decoded || !decoded.email) {
+            console.error('No valid token or email found');
+            toastr.error('Authentication failed');
+            return;
+        }
+        
+        console.log('Token email:', decoded.email);
+
+        // Fetch users and validate email
+        const usersResponse = await fetch('https://bni-data-backend.onrender.com/api/getUsers');
+        const users = await usersResponse.json();
+        console.log('Checking authorization for email:', decoded.email);
+        
+        const isAuthorized = users.some(user => user.email === decoded.email);
+        if (!isAuthorized) {
+            console.error('User not authorized');
+            toastr.error('You are not authorized to view these settings');
+            return;
+        }
+
+        // Fetch company info
+        const response = await fetch('https://bni-data-backend.onrender.com/api/company');
         if (!response.ok) {
             throw new Error('Failed to fetch company info');
         }
@@ -63,10 +120,11 @@ async function fetchCompanyInfo() {
             throw new Error('Company not found');
         }
 
+        console.log('Company info fetched successfully');
         populateCompanyInfo(company);
-        console.log('Company info populated successfully');
+        
     } catch (error) {
-        console.error('Error fetching company info:', error);
+        console.error('Error in fetchCompanyInfo:', error);
         toastr.error('Failed to load company information');
     }
 }
@@ -148,23 +206,9 @@ async function fetchGstValues() {
 
 // Add debugging to initialization
 document.addEventListener('DOMContentLoaded', async function() {
+    console.log('=== PAGE INITIALIZATION START ===');
     try {
-        console.log('=== PAGE INITIALIZATION START ===');
-        
-        // Check authorization first
-        const isAuthorized = await checkUserAuthorization();
-        if (!isAuthorized) {
-            console.warn('User not authorized');
-            toastr.error('You are not authorized to view these settings');
-            return;
-        }
-
-        // Fetch company info
         await fetchCompanyInfo();
-        
-        // Populate tax dropdowns
-        await populateTaxDropdowns();
-
         console.log('=== PAGE INITIALIZATION COMPLETE ===');
     } catch (error) {
         console.error('Error during initialization:', error);
