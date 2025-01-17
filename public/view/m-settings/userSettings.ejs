@@ -1949,7 +1949,7 @@ function loadLogo() {
         
         const logoPreview = document.getElementById('logo-preview');
         // Construct the full URL using the image name
-        const imageUrl = `https://bni-data-backend.onrender.com/uploads/dynamicLogo/${imageName}`;
+        const imageUrl = `http://localhost:5000/uploads/dynamicLogo/${imageName}`;
         console.log('Setting image URL:', imageUrl);
         
         logoPreview.src = imageUrl + '?t=' + new Date().getTime();
